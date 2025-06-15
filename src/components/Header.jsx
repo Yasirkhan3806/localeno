@@ -1,13 +1,7 @@
 
+
 import React, { useState } from "react";
 import { Menu, X, ChevronDown, Search, User, LogIn, UserPlus } from "lucide-react";
-
-const categories = [
-  { name: "Electronics" },
-  { name: "Clothing" },
-  { name: "Accessories" },
-  { name: "Home & Living" },
-];
 
 const navTabs = [
   { name: "Home", link: "#" },
@@ -16,13 +10,6 @@ const navTabs = [
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [categoriesDropdown, setCategoriesDropdown] = useState(false);
-
-  // Only show categories dropdown on desktop
-  const handleCategoriesClick = (e) => {
-    e.preventDefault();
-    setCategoriesDropdown((c) => !c);
-  };
 
   return (
     <header className="sticky top-0 z-30 bg-background/95 backdrop-blur font-inter shadow-none border-b border-neutral-200">
@@ -45,27 +32,6 @@ const Header = () => {
               </a>
             </li>
           ))}
-          {/* Categories Dropdown */}
-          <li className="relative">
-            <button
-              onClick={handleCategoriesClick}
-              className="px-4 py-2 rounded inline-flex items-center gap-1 hover:bg-neutral-100 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
-            >
-              Categories
-              <ChevronDown size={18} />
-            </button>
-            {categoriesDropdown && (
-              <ul className="absolute w-56 left-0 top-14 rounded shadow bg-white py-2 z-50 border font-normal animate-fade-in">
-                {categories.map((cat) => (
-                  <li key={cat.name}>
-                    <a href="#" className="block px-4 py-2 hover:bg-neutral-100">
-                      {cat.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
           <li>
             <a href="#" className="px-4 py-2 rounded hover:bg-neutral-100 transition-all">
               About Us
@@ -121,23 +87,7 @@ const Header = () => {
                     </a>
                   </li>
                 ))}
-                <li>
-                  {/* Categories dropdown in mobile - built as nested submenu */}
-                  <details>
-                    <summary className="px-3 py-2 rounded cursor-pointer flex items-center gap-1 hover:bg-neutral-100 select-none">
-                      Categories <ChevronDown size={16} />
-                    </summary>
-                    <ul className="pl-4 flex flex-col gap-1 mt-1">
-                      {categories.map((cat) => (
-                        <li key={cat.name}>
-                          <a href="#" className="block px-3 py-1 rounded hover:bg-neutral-100">
-                            {cat.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                </li>
+                {/* Removed categories dropdown from mobile */}
                 <li>
                   <a href="#" className="block px-3 py-2 rounded hover:bg-neutral-100 text-base">
                     About Us
@@ -184,3 +134,4 @@ const Header = () => {
 };
 
 export default Header;
+
