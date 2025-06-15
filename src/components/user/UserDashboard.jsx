@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import UserSidebar from './UserSidebar';
@@ -22,13 +23,15 @@ const UserDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header is always fixed at the top */}
       <UserHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       
-      <div className="flex">
+      {/* Main dashboard layout: leave space for header with pt-16 */}
+      <div className="flex pt-16">
         <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        
+
         <div className="flex-1 lg:ml-64">
-          <main className="pt-20 p-4 lg:p-8">
+          <main className="p-4 lg:p-8">
             <Routes>
               <Route path="/home" element={<UserHome />} />
               <Route path="/cart" element={<UserCart />} />
@@ -51,3 +54,4 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+

@@ -1,7 +1,7 @@
+
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-// Import Home icon for sidebar button
 import { 
   Home, 
   ShoppingBag, 
@@ -39,17 +39,21 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <>
-      {/* Mobile Overlay */}
+      {/* Mobile Overlay: covers only below the header (h-16 = top-16) */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          className="fixed inset-x-0 top-16 bottom-0 bg-black bg-opacity-50 z-20 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
+      {/* Sidebar slides from left, start below header on mobile, full height on desktop */}
       <div className={`
-        fixed top-0 left-0 z-30 w-64 h-full bg-white shadow-xl transform transition-transform duration-300
+        fixed 
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        top-16 lg:top-0 left-0 z-30 w-64
+        h-[calc(100vh-4rem)] lg:h-full 
+        bg-white shadow-xl transform transition-transform duration-300
         lg:translate-x-0 lg:static lg:z-10
       `}>
         <div className="flex flex-col h-full">
@@ -136,3 +140,4 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 };
 
 export default UserSidebar;
+
