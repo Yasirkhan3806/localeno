@@ -2,33 +2,39 @@
 import React, { useState } from "react";
 import { Ban, Bell, Clock, Eye, Filter } from "lucide-react";
 
+// KPI demo stats
 const DEMO_REPORT_STATS = [
   {
     label: "Total Reports",
-    icon: <Ban className="w-6 h-6 text-fuchsia-500 bg-fuchsia-100 rounded p-1.5" />,
+    icon: <Ban className="w-6 h-6 text-red-400 bg-red-100 rounded p-1.5" />,
     value: 156,
-    className: "bg-fuchsia-50",
+    className: "bg-white border border-gray-200",
+    iconBg: "bg-red-100",
   },
   {
     label: "Pending",
     icon: <Clock className="w-6 h-6 text-yellow-500 bg-yellow-100 rounded p-1.5" />,
     value: 23,
-    className: "bg-yellow-50",
+    className: "bg-white border border-gray-200",
+    iconBg: "bg-yellow-100",
   },
   {
     label: "Under Review",
     icon: <Bell className="w-6 h-6 text-blue-500 bg-blue-100 rounded p-1.5" />,
     value: 45,
-    className: "bg-blue-50",
+    className: "bg-white border border-gray-200",
+    iconBg: "bg-blue-100",
   },
   {
     label: "Resolved",
     icon: <Ban className="w-6 h-6 text-green-500 bg-green-100 rounded p-1.5" />,
     value: 88,
-    className: "bg-green-50",
+    className: "bg-white border border-gray-200",
+    iconBg: "bg-green-100",
   }
 ];
 
+// Demo table data
 const DEMO_REPORTS = [
   {
     id: "RPT-001",
@@ -68,31 +74,31 @@ const DEMO_REPORTS = [
   },
 ];
 
+// Modern badge styles
 const priorityBadge = (priority) => {
   switch (priority) {
     case "High":
-      return <span className="bg-orange-100 text-orange-600 rounded-full px-2 py-0.5 text-xs font-semibold">High</span>;
+      return <span className="bg-orange-100 text-orange-600 rounded-full px-3 py-1 text-xs font-semibold">{priority}</span>;
     case "Medium":
-      return <span className="bg-yellow-100 text-yellow-600 rounded-full px-2 py-0.5 text-xs font-semibold">Medium</span>;
+      return <span className="bg-yellow-100 text-yellow-700 rounded-full px-3 py-1 text-xs font-semibold">{priority}</span>;
     case "Critical":
-      return <span className="bg-red-100 text-red-500 rounded-full px-2 py-0.5 text-xs font-semibold">Critical</span>;
+      return <span className="bg-red-100 text-red-500 rounded-full px-3 py-1 text-xs font-semibold">{priority}</span>;
     default:
-      return <span className="bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 text-xs font-semibold">{priority}</span>;
+      return <span className="bg-gray-100 text-gray-500 rounded-full px-3 py-1 text-xs font-semibold">{priority}</span>;
   }
 };
-
 const statusBadge = (status) => {
   switch (status) {
     case "Under Review":
-      return <span className="bg-blue-100 text-blue-600 rounded-full px-2 py-0.5 text-xs font-semibold">Under Review</span>;
+      return <span className="bg-blue-100 text-blue-600 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
     case "Resolved":
-      return <span className="bg-green-100 text-green-600 rounded-full px-2 py-0.5 text-xs font-semibold">Resolved</span>;
+      return <span className="bg-green-100 text-green-600 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
     case "Investigating":
-      return <span className="bg-yellow-100 text-yellow-700 rounded-full px-2 py-0.5 text-xs font-semibold">Investigating</span>;
+      return <span className="bg-yellow-100 text-yellow-700 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
     case "Pending":
-      return <span className="bg-red-100 text-red-500 rounded-full px-2 py-0.5 text-xs font-semibold">Pending</span>;
+      return <span className="bg-red-100 text-red-500 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
     default:
-      return <span className="bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 text-xs font-semibold">{status}</span>;
+      return <span className="bg-gray-100 text-gray-500 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
   }
 };
 
@@ -107,17 +113,24 @@ const AdminReportsTable = () => {
   );
 
   return (
-    <div className="w-full">
-      {/* Section Title */}
-      <div className="mb-5">
-        <h2 className="text-2xl font-bold text-gray-900">Reports & Violations</h2>
-        <div className="text-gray-500 font-normal text-base">Manage customer reports and platform violations</div>
+    <div className="w-full h-full px-0 md:px-0 bg-[#F7F9FB]">
+      {/* Header */}
+      <div className="mb-8 mt-2">
+        <h2 className="text-2xl font-bold text-gray-900 mb-1">Reports & Violations</h2>
+        <p className="text-gray-500 font-normal text-base">Manage customer reports and platform violations</p>
       </div>
-      {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-7">
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-8">
         {DEMO_REPORT_STATS.map((k, i) => (
-          <div key={i} className={`rounded-xl px-6 py-5 flex items-center gap-4 min-w-[160px] ${k.className}`}>
-            <div>{k.icon}</div>
+          <div
+            key={i}
+            className={`rounded-xl px-8 py-5 flex items-center gap-4 min-w-[160px] shadow-sm ${k.className}`}
+            style={{ minHeight: 80 }}
+          >
+            <div className={`flex items-center justify-center rounded ${k.iconBg}`}>
+              {k.icon}
+            </div>
             <div>
               <div className="text-gray-500 text-[.98rem] font-medium">{k.label}</div>
               <div className="text-2xl font-extrabold text-gray-900">{k.value}</div>
@@ -125,9 +138,10 @@ const AdminReportsTable = () => {
           </div>
         ))}
       </div>
+
       {/* Search + Filter */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
-        <div className="flex-1 flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden max-w-md">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+        <div className="flex-1 flex items-center border border-gray-200 bg-white rounded-lg overflow-hidden max-w-md shadow-sm">
           <svg className="text-gray-400 w-5 h-5 ml-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -142,25 +156,26 @@ const AdminReportsTable = () => {
         </div>
         <button
           onClick={() => window.alert('Filter not implemented (demo only).')}
-          className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition ml-auto"
+          className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition ml-auto shadow-sm"
         >
           <Filter size={18} className="text-gray-500" />
           Filter
         </button>
       </div>
+
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow border border-gray-100 overflow-auto">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="min-w-full text-sm">
           <thead>
-            <tr className="text-xs text-gray-400 font-semibold border-b">
-              <th className="pl-6 py-3 text-left">REPORT ID</th>
-              <th className="py-3 text-left">TYPE</th>
-              <th className="py-3 text-left">REPORTER</th>
-              <th className="py-3 text-left">REPORTED</th>
-              <th className="py-3 text-left">PRIORITY</th>
-              <th className="py-3 text-left">STATUS</th>
-              <th className="py-3 text-left">DATE</th>
-              <th className="py-3 text-left">ACTIONS</th>
+            <tr className="text-xs text-gray-400 font-semibold bg-white border-b">
+              <th className="pl-6 py-3 text-left font-semibold">REPORT ID</th>
+              <th className="py-3 text-left font-semibold">TYPE</th>
+              <th className="py-3 text-left font-semibold">REPORTER</th>
+              <th className="py-3 text-left font-semibold">REPORTED</th>
+              <th className="py-3 text-left font-semibold">PRIORITY</th>
+              <th className="py-3 text-left font-semibold">STATUS</th>
+              <th className="py-3 text-left font-semibold">DATE</th>
+              <th className="py-3 text-left font-semibold">ACTIONS</th>
             </tr>
           </thead>
           <tbody className="text-gray-900">
@@ -182,7 +197,7 @@ const AdminReportsTable = () => {
                   <td className="py-3">{report.date}</td>
                   <td className="py-3">
                     <button
-                      className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                      className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500"
                       title="View"
                       onClick={() => window.alert('View report functionality not implemented (demo only).')}
                     >
