@@ -50,7 +50,7 @@ const Header = () => {
               <li key={tab.name}>
                 <button
                   onClick={() => navigate(tab.link)}
-                  className="px-4 py-2 rounded-lg hover:bg-neutral-100 focus:bg-neutral-100 transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
+                  className="px-4 py-2 rounded-lg bg-background hover:bg-accent text-foreground hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
                 >
                   {tab.name}
                 </button>
@@ -82,7 +82,7 @@ const Header = () => {
                 {/* Cart, Wishlist, Rental Icons */}
                 <button 
                   onClick={() => navigate('/user/cart')}
-                  className="p-2 rounded-lg hover:bg-neutral-100 relative"
+                  className="p-2 rounded-lg hover:bg-accent transition-colors relative"
                 >
                   <ShoppingCart size={20} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
@@ -90,7 +90,7 @@ const Header = () => {
                 
                 <button 
                   onClick={() => navigate('/user/wishlist')}
-                  className="p-2 rounded-lg hover:bg-neutral-100 relative"
+                  className="p-2 rounded-lg hover:bg-accent transition-colors relative"
                 >
                   <Heart size={20} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
@@ -98,14 +98,14 @@ const Header = () => {
 
                 <button 
                   onClick={() => navigate('/user/rentals')}
-                  className="p-2 rounded-lg hover:bg-neutral-100"
+                  className="p-2 rounded-lg hover:bg-accent"
                 >
                   <Calendar size={20} />
                 </button>
 
                 {/* User Menu */}
                 <div className="relative group">
-                  <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-neutral-100">
+                  <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-accent">
                     <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm">
                       {user?.firstName?.[0]}{user?.lastName?.[0]}
                     </div>
@@ -140,14 +140,14 @@ const Header = () => {
               <>
                 <button 
                   onClick={() => navigate('/login')}
-                  className="px-4 py-2 bg-black text-white font-semibold rounded-lg hover:scale-105 hover:bg-neutral-900 transition-all focus:ring-2 focus:ring-neutral-400 focus:outline-none"
+                  className="px-4 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 hover:scale-105 transition-all focus:ring-2 focus:ring-primary focus:outline-none"
                 >
                   <LogIn size={18} className="inline-block mr-1 -mt-1" />
                   Login
                 </button>
                 <button 
                   onClick={() => navigate('/signup')}
-                  className="px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg hover:scale-105 hover:bg-neutral-200 transition-all focus:ring-2 focus:ring-neutral-400 focus:outline-none"
+                  className="px-4 py-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 hover:scale-105 transition-all focus:ring-2 focus:ring-primary focus:outline-none"
                 >
                   <UserPlus size={18} className="inline-block mr-1 -mt-1" />
                   Sign Up
@@ -158,7 +158,7 @@ const Header = () => {
           
           {/* Hamburger (Mobile) */}
           <button
-            className="md:hidden p-2 rounded-lg border border-neutral-200 hover:bg-neutral-200 shadow transition focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
+            className="md:hidden p-2 rounded-lg border border-input hover:bg-accent transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Open mobile navigation"
             style={{
@@ -174,11 +174,11 @@ const Header = () => {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-black/30 animate-fade-in">
           {/* Sidebar slides from the left */}
-          <div className="fixed top-0 left-0 h-full w-64 max-w-full bg-white shadow-xl px-5 py-8 flex flex-col gap-6">
+          <div className="fixed top-0 left-0 h-full w-64 max-w-full bg-background shadow-xl px-5 py-8 flex flex-col gap-6">
             <div className="flex items-center justify-between pb-4 border-b">
-              <span className="font-bold text-xl text-black">Shoply</span>
+              <span className="font-bold text-xl text-primary">Shoply</span>
               <button
-                className="p-2 rounded hover:bg-neutral-100"
+                className="p-2 rounded hover:bg-accent"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -193,7 +193,7 @@ const Header = () => {
                       navigate(tab.link);
                       setMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium hover:bg-neutral-950 hover:text-white transition-all shadow-sm border border-transparent hover:border-neutral-900 bg-neutral-100"
+                    className="block w-full text-left px-3 py-2 rounded-lg bg-background text-foreground font-medium hover:bg-accent hover:text-primary transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   >
                     {tab.name}
                   </button>
@@ -206,7 +206,7 @@ const Header = () => {
                   navigate('/login');
                   setMobileMenuOpen(false);
                 }}
-                className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg hover:scale-105 hover:bg-neutral-900 transition"
+                className="w-full px-4 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 hover:scale-105 transition"
               >
                 <LogIn size={18} className="inline-block mr-1 -mt-1" />
                 Login
@@ -216,7 +216,7 @@ const Header = () => {
                   navigate('/signup');
                   setMobileMenuOpen(false);
                 }}
-                className="w-full px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg hover:scale-105 hover:bg-neutral-200 transition"
+                className="w-full px-4 py-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 hover:scale-105 transition"
               >
                 <UserPlus size={18} className="inline-block mr-1 -mt-1" />
                 Sign Up

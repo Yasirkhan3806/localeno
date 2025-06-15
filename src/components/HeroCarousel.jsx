@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 const images = [
@@ -55,14 +54,14 @@ function HeroCarousel() {
             <p className="text-base sm:text-lg opacity-90 mt-2 mb-5">{img.subtitle}</p>
             <div className="flex gap-3">
               <button
-                className={`py-2 px-6 rounded-xl ${gradientButton} ${buttonText} text-sm sm:text-base shadow-lg hover:scale-105 hover:from-neutral-900 hover:to-black focus:outline-none focus:ring-2 focus:ring-black transition-all`}
+                className="py-2 px-4 sm:px-5 rounded-lg bg-primary text-primary-foreground text-sm shadow-lg font-semibold hover:bg-primary/90 focus:outline-none transition-all"
               >
-                Start Shopping
+                Shop Now
               </button>
               <button
-                className={`py-2 px-6 rounded-xl border border-white/70 ${buttonText} text-sm sm:text-base bg-black bg-opacity-40 hover:bg-opacity-70 shadow-md hover:scale-105 focus:outline-none transition-all`}
+                className="py-2 px-4 sm:px-5 rounded-lg border border-primary/60 bg-background/70 text-primary font-semibold text-sm shadow hover:bg-primary/10 focus:outline-none transition-all"
               >
-                Verify Identity
+                Learn More
               </button>
             </div>
           </div>
@@ -101,4 +100,3 @@ function HeroCarousel() {
 }
 
 export default HeroCarousel;
-

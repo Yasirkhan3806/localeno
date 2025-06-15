@@ -83,11 +83,11 @@ const Footer = () => (
           <form className="flex flex-col sm:flex-row gap-2 w-full md:w-auto max-w-md sm:max-w-none mx-auto">
             <input
               type="email"
-              className="flex-1 px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/60 text-gray-900 bg-white shadow-sm transition-all text-base"
+              className="flex-1 px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-primary/60 text-gray-900 bg-white shadow-sm transition-all text-base"
               placeholder="Enter your email address"
             />
             <button
-              className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition-all hover:scale-[1.035] whitespace-nowrap text-base shadow"
+              className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.035] whitespace-nowrap text-base shadow"
               type="submit"
             >
               Subscribe
