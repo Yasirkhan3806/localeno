@@ -46,7 +46,6 @@ const LoginPage = () => {
         ) {
           setAdminError('');
           setLoading(false);
-          // Ensure redirect to /admin using router
           navigate('/admin');
         } else {
           setLoading(false);
@@ -69,10 +68,10 @@ const LoginPage = () => {
       login(userData);
       setLoading(false);
       
-      // Direct navigation based on account type
+      // Proper redirection based on account type
       if (mode === 'seller') {
         navigate('/seller/dashboard');
-      } else {
+      } else if (mode === 'customer') {
         navigate('/user/home');
       }
     }, 1000);

@@ -15,7 +15,7 @@ import {
   LogOut,
   X,
   Menu,
-  Calendar // <-- import for Rentals tab icon
+  Calendar
 } from 'lucide-react';
 
 const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -32,7 +32,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
-    { icon: Calendar, label: 'My Rentals', path: '/user/rentals' }, // <-- Added
+    { icon: Calendar, label: 'My Rentals', path: '/user/rentals' },
     { icon: Package, label: 'My Orders', path: '/user/orders' },
     { icon: Star, label: 'Reviews', path: '/user/reviews' },
     { icon: MessageCircle, label: 'Messages', path: '/user/chats' },
@@ -57,6 +57,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
         h-[calc(100vh-4rem)] lg:h-full 
         bg-white shadow-xl transform transition-transform duration-300
         lg:translate-x-0 lg:static lg:z-10
+        flex flex-col
       `}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -79,6 +80,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <X size={20} />
           </button>
         </div>
+
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1">
           {menuItems.map((item) => (
@@ -99,40 +101,45 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </NavLink>
           ))}
         </nav>
-        {/* Back to Home Button */}
-        <div className="px-4 pb-4 mt-auto">
-          <button
-            className="w-full flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg"
-            style={{ justifyContent: 'center' }}
-            onClick={() => navigate('/user/home')}
-            aria-label="Back to Home"
-          >
-            <Home size={20} />
-            <span>Back to Home</span>
-          </button>
-        </div>
-        {/* Logout */}
-        <div className="p-4 border-t border-gray-200">
-          <button
-            onClick={handleLogout}
-            className="
-              flex items-center gap-3 w-full px-4 py-3 
-              bg-gradient-to-r from-black via-gray-800 to-gray-900
-              text-white hover:from-gray-800 hover:to-black
-              rounded-xl font-semibold transition
-              shadow-lg shadow-black/5
-              border-2 border-transparent
-              hover:border-red-500
-              group
-              relative
-              overflow-hidden
-              focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
-            "
-          >
-            <LogOut size={22} className="text-red-100 group-hover:text-red-500 transition" />
-            <span className="font-bold">Logout</span>
-            <span className="absolute right-4 top-3 text-xs text-gray-400 group-hover:text-red-400 transition">Sign out</span>
-          </button>
+
+        {/* Bottom section with Back to Home and Logout */}
+        <div className="mt-auto">
+          {/* Back to Home Button */}
+          <div className="px-4 pb-4">
+            <button
+              className="w-full flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg"
+              style={{ justifyContent: 'center' }}
+              onClick={() => navigate('/user/home')}
+              aria-label="Back to Home"
+            >
+              <Home size={20} />
+              <span>Back to Home</span>
+            </button>
+          </div>
+
+          {/* Logout */}
+          <div className="p-4 border-t border-gray-200">
+            <button
+              onClick={handleLogout}
+              className="
+                flex items-center gap-3 w-full px-4 py-3 
+                bg-gradient-to-r from-black via-gray-800 to-gray-900
+                text-white hover:from-gray-800 hover:to-black
+                rounded-xl font-semibold transition
+                shadow-lg shadow-black/5
+                border-2 border-transparent
+                hover:border-red-500
+                group
+                relative
+                overflow-hidden
+                focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+              "
+            >
+              <LogOut size={22} className="text-red-100 group-hover:text-red-500 transition" />
+              <span className="font-bold">Logout</span>
+              <span className="absolute right-4 top-3 text-xs text-gray-400 group-hover:text-red-400 transition">Sign out</span>
+            </button>
+          </div>
         </div>
       </div>
     </>
@@ -140,4 +147,3 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 };
 
 export default UserSidebar;
-
