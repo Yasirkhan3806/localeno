@@ -16,7 +16,7 @@ import {
 
 const navItems = [
   { to: "/seller/dashboard", icon: Grid2x2, label: "Dashboard" },
-  { to: "/seller/products", icon: Box, label: "My Products" },
+  { to: "/seller/my-products", icon: Box, label: "My Products" },
   { to: "/seller/products/add", icon: Plus, label: "Add Product" },
   { to: "/seller/rentals", icon: Repeat, label: "Rental Management" },
   { to: "/seller/reviews", icon: Star, label: "Customer Reviews" },

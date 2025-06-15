@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import SellerSidebar from "./SellerSidebar";
@@ -50,6 +49,7 @@ export default function SellerDashboard() {
           <Routes>
             <Route path="/dashboard" element={<SellerDashboardOverview />} />
             {/* Remaining routes */}
+            <Route path="/my-products" element={<SellerProducts />} />
             <Route path="/products" element={<SellerProducts />} />
             <Route path="/products/add" element={<SellerAddProduct />} />
             <Route path="/rentals" element={<SellerRentals />} />
