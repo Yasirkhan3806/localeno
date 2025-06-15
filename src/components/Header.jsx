@@ -51,7 +51,7 @@ const Header = () => {
               <li key={tab.name}>
                 <button
                   onClick={() => navigate(tab.link)}
-                  className="px-4 py-2 rounded hover:bg-neutral-100 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                  className="px-4 py-2 rounded-lg hover:bg-neutral-100 focus:bg-neutral-100 transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
                 >
                   {tab.name}
                 </button>
@@ -159,9 +159,12 @@ const Header = () => {
           
           {/* Hamburger (Mobile) */}
           <button
-            className="md:hidden p-2 rounded border border-neutral-200 hover:bg-neutral-100 transition focus:outline-none"
+            className="md:hidden p-2 rounded-lg border border-neutral-200 hover:bg-neutral-200 shadow transition focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Open mobile navigation"
+            style={{
+              boxShadow: '0 4px 16px 0 rgba(0,0,0,0.03)' // subtle shadow for visibility
+            }}
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -206,7 +209,7 @@ const Header = () => {
                           navigate(tab.link);
                           setMobileMenuOpen(false);
                         }}
-                        className="block w-full text-left px-3 py-2 rounded hover:bg-neutral-100 text-base"
+                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-neutral-100 text-base"
                       >
                         {tab.name}
                       </button>
@@ -221,13 +224,13 @@ const Header = () => {
                         navigate('/user/home');
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg"
+                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg shadow hover:bg-gray-900 transition"
                     >
                       Dashboard
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg"
+                      className="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition"
                     >
                       Logout
                     </button>
@@ -239,7 +242,7 @@ const Header = () => {
                         navigate('/login');
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg"
+                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg shadow hover:bg-neutral-900 transition"
                     >
                       <LogIn size={18} className="inline-block mr-1 -mt-1" />
                       Login
@@ -249,7 +252,7 @@ const Header = () => {
                         navigate('/signup');
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg"
+                      className="w-full px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg shadow hover:bg-neutral-200 transition"
                     >
                       <UserPlus size={18} className="inline-block mr-1 -mt-1" />
                       Sign Up
@@ -261,6 +264,21 @@ const Header = () => {
           )}
         </nav>
       </header>
+      {/* Hero Buttons */}
+      <div className="w-full flex flex-col items-center gap-5 mt-8 pb-5">
+        <button
+          onClick={() => navigate('/products')}
+          className="px-10 py-4 bg-black text-white font-bold rounded-2xl text-lg shadow-lg hover:bg-gray-900 hover:scale-105 transition-all border-2 border-transparent hover:border-black focus:outline-none focus:ring-2 focus:ring-black"
+        >
+          Start Shopping
+        </button>
+        <button
+          onClick={() => setShowVerification(true)}
+          className="px-10 py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white font-bold rounded-2xl text-lg shadow-lg hover:from-gray-800 hover:to-black hover:scale-105 transition-all border-2 border-transparent hover:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
+        >
+          Verify Identity
+        </button>
+      </div>
 
       {/* Identity Verification Modal */}
       <IdentityVerification
