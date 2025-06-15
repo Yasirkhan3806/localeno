@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,7 +15,10 @@ const SignupPage = () => {
     dateOfBirth: '',
     accountType: 'customer',
     phone: '',
-    address: ''
+    address: '',
+    dailyOrderVolume: '',
+    businessOpenTime: '',
+    businessCloseTime: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +45,15 @@ const SignupPage = () => {
         dateOfBirth: formData.dateOfBirth,
         phone: formData.phone,
         address: formData.address,
-        avatar: null
+        avatar: null,
+        sellerInfo:
+          formData.accountType === 'seller'
+            ? {
+                dailyOrderVolume: formData.dailyOrderVolume,
+                businessOpenTime: formData.businessOpenTime,
+                businessCloseTime: formData.businessCloseTime
+              }
+            : null
       };
       
       login(userData);
@@ -204,6 +214,50 @@ const SignupPage = () => {
                 />
               </div>
             </div>
+
+            {/* Seller-specific daily questions */}
+            {formData.accountType === 'seller' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Average Daily Order Volume
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.dailyOrderVolume}
+                    onChange={(e) => setFormData({ ...formData, dailyOrderVolume: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="e.g. 25"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business Open Time
+                  </label>
+                  <input
+                    type="time"
+                    value={formData.businessOpenTime}
+                    onChange={(e) => setFormData({ ...formData, businessOpenTime: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business Close Time
+                  </label>
+                  <input
+                    type="time"
+                    value={formData.businessCloseTime}
+                    onChange={(e) => setFormData({ ...formData, businessCloseTime: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
+                    required
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
