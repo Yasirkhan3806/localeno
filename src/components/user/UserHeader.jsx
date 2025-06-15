@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Search, ShoppingCart, Heart, Bell, X } from 'lucide-react';
@@ -24,19 +25,6 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
   // Handler: double-click hides icon
   const handleIconDoubleClick = (icon) =>
     setIconStates((s) => ({ ...s, [icon]: false }));
-
-  // For detail pages, auto-hide icon if user double-clicked previously
-  // Map of detail routes and their icons
-  const routeToIcon = {
-    '/user/cart': 'cart',
-    '/user/wishlist': 'wishlist',
-    '/user/notifications': 'notification', // example notifications detail route
-  };
-  const currentRouteIcon = routeToIcon[location.pathname];
-
-  // Only show icon if its state is true OR we are not on its detail page
-  // For detail page, keep hidden if toggled.
-  // For now, Wishlist and Cart; Notifications only if such detail page exists.
 
   // Mock notifications
   const [notifications] = useState([
@@ -78,26 +66,48 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
-        <div className="h-20 px-2 md:px-8 flex items-center justify-between gap-4">
-          {/* Left */}
-          <div className="flex items-center gap-3">
+        <div className="h-16 md:h-14 px-2 md:px-8 flex items-center justify-between gap-4 transition-all">
+          {/* Left: Hamburger and Logo */}
+          <div className="flex items-center gap-2 min-w-fit">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
               aria-label="Open sidebar"
             >
-              <Menu size={26} />
+              <Menu size={22} />
             </button>
             <button
               onClick={() => navigate('/')}
-              className="text-xl font-extrabold bg-black text-white px-3 py-1 rounded-xl tracking-tight shadow hover:bg-gray-900 transition"
+              className="text-[1.1rem] md:text-lg font-extrabold bg-black text-white px-2 py-1 rounded-xl tracking-tight shadow hover:bg-gray-900 transition leading-none"
+              style={{ letterSpacing: '0.01em', height: '28px' }}
             >
               Shoply
             </button>
           </div>
-          {/* Right - User + Actions */}
+
+          {/* Center: Search Bar on desktop */}
+          <div className="hidden md:flex flex-1 justify-center">
+            <form onSubmit={handleSearch} className="flex w-full max-w-sm items-center">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products…"
+                className="w-44 md:w-72 pl-3 pr-10 py-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-black focus:border-black text-sm"
+              />
+              <button
+                type="submit"
+                className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-900 transition"
+                aria-label="Search"
+              >
+                <Search size={18} />
+              </button>
+            </form>
+          </div>
+
+          {/* Right - Icons and Avatar */}
           <div
-            className="flex items-center gap-0 md:gap-2"
+            className="flex items-center gap-0 md:gap-1 min-w-fit"
             style={{ userSelect: "none", cursor: "pointer" }}
           >
             {/* Cart */}
@@ -106,11 +116,11 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
                 onClick={() => navigate('/user/cart')}
                 onClickCapture={() => handleIconSingleClick("cart")}
                 onDoubleClick={() => handleIconDoubleClick("cart")}
-                className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+                className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative"
                 aria-label="View cart"
               >
-                <ShoppingCart size={22} className="text-gray-900 group-hover:text-black transition" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">2</span>
+                <ShoppingCart size={20} className="text-gray-900 group-hover:text-black transition" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">2</span>
               </button>
             )}
             {/* Wishlist */}
@@ -119,11 +129,11 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
                 onClick={() => navigate('/user/wishlist')}
                 onClickCapture={() => handleIconSingleClick("wishlist")}
                 onDoubleClick={() => handleIconDoubleClick("wishlist")}
-                className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+                className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative"
                 aria-label="Wishlist"
               >
-                <Heart size={22} className="text-gray-900 group-hover:text-black transition" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">5</span>
+                <Heart size={20} className="text-gray-900 group-hover:text-black transition" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">5</span>
               </button>
             )}
             {/* Notifications */}
@@ -133,12 +143,12 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
                   onClick={() => setShowNotifications(!showNotifications)}
                   onClickCapture={() => handleIconSingleClick("notification")}
                   onDoubleClick={() => handleIconDoubleClick("notification")}
-                  className="p-2 rounded-full hover:bg-gray-100 transition relative"
+                  className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 transition relative"
                   aria-label="Notifications"
                 >
-                  <Bell size={22} className="text-gray-900" />
+                  <Bell size={20} className="text-gray-900" />
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{unreadCount}</span>
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">{unreadCount}</span>
                   )}
                 </button>
                 {showNotifications && (
@@ -184,52 +194,33 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             {/* User Avatar */}
             <button
               onClick={() => navigate('/user/profile')}
-              className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
+              className="w-9 h-9 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-base md:text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
               aria-label="User Profile"
             >
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </button>
           </div>
         </div>
-        {/* Search bar under nav right side */}
-        <div className="hidden md:flex justify-end px-2 md:px-8 py-2">
-          <form onSubmit={handleSearch} className="flex w-full max-w-xs items-center">
+        {/* Mobile search bar (below nav for small screens) */}
+        <div className="md:hidden px-2 py-2 border-t border-gray-100">
+          <form onSubmit={handleSearch} className="flex">
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search products…"
-              className="w-36 md:w-60 pl-3 pr-10 py-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-black focus:border-black transition"
+              className="flex-1 px-3 py-2 border border-gray-200 rounded-l-lg focus:ring focus:ring-black focus:border-black"
             />
             <button
               type="submit"
-              className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-900 transition"
+              className="px-3 py-2 bg-black text-white rounded-r-lg hover:bg-gray-900 transition"
               aria-label="Search"
             >
-              <Search size={19} />
+              <Search size={18} />
             </button>
           </form>
         </div>
       </header>
-      {/* Mobile search */}
-      <div className="md:hidden px-2 py-2 border-t border-gray-100">
-        <form onSubmit={handleSearch} className="flex">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search products…"
-            className="flex-1 px-3 py-2 border border-gray-200 rounded-l-lg focus:ring focus:ring-black focus:border-black"
-          />
-          <button
-            type="submit"
-            className="px-3 py-2 bg-black text-white rounded-r-lg hover:bg-gray-900 transition"
-            aria-label="Search"
-          >
-            <Search size={18} />
-          </button>
-        </form>
-      </div>
       {/* Notification overlay */}
       {showNotifications && (
         <div 
