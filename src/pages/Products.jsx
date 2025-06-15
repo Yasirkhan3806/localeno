@@ -7,14 +7,20 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 // Sample products data
 const allProducts = [
+  // ELECTRONICS
   { id: 1, name: "Bluetooth Speaker", category: "electronics", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$49", originalPrice: "$79", rentPrice: "$5/day", inStock: true, rating: 4.5, reviews: 123 },
   { id: 2, name: "Smart Watch", category: "electronics", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$98", originalPrice: "$129", rentPrice: "$8/day", inStock: true, rating: 4.2, reviews: 89 },
   { id: 3, name: "Wireless Headphones", category: "electronics", image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=200&q=80", price: "$120", originalPrice: "$159", rentPrice: "$10/day", inStock: false, rating: 4.7, reviews: 234 },
+  // CLOTHING
   { id: 4, name: "Denim Jacket", category: "clothing", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80", price: "$39", originalPrice: "$59", rentPrice: "$4/day", inStock: true, rating: 4.1, reviews: 67 },
   { id: 5, name: "Summer Dress", category: "clothing", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$29", originalPrice: "$45", rentPrice: "$3/day", inStock: true, rating: 4.3, reviews: 156 },
+  // ACCESSORIES
   { id: 6, name: "Gold Watch", category: "accessories", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$150", originalPrice: "$199", rentPrice: "$12/day", inStock: true, rating: 4.6, reviews: 89 },
-  { id: 7, name: "Table Lamp", category: "home", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$65", rentPrice: "$4/day", inStock: true, rating: 4.4, reviews: 45 },
-  { id: 8, name: "Throw Pillow", category: "home", image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80", price: "$19", originalPrice: "$29", rentPrice: "$2/day", inStock: true, rating: 4.0, reviews: 78 }
+  { id: 7, name: "Leather Bag", category: "accessories", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$75", originalPrice: "$95", rentPrice: "$6/day", inStock: true, rating: 4.4, reviews: 43 },
+  // HOME & LIVING
+  { id: 8, name: "Table Lamp", category: "home", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$65", rentPrice: "$4/day", inStock: true, rating: 4.4, reviews: 45 },
+  { id: 9, name: "Throw Pillow", category: "home", image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80", price: "$19", originalPrice: "$29", rentPrice: "$2/day", inStock: true, rating: 4.0, reviews: 78 },
+  { id: 10, name: "Vase", category: "home", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$32", originalPrice: "$45", rentPrice: "$3/day", inStock: true, rating: 4.2, reviews: 21 }
 ];
 
 const categories = [

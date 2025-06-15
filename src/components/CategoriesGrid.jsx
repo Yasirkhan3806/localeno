@@ -24,7 +24,7 @@ const categories = [
     products: [
       { id: 5, name: "Denim Jacket", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80", price: "$39", originalPrice: "$59", rentPrice: "$4/day", inStock: true },
       { id: 6, name: "Summer Dress", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$29", originalPrice: "$45", rentPrice: "$3/day", inStock: true },
-      { id: 7, name: "Casual Shirt", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$3/day", inStock: true },
+      { id: 7, name: "Casual Shirt", image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$3/day", inStock: true },
       { id: 8, name: "Winter Coat", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$89", originalPrice: "$120", rentPrice: "$7/day", inStock: false }
     ]
   },
@@ -35,9 +35,9 @@ const categories = [
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
     products: [
       { id: 9, name: "Gold Watch", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$150", originalPrice: "$199", rentPrice: "$12/day", inStock: true },
-      { id: 10, name: "Elegant Scarf", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$2/day", inStock: true },
-      { id: 11, name: "Leather Bag", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$75", originalPrice: "$95", rentPrice: "$6/day", inStock: true },
-      { id: 12, name: "Sunglasses", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$49", rentPrice: "$3/day", inStock: true }
+      { id: 10, name: "Elegant Scarf", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$2/day", inStock: true },
+      { id: 11, name: "Leather Bag", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$75", originalPrice: "$95", rentPrice: "$6/day", inStock: true },
+      { id: 12, name: "Sunglasses", image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$49", rentPrice: "$3/day", inStock: true }
     ]
   },
   {
