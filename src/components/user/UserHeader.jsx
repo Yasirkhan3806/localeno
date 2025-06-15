@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Search, ShoppingCart, Heart, Bell, X, Gem } from 'lucide-react';
+import { Menu, Search, ShoppingCart, Heart, Bell, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
@@ -77,16 +77,21 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             </button>
             <button
               onClick={() => navigate('/')}
-              className="flex items-center font-bold font-playfair bg-gradient-to-r from-emerald-400 via-sky-400 to-fuchsia-500 bg-clip-text text-transparent text-[1.4rem] md:text-2xl px-3 py-1 rounded-2xl shadow hover:scale-105 transition-transform duration-200 border-2 border-gray-200"
+              className="flex items-center px-1 md:px-2 py-1 rounded-xl focus:outline-none hover:scale-105 transition-transform"
               style={{
-                letterSpacing: '0.01em',
                 height: '40px',
-                boxShadow: "0 2px 8px rgba(64, 152, 255, 0.10)"
+                background: 'transparent',
+                border: 'none',
               }}
               aria-label="Go to home"
             >
-              <Gem size={26} className="mr-2 drop-shadow-[0_1px_3px_rgba(115,100,255,0.18)] text-fuchsia-500" />
-              <span className="tracking-tight">Shoply</span>
+              <img 
+                src="/lovable-uploads/30e44ece-5d85-45dc-9308-5bd7308ea047.png"
+                alt="Site Logo"
+                className="h-8 md:h-10 max-w-[158px] md:max-w-[210px] object-contain"
+                style={{ display: 'block' }}
+                draggable="false"
+              />
             </button>
           </div>
 
