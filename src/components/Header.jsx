@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Menu, X, Search, User, LogIn, UserPlus, ShoppingCart, Heart, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +57,7 @@ const Header = () => {
               </li>
             ))}
           </ul>
-          
+
           {/* Right Section */}
           <div className="hidden md:flex gap-2 items-center">
             {/* Search Bar */}
@@ -201,6 +200,7 @@ const Header = () => {
                   </button>
                 </form>
                 
+                {/* Mobile Nav Tabs */}
                 <ul className="flex flex-col gap-2">
                   {navTabs.map((tab) => (
                     <li key={tab.name}>
@@ -209,7 +209,7 @@ const Header = () => {
                           navigate(tab.link);
                           setMobileMenuOpen(false);
                         }}
-                        className="block w-full text-left px-3 py-2 rounded-lg hover:bg-neutral-100 text-base"
+                        className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium hover:bg-neutral-950 hover:text-white transition-all shadow-sm border border-transparent hover:border-neutral-900 bg-neutral-100"
                       >
                         {tab.name}
                       </button>
@@ -264,22 +264,6 @@ const Header = () => {
           )}
         </nav>
       </header>
-      {/* Hero Buttons */}
-      <div className="w-full flex flex-col items-center gap-5 mt-8 pb-5">
-        <button
-          onClick={() => navigate('/products')}
-          className="px-10 py-4 bg-black text-white font-bold rounded-2xl text-lg shadow-lg hover:bg-gray-900 hover:scale-105 transition-all border-2 border-transparent hover:border-black focus:outline-none focus:ring-2 focus:ring-black"
-        >
-          Start Shopping
-        </button>
-        <button
-          onClick={() => setShowVerification(true)}
-          className="px-10 py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white font-bold rounded-2xl text-lg shadow-lg hover:from-gray-800 hover:to-black hover:scale-105 transition-all border-2 border-transparent hover:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
-        >
-          Verify Identity
-        </button>
-      </div>
-
       {/* Identity Verification Modal */}
       <IdentityVerification
         isOpen={showVerification}

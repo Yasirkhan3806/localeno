@@ -26,6 +26,12 @@ function HeroCarousel() {
   const next = () => setCurr((curr + 1) % images.length);
   const prev = () => setCurr((curr - 1 + images.length) % images.length);
 
+  // Custom colors for theme "Shoply"
+  const gradientButton =
+    "bg-gradient-to-r from-black via-neutral-900 to-gray-700";
+  const buttonText =
+    "text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.20)]";
+
   return (
     <section className="relative w-full mx-auto max-w-6xl h-[340px] sm:h-[410px] rounded-2xl overflow-hidden shadow-sm bg-neutral-200 animate-fade-in">
       {images.map((img, i) => (
@@ -42,16 +48,20 @@ function HeroCarousel() {
             draggable="false"
             style={{ filter: "brightness(86%)", transition: "all 0.5s" }}
           />
-          <div className="relative z-10 p-8 sm:p-12 text-white max-w-lg">
-            <h2 className="text-3xl md:text-4xl font-bold drop-shadow">
+          <div className="relative z-10 p-4 sm:p-10 pb-6 text-white max-w-md sm:max-w-lg">
+            <h2 className="text-2xl sm:text-4xl font-extrabold drop-shadow">
               {img.title}
             </h2>
-            <p className="text-lg opacity-90 mt-2 mb-5">{img.subtitle}</p>
+            <p className="text-base sm:text-lg opacity-90 mt-2 mb-5">{img.subtitle}</p>
             <div className="flex gap-3">
-              <button className="rounded-lg bg-white text-black px-6 py-2 font-semibold text-base shadow hover:scale-105 focus:ring-2 focus:ring-black focus:outline-none hover:bg-neutral-100 transition-all">
+              <button
+                className={`py-2 px-6 rounded-xl ${gradientButton} ${buttonText} text-sm sm:text-base shadow-lg hover:scale-105 hover:from-neutral-900 hover:to-black focus:outline-none focus:ring-2 focus:ring-black transition-all`}
+              >
                 Start Shopping
               </button>
-              <button className="rounded-lg border border-white px-6 py-2 font-semibold text-base text-white bg-black bg-opacity-40 hover:bg-opacity-70 hover:scale-105 transition-all focus:outline-none">
+              <button
+                className={`py-2 px-6 rounded-xl border border-white/70 ${buttonText} text-sm sm:text-base bg-black bg-opacity-40 hover:bg-opacity-70 shadow-md hover:scale-105 focus:outline-none transition-all`}
+              >
                 Verify Identity
               </button>
             </div>
@@ -91,3 +101,4 @@ function HeroCarousel() {
 }
 
 export default HeroCarousel;
+
