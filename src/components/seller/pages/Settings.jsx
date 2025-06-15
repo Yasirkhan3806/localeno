@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import { Bell, Globe, Shield, Lock, Trash2, Store, Camera } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -80,6 +81,29 @@ export default function SellerSettings() {
       ...prev,
       [key]: value,
     }));
+  };
+
+  // Handle profile changes
+  const handleProfileChange = (key, value) => {
+    setProfile((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  // Handle profile image upload
+  const handleProfileImg = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfile((prev) => ({
+          ...prev,
+          profileImg: e.target.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Toggle password visibility
