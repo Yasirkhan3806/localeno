@@ -1,9 +1,9 @@
-
-import React, { useState } from "react";
-import { Bell, Globe, Shield, Lock, Trash2, Store } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Bell, Globe, Shield, Lock, Trash2, Store, Camera } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 const languages = [
   { value: "en", label: "English" },
@@ -19,7 +19,29 @@ const currencies = [
   { value: "CAD", label: "CAD (C$)" },
 ];
 
+const genders = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
+
 export default function SellerSettings() {
+  // Profile state
+  const [profile, setProfile] = useState({
+    profileImg: "https://randomuser.me/api/portraits/men/25.jpg", // Demo image
+    firstName: "John",
+    lastName: "Seller",
+    email: "john.seller@example.com",
+    phone: "+1 (555) 123-4567",
+    dob: "1990-01-15",
+    gender: "male",
+    storeName: "John's Electronics Store",
+    address: "123 Main St, New York, NY 10001",
+    bio:
+      "Experienced electronics seller with over 5 years in the marketplace. Specializing in laptops, cameras, and tech accessories.",
+  });
+  const profileInputRef = useRef(null);
+
   // Main state for all checkboxes and fields
   const [settings, setSettings] = useState({
     // Notification
@@ -78,7 +100,158 @@ export default function SellerSettings() {
 
   // --- Main return ---
   return (
-    <div className="max-w-2xl mx-auto w-full space-y-6 pb-12">
+    <div className="max-w-3xl mx-auto w-full space-y-8 pb-12">
+      {/* Profile Information Card */}
+      <section className="bg-white rounded-2xl shadow px-8 py-9 border">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8">Profile Information</h2>
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+          {/* Profile Photo */}
+          <div className="flex flex-col items-center gap-2 relative mb-4 min-w-[120px]">
+            <div className="relative">
+              <img
+                src={profile.profileImg}
+                alt="Profile"
+                className="w-28 h-28 rounded-full object-cover border-2 border-gray-200"
+              />
+              <button
+                className="absolute bottom-0 right-0 bg-black text-white p-2 rounded-full border-2 border-white hover:bg-gray-700 transition"
+                style={{ lineHeight: 0 }}
+                onClick={() => profileInputRef.current.click()}
+                type="button"
+                aria-label="Upload profile photo"
+              >
+                <Camera size={18} />
+              </button>
+              <input
+                type="file"
+                ref={profileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleProfileImg}
+              />
+            </div>
+            <div className="text-center mt-2">
+              <div className="font-semibold text-lg text-gray-900">{profile.firstName} {profile.lastName}</div>
+              <div className="text-sm text-gray-500">Click the camera icon to update your profile photo</div>
+            </div>
+          </div>
+
+          {/* Profile Form */}
+          <form
+            className="flex-1 w-full grid grid-cols-1 md:grid-cols-2 gap-5"
+            onSubmit={e => { e.preventDefault(); }}
+            autoComplete="off"
+          >
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+              <Input
+                value={profile.firstName}
+                onChange={e => handleProfileChange("firstName", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+              <Input
+                value={profile.lastName}
+                onChange={e => handleProfileChange("lastName", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+              <Input
+                type="email"
+                value={profile.email}
+                onChange={e => handleProfileChange("email", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+              <Input
+                value={profile.phone}
+                onChange={e => handleProfileChange("phone", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
+              <Input
+                type="date"
+                value={profile.dob}
+                onChange={e => handleProfileChange("dob", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+              <select
+                className="block w-full border-gray-300 rounded-md px-4 py-2 bg-white focus:ring-2 focus:ring-black focus:outline-none"
+                value={profile.gender}
+                onChange={e => handleProfileChange("gender", e.target.value)}
+              >
+                {genders.map(g => (
+                  <option value={g.value} key={g.value}>{g.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Store Name</label>
+              <Input
+                value={profile.storeName}
+                onChange={e => handleProfileChange("storeName", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+              <Input
+                value={profile.address}
+                onChange={e => handleProfileChange("address", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Store Bio</label>
+              <Textarea
+                value={profile.bio}
+                onChange={e => handleProfileChange("bio", e.target.value)}
+                rows={3}
+              />
+            </div>
+            <div className="md:col-span-2 flex justify-end mt-2">
+              <Button type="submit" className="bg-gray-900 text-white font-semibold px-6 py-2 rounded-lg hover:bg-black transition flex gap-2">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="5" rx="1" stroke="currentColor" strokeWidth="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="2"/><rect x="14" y="3" width="7" height="18" rx="1" stroke="currentColor" strokeWidth="2"/></svg>
+                Save Profile
+              </Button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Account Management Section */}
+      <section className="bg-white rounded-2xl shadow px-8 py-7 border">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Account Management</h2>
+        <div className="bg-red-50 border border-red-200 rounded-xl px-6 py-5 flex items-start gap-5">
+          <div className="flex flex-col w-full">
+            <div className="font-bold text-lg text-red-700 mb-1 flex items-center gap-2">
+              <Trash2 className="text-red-700" size={22} /> Delete Account
+            </div>
+            <div className="text-red-700 mb-4 text-sm">
+              Once you delete your account, there is no going back. This will permanently delete your profile, store, and all associated data.
+            </div>
+            <Button
+              className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg flex gap-2 w-fit"
+              type="button"
+              onClick={() => setDeleteDialog(true)}
+            >
+              <Trash2 size={18}/> Delete Account
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Notification Settings */}
       <section className="bg-white rounded-2xl shadow px-8 py-7 space-y-5 border">
         <div className="flex items-center gap-2 mb-2">
