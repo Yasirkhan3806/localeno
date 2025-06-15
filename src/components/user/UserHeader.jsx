@@ -101,16 +101,16 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
                 draggable="false"
               >
                 {/* Main LOC(LucideCart)LENA text */}
-                <span className="flex items-center text-[12px] md:text-[15px] font-extrabold text-gray-900 tracking-tight" style={{ letterSpacing: '0.06em' }}>
+                <span className="flex items-center text-[11px] md:text-[14px] font-extrabold text-gray-900 tracking-tight" style={{ letterSpacing: '0.06em' }}>
                   <span style={{ letterSpacing: '0.12em', marginRight: '2px' }}>LOC</span>
                   <span className="inline-flex items-center justify-center mx-0.5">
-                    <ShoppingCart size={14} className="text-green-900" strokeWidth={2.2} />
+                    <ShoppingCart size={13} className="text-green-600" strokeWidth={2.2} />
                   </span>
                   <span style={{ letterSpacing: '0.12em', marginLeft: '2px' }}>LENA</span>
                 </span>
                 {/* Slogan */}
                 <span
-                  className="text-[7px] md:text-[10px] text-green-900 font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap text-center"
+                  className="text-[6px] md:text-[8px] text-green-600 font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap text-center"
                   style={{
                     textShadow: '0 0.5px 0.5px #fff',
                     letterSpacing: '0.06em',
