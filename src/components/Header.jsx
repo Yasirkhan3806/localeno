@@ -45,26 +45,39 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-30 bg-background/95 backdrop-blur font-inter shadow-none border-b border-neutral-200">
         <nav className="container mx-auto flex items-center justify-between h-20 relative">
-          {/* Localena Logo */}
+          {/* Localena Style Logo with Cart Icon */}
           <div className="flex items-center gap-2 text-2xl font-bold">
             <button
               onClick={() => navigate('/')}
-              className="group flex items-center space-x-2 focus:outline-none"
+              className="flex flex-col items-start bg-transparent border-none p-0 m-0 focus:outline-none"
               aria-label="Go to home"
             >
               <span
-                className="bg-gradient-to-tr from-primary to-secondary text-transparent bg-clip-text font-extrabold text-3xl tracking-tight drop-shadow-lg group-hover:scale-105 transition-transform duration-200"
+                className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md px-2 py-1 transition-transform hover:scale-105 font-inter min-w-0 min-h-0 w-auto"
                 style={{
-                  fontFamily: `'Playfair Display', serif`,
-                  letterSpacing: "0.05em"
+                  maxWidth: '130px',
+                  minWidth: '82px',
+                  padding: '2px 6px',
+                  lineHeight: 1.1
                 }}
+                draggable="false"
               >
-                localena
-              </span>
-              <span
-                className="rounded-xl ml-2 px-2.5 py-1 text-sm font-semibold tracking-wide bg-primary text-white shadow group-hover:bg-secondary transition-colors"
-              >
-                style
+                <span className="flex items-center text-[18px] font-extrabold text-gray-900 tracking-tight"
+                  style={{
+                    letterSpacing: '0.08em'
+                  }}>
+                  <span style={{
+                    letterSpacing: '0.13em',
+                    marginRight: '3px'
+                  }}>LOC</span>
+                  <span className="inline-flex items-center justify-center mx-0.5">
+                    <ShoppingCart size={20} className="text-green-700" strokeWidth={2.2} />
+                  </span>
+                  <span style={{
+                    letterSpacing: '0.13em',
+                    marginLeft: '3px'
+                  }}>LENA</span>
+                </span>
               </span>
             </button>
           </div>
