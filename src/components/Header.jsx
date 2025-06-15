@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Menu, X, LogIn, UserPlus, Search, User, ShoppingCart, Heart, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -130,55 +129,53 @@ const Header = () => {
 
               {iconsVisible && (
                 isAuthenticated ? (
-                  <>
-                    {/* Cart, Wishlist Icons only, Calendar removed */}
-                    <button 
-                      onClick={() => navigate('/user/cart')}
-                      className="p-2 rounded-lg hover:bg-accent transition-colors relative"
-                    >
-                      <ShoppingCart size={20} />
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                  // Cart, Wishlist Icons only, Calendar removed
+                  <button 
+                    onClick={() => navigate('/user/cart')}
+                    className="p-2 rounded-lg hover:bg-accent transition-colors relative"
+                  >
+                    <ShoppingCart size={20} />
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                  </button>
+                  <button 
+                    onClick={() => navigate('/user/wishlist')}
+                    className="p-2 rounded-lg hover:bg-accent transition-colors relative"
+                  >
+                    <Heart size={20} />
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                  </button>
+                  {/* Calendar (Rent) icon removed */}
+                  {/* User Menu */}
+                  <div className="relative group">
+                    <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-accent">
+                      <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm">
+                        {user?.firstName?.[0]}{user?.lastName?.[0]}
+                      </div>
+                      <span className="text-sm font-medium">{user?.firstName}</span>
                     </button>
-                    <button 
-                      onClick={() => navigate('/user/wishlist')}
-                      className="p-2 rounded-lg hover:bg-accent transition-colors relative"
-                    >
-                      <Heart size={20} />
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
-                    </button>
-                    {/* Calendar (Rent) icon removed */}
-                    {/* User Menu */}
-                    <div className="relative group">
-                      <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-accent">
-                        <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm">
-                          {user?.firstName?.[0]}{user?.lastName?.[0]}
-                        </div>
-                        <span className="text-sm font-medium">{user?.firstName}</span>
-                      </button>
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                        <div className="py-2">
-                          <button
-                            onClick={() => navigate('/user/home')}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            Dashboard
-                          </button>
-                          <button
-                            onClick={() => navigate('/user/profile')}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            Profile
-                          </button>
-                          <button
-                            onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                          >
-                            Logout
-                          </button>
-                        </div>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                      <div className="py-2">
+                        <button
+                          onClick={() => navigate('/user/home')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Dashboard
+                        </button>
+                        <button
+                          onClick={() => navigate('/user/profile')}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Profile
+                        </button>
+                        <button
+                          onClick={handleLogout}
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          Logout
+                        </button>
                       </div>
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <>
                     <button 
@@ -188,24 +185,42 @@ const Header = () => {
                       <LogIn size={18} className="inline-block mr-1 -mt-1" />
                       Login
                     </button>
-                    <button 
-                      onClick={() => navigate('/signup')}
-                      className="px-4 py-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 hover:scale-105 transition-all focus:ring-2 focus:ring-primary focus:outline-none"
-                    >
-                      <UserPlus size={18} className="inline-block mr-1 -mt-1" />
-                      Sign Up
-                    </button>
+                    <div className="relative">
+                      <button 
+                        onClick={() => navigate('/signup')}
+                        className="px-4 py-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 hover:scale-105 transition-all focus:ring-2 focus:ring-primary focus:outline-none flex flex-col items-center"
+                        style={{ position: "relative" }}
+                      >
+                        <span className="flex items-center">
+                          <UserPlus size={18} className="inline-block mr-1 -mt-1" />
+                          Sign Up
+                        </span>
+                        {/* Admin Panel Button Inside Sign Up */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/admin-login');
+                          }}
+                          className="mt-2 px-3 py-1 bg-yellow-400 text-black font-semibold rounded hover:bg-yellow-500 hover:scale-105 transition-all focus:ring-2 focus:ring-yellow-300 focus:outline-none text-xs shadow"
+                          style={{ width: "100%" }}
+                          tabIndex={-1}
+                        >
+                          Admin Panel
+                        </button>
+                        {/* Admin panel login details */}
+                        <div className="mt-2 bg-gray-100 text-gray-600 rounded px-2 py-1 text-xs w-full text-center border border-gray-200">
+                          <div><b>Admin Login</b></div>
+                          <div>Username: <span className="font-mono">admin</span></div>
+                          <div>Password: <span className="font-mono">admin123</span></div>
+                        </div>
+                      </button>
+                    </div>
                   </>
                 )
               )}
             </div>
-            {/* Admin Panel button - Always visible, even without login, below sign up */}
-            <button
-              onClick={() => navigate('/admin-login')}
-              className="mt-2 px-4 py-2 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500 hover:scale-105 transition-all focus:ring-2 focus:ring-yellow-300 focus:outline-none shadow"
-            >
-              Admin Panel
-            </button>
+            {/* Removed old admin panel button from here */}
           </div>
           
           {/* Hamburger (Mobile) */}
