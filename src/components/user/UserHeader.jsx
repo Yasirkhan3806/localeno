@@ -75,12 +75,13 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             >
               <Menu size={22} />
             </button>
-            {/* Custom Logo */}
+            {/* Custom Logo - now smaller */}
             <button
               onClick={() => navigate('/')}
-              className="flex flex-col px-1 md:px-2 py-1 rounded-xl focus:outline-none hover:scale-105 transition-transform items-start bg-transparent border-none"
+              className="flex flex-col px-0.5 md:px-1 py-0.5 rounded-xl focus:outline-none hover:scale-105 transition-transform items-start bg-transparent border-none"
               style={{
-                height: '40px',
+                height: '32px',
+                minHeight: 'unset',
               }}
               aria-label="Go to home"
             >
@@ -88,31 +89,34 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
                 className="
                   flex items-center
                   bg-white border-2 border-black rounded-lg
-                  font-extrabold text-lg md:text-2xl
+                  font-extrabold text-[1rem] md:text-lg
                   text-gray-800 select-none shadow-md
-                  px-4 md:px-6 py-0.5 md:py-1 tracking-wider
+                  px-2.5 md:px-4 py-0.5 tracking-wider
                   font-inter
                 "
                 style={{
                   letterSpacing: '0.03em',
-                  lineHeight: 1.1,
+                  lineHeight: 1.05,
+                  minHeight: '28px',
+                  minWidth: '84px',
+                  maxWidth: '170px',
                 }}
                 draggable="false"
               >
                 <span style={{ letterSpacing: '0.08em' }}>LOC</span>
-                <span className="inline-flex mx-1 items-center justify-center">
+                <span className="inline-flex mx-0.5 items-center justify-center">
                   <ShoppingCart
-                    size={30}
+                    size={20}
                     className="mx-0 text-green-500"
-                    strokeWidth={2.8}
+                    strokeWidth={2.4}
                   />
                 </span>
                 <span style={{ letterSpacing: '0.08em' }}>LENA</span>
               </span>
               <span
                 className="
-                  text-green-500 text-xs md:text-sm
-                  font-semibold mt-0.5 ml-2 md:ml-3 whitespace-nowrap
+                  text-green-500 text-[10px] md:text-xs
+                  font-semibold mt-0.5 ml-1 md:ml-2 whitespace-nowrap
                   tracking-wide
                 "
                 style={{
