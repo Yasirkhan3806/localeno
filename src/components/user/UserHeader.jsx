@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Search, ShoppingCart, Heart, Bell, X } from 'lucide-react';
+import { Menu, Search, ShoppingCart, Heart, Bell, X, Gem } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
@@ -66,7 +65,7 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
-        <div className="h-16 md:h-14 px-2 md:px-8 flex items-center justify-between gap-4 transition-all">
+        <div className="h-14 md:h-12 px-2 md:px-6 flex items-center justify-between gap-4 transition-all">
           {/* Left: Hamburger and Logo */}
           <div className="flex items-center gap-2 min-w-fit">
             <button
@@ -78,10 +77,16 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             </button>
             <button
               onClick={() => navigate('/')}
-              className="text-[1.1rem] md:text-lg font-extrabold bg-black text-white px-2 py-1 rounded-xl tracking-tight shadow hover:bg-gray-900 transition leading-none"
-              style={{ letterSpacing: '0.01em', height: '28px' }}
+              className="flex items-center font-bold font-playfair bg-gradient-to-r from-emerald-400 via-sky-400 to-fuchsia-500 bg-clip-text text-transparent text-[1.4rem] md:text-2xl px-3 py-1 rounded-2xl shadow hover:scale-105 transition-transform duration-200 border-2 border-gray-200"
+              style={{
+                letterSpacing: '0.01em',
+                height: '40px',
+                boxShadow: "0 2px 8px rgba(64, 152, 255, 0.10)"
+              }}
+              aria-label="Go to home"
             >
-              Shoply
+              <Gem size={26} className="mr-2 drop-shadow-[0_1px_3px_rgba(115,100,255,0.18)] text-fuchsia-500" />
+              <span className="tracking-tight">Shoply</span>
             </button>
           </div>
 
