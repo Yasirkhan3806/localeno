@@ -1,13 +1,13 @@
 
 import React, { useState } from "react";
-import { AlarmWarning, Clock, MessageSquare, Ban, Eye, Filter } from "lucide-react";
+import { Ban, Bell, Clock, Eye, Filter } from "lucide-react";
 
 const DEMO_REPORT_STATS = [
   {
     label: "Total Reports",
-    icon: <AlarmWarning className="w-6 h-6 text-red-500 bg-red-100 rounded p-1.5" />,
+    icon: <Ban className="w-6 h-6 text-fuchsia-500 bg-fuchsia-100 rounded p-1.5" />,
     value: 156,
-    className: "bg-red-50",
+    className: "bg-fuchsia-50",
   },
   {
     label: "Pending",
@@ -17,7 +17,7 @@ const DEMO_REPORT_STATS = [
   },
   {
     label: "Under Review",
-    icon: <MessageSquare className="w-6 h-6 text-blue-500 bg-blue-100 rounded p-1.5" />,
+    icon: <Bell className="w-6 h-6 text-blue-500 bg-blue-100 rounded p-1.5" />,
     value: 45,
     className: "bg-blue-50",
   },
