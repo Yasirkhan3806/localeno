@@ -1,21 +1,32 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Updated images related to main categories
 const images = [
   {
-    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
-    title: "Summer Tech Sale!",
-    subtitle: "Up to 40% off selected gadgets",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=900&q=80",
-    title: "Fresh Looks for Home",
-    subtitle: "Shop our new home & living arrivals",
-  },
-  {
+    // Electronics: laptop
     src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=900&q=80",
-    title: "Verified & Trusted Marketplace",
-    subtitle: "Find original brands, verified sellers, best prices",
+    title: "Upgrade Your Tech",
+    subtitle: "Explore the best in Electronics – speakers, gadgets, and more.",
+  },
+  {
+    // Clothing: lifestyle/fashion (closest available, use Home as placeholder since no direct clothes)
+    src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=80",
+    title: "Stand Out In Style",
+    subtitle: "From jackets to dresses, discover our trending Clothing collection.",
+  },
+  {
+    // Accessories: watch
+    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+    title: "Accessorize Your Look",
+    subtitle: "Find the perfect Accessories to complete any outfit.",
+  },
+  {
+    // Home & Living: sofa/home decor
+    src: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=900&q=80",
+    title: "Refresh Your Home",
+    subtitle: "Shop stylish Home & Living essentials for every space.",
   },
 ];
 
@@ -27,7 +38,6 @@ function HeroCarousel() {
   const next = () => setCurr((curr + 1) % images.length);
   const prev = () => setCurr((curr - 1 + images.length) % images.length);
 
-  // Replace gradientButton and buttonText for a vibrant look using your theme
   const gradientButton =
     "bg-gradient-to-tr from-primary via-gray-900 to-secondary shadow-lg hover:shadow-xl hover:from-gray-900 hover:via-primary hover:to-gray-900 focus-visible:ring-4 focus-visible:ring-primary/50 ring-offset-2 transition-all";
   const buttonText =
