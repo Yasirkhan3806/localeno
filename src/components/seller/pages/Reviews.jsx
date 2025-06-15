@@ -27,13 +27,14 @@ const reviewStats = [
   },
 ];
 
-// Example reviews, ideally would be fetched from an API
+// Example reviews, all referencing products from the main categories ("Electronics", "Clothing", "Accessories", "Home & Living")
 const reviews = [
   {
     id: 1,
     product: {
-      name: "MacBook Pro 16-inch",
-      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=128&q=80",
+      name: "Wireless Bluetooth Headphones",
+      category: "Electronics",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=128&q=80",
       rating: 5,
       ratingsText: "5 out of 5 stars",
     },
@@ -42,31 +43,68 @@ const reviews = [
       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
     },
     date: "6/10/2024",
-    text: "Excellent laptop! Works perfectly for my video editing needs. The seller was very responsive and helpful.",
+    text: "Excellent headphones! Noise cancellation is amazing and the battery lasts all day.",
     likes: 12,
     replies: [],
   },
   {
     id: 2,
     product: {
-      name: "Canon EOS R Camera",
-      image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=128&q=80",
+      name: "Denim Jacket",
+      category: "Clothing",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=128&q=80",
       rating: 4,
       ratingsText: "4 out of 5 stars",
     },
     customer: {
-      name: "Sarah Johnson",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+      name: "Ella Rose",
+      avatar: "https://randomuser.me/api/portraits/women/65.jpg",
     },
-    date: "6/8/2024",
-    text: "Great camera quality! Had some minor issues with the lens cap but overall satisfied with the rental experience.",
+    date: "6/05/2024",
+    text: "The jacket fit as expected, and the material feels premium. Love wearing it on cool days.",
     likes: 8,
     replies: [],
     images: [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=128&q=80"
+      "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=128&q=80"
     ]
   },
-  // More reviews as needed ...
+  {
+    id: 3,
+    product: {
+      name: "Gold Analog Watch",
+      category: "Accessories",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=128&q=80",
+      rating: 5,
+      ratingsText: "5 out of 5 stars",
+    },
+    customer: {
+      name: "Chris Evans",
+      avatar: "https://randomuser.me/api/portraits/men/56.jpg",
+    },
+    date: "6/02/2024",
+    text: "Really elegant and comfortable, received plenty of compliments. Fast shipping as well.",
+    likes: 14,
+    replies: [],
+    images: []
+  },
+  {
+    id: 4,
+    product: {
+      name: "Table Lamp",
+      category: "Home & Living",
+      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=128&q=80",
+      rating: 3,
+      ratingsText: "3 out of 5 stars",
+    },
+    customer: {
+      name: "Samira Patel",
+      avatar: "https://randomuser.me/api/portraits/women/50.jpg",
+    },
+    date: "5/28/2024",
+    text: "Lamp looks good but is a bit smaller than I expected. Works fine for reading.",
+    likes: 5,
+    replies: [],
+  }
 ];
 
 export default function SellerReviews() {
