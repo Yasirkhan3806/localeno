@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Search, Filter, Grid, List, Heart, ShoppingCart, Calendar } from 'lucide-react';
+import { useCart } from '../../../hooks/useCart';
+import { useWishlist } from '../../../hooks/useWishlist';
 
 const UserProducts = () => {
   const { categoryName } = useParams();
@@ -60,6 +61,15 @@ const UserProducts = () => {
     // Add more products...
   ];
 
+  const { addToCart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const [rentedItems, setRentedItems] = useState([]);
+
+  const handleRentNow = (product) => {
+    setRentedItems(prev => [...prev, product.id]);
+    // Optionally add toast/popup here
+  };
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = !selectedCategory || selectedCategory === 'All Products' || product.category === selectedCategory;
@@ -74,10 +84,21 @@ const UserProducts = () => {
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors">
-          <Heart size={18} className="text-gray-600 hover:text-red-500" />
+        <button
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-md transition
+            ${isWishlisted(product.id) ? 'bg-red-100 text-red-600' : 'bg-white text-gray-600'}`}
+          onClick={() => toggleWishlist(product)}
+          aria-label={isWishlisted(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart
+            size={20}
+            className={
+              isWishlisted(product.id)
+                ? "fill-current text-red-500"
+                : "text-gray-600 hover:text-red-500"
+            }
+          />
         </button>
-        
         {!product.inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -86,7 +107,6 @@ const UserProducts = () => {
           </div>
         )}
       </div>
-
       <div className="p-6">
         <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
         <div className="flex items-center mb-3">
@@ -99,14 +119,12 @@ const UserProducts = () => {
           </div>
           <span className="text-sm text-gray-600 ml-2">({product.reviews})</span>
         </div>
-
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-gray-900">${product.price}</span>
             <span className="text-sm text-gray-600">${product.rentPrice}/day rent</span>
           </div>
         </div>
-
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => navigate(`/product/${product.id}`)}
@@ -114,10 +132,18 @@ const UserProducts = () => {
           >
             Buy Now
           </button>
-          <button className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center">
-            <ShoppingCart size={16} />
+          <button
+            onClick={() => addToCart(product)}
+            className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-black hover:text-white transition-colors flex items-center justify-center group"
+          >
+            <ShoppingCart size={16} className="group-hover:text-white" />
           </button>
-          <button className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center">
+          <button
+            onClick={() => handleRentNow(product)}
+            className={`px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-purple-600 hover:text-white transition-colors flex items-center justify-center ${
+              rentedItems.includes(product.id) ? "bg-purple-100 text-purple-700" : ""
+            }`}
+          >
             <Calendar size={16} />
           </button>
         </div>

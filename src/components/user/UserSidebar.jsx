@@ -26,13 +26,13 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     navigate('/');
   };
 
+  // Profile BEFORE Cart
   const menuItems = [
-    { icon: Home, label: 'Dashboard', path: '/user/home' },
+    { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
     { icon: Package, label: 'My Orders', path: '/user/orders' },
     { icon: Calendar, label: 'Rentals', path: '/user/rentals' },
-    { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: Star, label: 'Reviews', path: '/user/reviews' },
     { icon: MessageCircle, label: 'Messages', path: '/user/chats' },
     { icon: Settings, label: 'Settings', path: '/user/settings' },
@@ -48,65 +48,61 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
         />
       )}
 
-      {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 z-30 w-64 h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 z-30 w-64 h-full bg-white shadow-xl transform transition-transform duration-300
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:z-10
       `}>
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center font-bold text-lg border-2 border-gray-200 shadow-lg transition hover:scale-105 cursor-pointer"
+                aria-label="User Profile"
+                onClick={() => { navigate('/user/profile'); setSidebarOpen(false); }}
+              >
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
               <div>
-                <div className="font-semibold text-gray-900">
-                  {user?.firstName} {user?.lastName}
-                </div>
-                <div className="text-sm text-gray-500 capitalize">
-                  {user?.accountType}
-                </div>
+                <div className="font-bold text-gray-900">{user?.firstName} {user?.lastName}</div>
+                <div className="text-xs text-gray-500 capitalize">{user?.accountType}</div>
               </div>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+              className="lg:hidden p-2 rounded hover:bg-gray-100 transition"
             >
               <X size={20} />
             </button>
           </div>
-
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 p-4 space-y-1">
             {menuItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 px-4 py-3 rounded-xl transition-colors ${
+                  `flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors duration-200 font-medium group ${
                     isActive
-                      ? 'bg-black text-white'
+                      ? 'bg-black text-white shadow shadow-black/10'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`
                 }
               >
-                <item.icon size={20} />
-                <span className="font-medium">{item.label}</span>
+                <item.icon size={22} className="transition group-hover:text-black" />
+                <span>{item.label}</span>
               </NavLink>
             ))}
           </nav>
-
           {/* Logout */}
           <div className="p-4 border-t border-gray-200">
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+              className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl font-semibold transition"
             >
               <LogOut size={20} />
-              <span className="font-medium">Logout</span>
+              <span>Logout</span>
             </button>
           </div>
         </div>

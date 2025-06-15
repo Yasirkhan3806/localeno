@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Search, ShoppingCart, Heart, Calendar, Bell, X } from 'lucide-react';
@@ -49,180 +48,153 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow-sm border-b border-gray-200">
-        <div className="h-20 px-4 lg:px-8 flex items-center justify-between">
-          {/* Left Section */}
-          <div className="flex items-center space-x-4">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
+        <div className="h-20 px-2 md:px-8 flex items-center justify-between gap-4">
+          {/* Left */}
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+              className="lg:hidden p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
+              aria-label="Open sidebar"
             >
-              <Menu size={24} />
+              <Menu size={26} />
             </button>
-            
-            <button 
+            <button
               onClick={() => navigate('/')}
-              className="text-2xl font-bold"
+              className="text-xl font-extrabold bg-black text-white px-3 py-1 rounded-xl tracking-tight shadow hover:bg-gray-900 transition"
             >
-              <span className="bg-black text-white px-2 py-1 rounded font-bold">Shoply</span>
+              Shoply
             </button>
           </div>
-
-          {/* Center Search */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-black focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="absolute right-0 top-0 h-full px-4 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors"
-              >
-                <Search size={18} />
-              </button>
-            </div>
-          </form>
-
-          {/* Right Section */}
-          <div className="flex items-center space-x-2">
-            {/* Mobile Search */}
-            <button className="md:hidden p-2 rounded-lg hover:bg-gray-100">
-              <Search size={20} />
-            </button>
-
-            {/* Action Icons */}
+          {/* Right - User + Actions */}
+          <div className="flex items-center gap-0 md:gap-2">
+            {/* Cart */}
             <button 
               onClick={() => navigate('/user/cart')}
-              className="p-2 rounded-lg hover:bg-gray-100 relative"
+              className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+              aria-label="View cart"
             >
-              <ShoppingCart size={20} />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                2
-              </span>
+              <ShoppingCart size={22} className="text-gray-900 group-hover:text-black transition" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">2</span>
             </button>
-
+            {/* Wishlist */}
             <button 
               onClick={() => navigate('/user/wishlist')}
-              className="p-2 rounded-lg hover:bg-gray-100 relative"
+              className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+              aria-label="Wishlist"
             >
-              <Heart size={20} />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                5
-              </span>
+              <Heart size={22} className="text-gray-900 group-hover:text-black transition" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">5</span>
             </button>
-
+            {/* Rental */}
             <button 
               onClick={() => navigate('/user/rentals')}
-              className="p-2 rounded-lg hover:bg-gray-100"
+              className="p-2 rounded-full hover:bg-gray-100 transition"
+              aria-label="Rentals"
             >
-              <Calendar size={20} />
+              <Calendar size={22} className="text-gray-900 hover:text-black transition" />
             </button>
-
             {/* Notifications */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2 rounded-lg hover:bg-gray-100 relative"
+                className="p-2 rounded-full hover:bg-gray-100 transition relative"
+                aria-label="Notifications"
               >
-                <Bell size={20} />
+                <Bell size={22} className="text-gray-900" />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {unreadCount}
-                  </span>
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{unreadCount}</span>
                 )}
               </button>
-
-              {/* Notifications Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-fade-in">
                   <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                     <h3 className="font-semibold text-gray-900">Notifications</h3>
                     <button
                       onClick={() => setShowNotifications(false)}
-                      className="p-1 hover:bg-gray-100 rounded"
+                      className="p-2 hover:bg-gray-100 rounded"
+                      aria-label="Close notifications"
                     >
                       <X size={16} />
                     </button>
                   </div>
-                  
-                  <div className="max-h-80 overflow-y-auto">
+                  <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
                     {notifications.length === 0 ? (
-                      <div className="p-4 text-center text-gray-500">
-                        No notifications
-                      </div>
+                      <div className="p-4 text-center text-gray-500">No notifications</div>
                     ) : (
                       notifications.map((notification) => (
                         <div
                           key={notification.id}
-                          className={`p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
-                            !notification.read ? 'bg-blue-50' : ''
-                          }`}
+                          className={`p-4 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50/40' : ''}`}
                         >
-                          <div className="flex items-start space-x-3">
-                            <div className={`w-2 h-2 rounded-full mt-2 ${
-                              !notification.read ? 'bg-blue-500' : 'bg-gray-300'
-                            }`} />
-                            <div className="flex-1">
-                              <h4 className="font-medium text-gray-900 text-sm">
-                                {notification.title}
-                              </h4>
-                              <p className="text-gray-600 text-sm mt-1">
-                                {notification.message}
-                              </p>
-                              <p className="text-gray-400 text-xs mt-1">
-                                {notification.time}
-                              </p>
+                          <div className="flex items-start gap-3">
+                            <div className={`w-2 h-2 rounded-full mt-2 ${!notification.read ? 'bg-blue-500' : 'bg-gray-300'}`} />
+                            <div>
+                              <h4 className="font-semibold text-sm">{notification.title}</h4>
+                              <p className="text-gray-700 text-sm">{notification.message}</p>
+                              <span className="text-gray-400 text-xs">{notification.time}</span>
                             </div>
                           </div>
                         </div>
                       ))
                     )}
                   </div>
-                  
-                  <div className="p-3 border-t border-gray-200">
-                    <button className="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium">
-                      View All Notifications
-                    </button>
+                  <div className="p-3 border-t text-center">
+                    <button className="text-blue-700 hover:text-blue-900 font-medium text-sm">View All Notifications</button>
                   </div>
                 </div>
               )}
             </div>
-
             {/* User Avatar */}
-            <button 
+            <button
               onClick={() => navigate('/user/profile')}
-              className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold hover:bg-gray-900 transition-colors"
+              className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
+              aria-label="User Profile"
             >
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </button>
           </div>
         </div>
-
-        {/* Mobile Search Bar */}
-        <div className="md:hidden px-4 py-3 border-t border-gray-200">
-          <form onSubmit={handleSearch} className="flex">
+        {/* Search bar under nav right side */}
+        <div className="hidden md:flex justify-end px-2 md:px-8 py-2">
+          <form onSubmit={handleSearch} className="flex w-full max-w-xs items-center">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-black focus:border-transparent"
+              placeholder="Search products…"
+              className="w-36 md:w-60 pl-3 pr-10 py-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-black focus:border-black transition"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-black text-white rounded-r-lg hover:bg-gray-900 transition-colors"
+              className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-900 transition"
+              aria-label="Search"
             >
-              <Search size={18} />
+              <Search size={19} />
             </button>
           </form>
         </div>
       </header>
-
-      {/* Notification Overlay */}
+      {/* Mobile search */}
+      <div className="md:hidden px-2 py-2 border-t border-gray-100">
+        <form onSubmit={handleSearch} className="flex">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search products…"
+            className="flex-1 px-3 py-2 border border-gray-200 rounded-l-lg focus:ring focus:ring-black focus:border-black"
+          />
+          <button
+            type="submit"
+            className="px-3 py-2 bg-black text-white rounded-r-lg hover:bg-gray-900 transition"
+            aria-label="Search"
+          >
+            <Search size={18} />
+          </button>
+        </form>
+      </div>
+      {/* Notification overlay */}
       {showNotifications && (
         <div 
           className="fixed inset-0 z-30"
