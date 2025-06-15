@@ -169,7 +169,7 @@ const Products = () => {
         setSearch={setSearch}
       />
 
-      {/* Product list */}
+      {/* Product table */}
       <ProductList
         products={filtered}
         onEdit={handleEdit}

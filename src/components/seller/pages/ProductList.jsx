@@ -1,6 +1,6 @@
 
 import React from "react";
-import ProductCard from "./ProductCard";
+import ProductTable from "./ProductTable";
 
 const ProductList = ({
   products,
@@ -9,32 +9,14 @@ const ProductList = ({
   onViewDetail,
   mobile
 }) => {
-  if (!products.length) {
-    return (
-      <div className="text-center mt-16 text-gray-400">No products found.</div>
-    );
-  }
   return (
-    <div
-      className={`
-        grid gap-4
-        ${mobile
-          ? "grid-cols-1"
-          : "sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
-        }
-      `}
-    >
-      {products.map(product => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onEdit={() => onEdit(product)}
-          onDelete={() => onDelete(product)}
-          onViewDetail={() => onViewDetail(product)}
-          mobile={mobile}
-        />
-      ))}
-    </div>
+    <ProductTable
+      products={products}
+      onEdit={onEdit}
+      onDelete={onDelete}
+      onViewDetail={onViewDetail}
+      mobile={mobile}
+    />
   );
 };
 
