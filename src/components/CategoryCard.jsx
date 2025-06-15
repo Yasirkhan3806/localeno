@@ -2,12 +2,18 @@
 import React, { useState } from "react";
 import ProductCard from "./ProductCard.jsx";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CategoryCard = ({ category, onProductClick, onCategoryClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   const handleCategoryClick = () => {
-    onCategoryClick();
+    navigate(`/products?category=${category.id}`);
+  };
+
+  const handleProductClick = (product) => {
+    navigate(`/product/${product.id}`);
   };
 
   return (
@@ -64,7 +70,7 @@ const CategoryCard = ({ category, onProductClick, onCategoryClick }) => {
               <ProductCard
                 key={product.id}
                 product={product}
-                onClick={() => onProductClick(product)}
+                onClick={() => handleProductClick(product)}
                 minimal={true}
                 showActions={isHovered}
               />
