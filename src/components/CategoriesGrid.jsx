@@ -2,54 +2,182 @@
 import React from "react";
 import CategoryCard from "./CategoryCard.jsx";
 
-// Demo category data with more products for better showcase
+// Categories updated as requested
 const categories = [
   {
-    id: "electronics",
-    title: "Electronics",
-    icon: "💡",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=400&q=80",
+    id: "home-decor",
+    title: "Home Decor",
+    icon: "🏠",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80",
     products: [
-      { id: 1, name: "Bluetooth Speaker", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$49", originalPrice: "$79", rentPrice: "$5/day", inStock: true },
-      { id: 2, name: "Smart Watch", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$98", originalPrice: "$129", rentPrice: "$8/day", inStock: true },
-      { id: 3, name: "Wireless Headphones", image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=200&q=80", price: "$120", originalPrice: "$159", rentPrice: "$10/day", inStock: false },
-      { id: 4, name: "Tablet", image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80", price: "$250", originalPrice: "$299", rentPrice: "$15/day", inStock: true }
+      {
+        id: 1,
+        name: "Modern Table Lamp",
+        image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80",
+        price: "$45",
+        originalPrice: "$65",
+        rentPrice: "$4/day",
+        inStock: true
+      },
+      {
+        id: 2,
+        name: "Decor Throw Pillow",
+        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80",
+        price: "$19",
+        originalPrice: "$29",
+        rentPrice: "$2/day",
+        inStock: true
+      },
+      {
+        id: 3,
+        name: "Wall Art Frame",
+        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=200&q=80",
+        price: "$65",
+        originalPrice: "$85",
+        rentPrice: "$5/day",
+        inStock: false
+      },
+      {
+        id: 4,
+        name: "Designer Vase",
+        image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80",
+        price: "$32",
+        originalPrice: "$45",
+        rentPrice: "$3/day",
+        inStock: true
+      }
     ]
   },
   {
-    id: "clothing",
-    title: "Clothing",
+    id: "health-beauty",
+    title: "Health and Beauty",
+    icon: "💄",
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=400&q=80",
+    products: [
+      {
+        id: 5,
+        name: "Aromatic Candles",
+        image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80",
+        price: "$22",
+        originalPrice: "$29",
+        rentPrice: "$2/day",
+        inStock: true
+      },
+      {
+        id: 6,
+        name: "Skin Care Set",
+        image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80",
+        price: "$49",
+        originalPrice: "$65",
+        rentPrice: "$5/day",
+        inStock: true
+      },
+      {
+        id: 7,
+        name: "Facial Roller",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80",
+        price: "$18",
+        originalPrice: "$25",
+        rentPrice: "$2/day",
+        inStock: true
+      },
+      {
+        id: 8,
+        name: "Beauty Mask Pack",
+        image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80",
+        price: "$27",
+        originalPrice: "$35",
+        rentPrice: "$3/day",
+        inStock: true
+      }
+    ]
+  },
+  {
+    id: "furniture-handicrafts",
+    title: "Furniture and Handicrafts",
+    icon: "🪑",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80",
+    products: [
+      {
+        id: 9,
+        name: "Wooden Rocking Chair",
+        image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=200&q=80",
+        price: "$120",
+        originalPrice: "$180",
+        rentPrice: "$15/day",
+        inStock: true
+      },
+      {
+        id: 10,
+        name: "Handcrafted Basket",
+        image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80",
+        price: "$35",
+        originalPrice: "$49",
+        rentPrice: "$4/day",
+        inStock: true
+      },
+      {
+        id: 11,
+        name: "Decorative Pottery",
+        image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80",
+        price: "$48",
+        originalPrice: "$65",
+        rentPrice: "$5/day",
+        inStock: true
+      },
+      {
+        id: 12,
+        name: "Boho Rug",
+        image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+        price: "$59",
+        originalPrice: "$75",
+        rentPrice: "$6/day",
+        inStock: true
+      }
+    ]
+  },
+  {
+    id: "clothing-accessories",
+    title: "Clothing and Accessories",
     icon: "👗",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80",
     products: [
-      { id: 5, name: "Denim Jacket", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80", price: "$39", originalPrice: "$59", rentPrice: "$4/day", inStock: true },
-      { id: 6, name: "Summer Dress", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$29", originalPrice: "$45", rentPrice: "$3/day", inStock: true },
-      { id: 7, name: "Casual Shirt", image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$3/day", inStock: true },
-      { id: 8, name: "Winter Coat", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$89", originalPrice: "$120", rentPrice: "$7/day", inStock: false }
-    ]
-  },
-  {
-    id: "accessories",
-    title: "Accessories",
-    icon: "⌚",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
-    products: [
-      { id: 9, name: "Gold Watch", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80", price: "$150", originalPrice: "$199", rentPrice: "$12/day", inStock: true },
-      { id: 10, name: "Elegant Scarf", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$2/day", inStock: true },
-      { id: 11, name: "Leather Bag", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$75", originalPrice: "$95", rentPrice: "$6/day", inStock: true },
-      { id: 12, name: "Sunglasses", image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$49", rentPrice: "$3/day", inStock: true }
-    ]
-  },
-  {
-    id: "home",
-    title: "Home & Living",
-    icon: "🏠",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80",
-    products: [
-      { id: 13, name: "Table Lamp", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$65", rentPrice: "$4/day", inStock: true },
-      { id: 14, name: "Throw Pillow", image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=200&q=80", price: "$19", originalPrice: "$29", rentPrice: "$2/day", inStock: true },
-      { id: 15, name: "Wall Art", image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=200&q=80", price: "$65", originalPrice: "$85", rentPrice: "$5/day", inStock: false },
-      { id: 16, name: "Vase", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$32", originalPrice: "$45", rentPrice: "$3/day", inStock: true }
+      {
+        id: 13,
+        name: "Summer Dress",
+        image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80",
+        price: "$29",
+        originalPrice: "$45",
+        rentPrice: "$3/day",
+        inStock: true
+      },
+      {
+        id: 14,
+        name: "Casual Shirt",
+        image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=200&q=80",
+        price: "$25",
+        originalPrice: "$35",
+        rentPrice: "$3/day",
+        inStock: true
+      },
+      {
+        id: 15,
+        name: "Denim Jacket",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=200&q=80",
+        price: "$39",
+        originalPrice: "$59",
+        rentPrice: "$4/day",
+        inStock: true
+      },
+      {
+        id: 16,
+        name: "Elegant Scarf",
+        image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+        price: "$25",
+        originalPrice: "$35",
+        rentPrice: "$2/day",
+        inStock: true
+      }
     ]
   }
 ];
@@ -112,3 +240,4 @@ const CategoriesGrid = ({ onProductClick }) => {
 };
 
 export default CategoriesGrid;
+
