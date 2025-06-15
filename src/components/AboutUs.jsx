@@ -1,37 +1,87 @@
 
 import React from "react";
-import { User, Heart, ShoppingBag, Shield } from "lucide-react";
+import { User, Heart, ShoppingBag, Shield, Award, Users, Globe, Zap } from "lucide-react";
 
 const aboutIcons = [
-  { icon: <Heart size={24} className="text-black" />, title: "Verified Sellers", text: "Shop only with authenticated, reviewed stores." },
-  { icon: <Shield size={24} className="text-black" />, title: "Secure Marketplace", text: "Safe payments & buyer protection always." },
-  { icon: <ShoppingBag size={24} className="text-black" />, title: "Wide Selection", text: "4,000+ items in 30+ trusted categories." },
-  { icon: <User size={24} className="text-black" />, title: "Reliable Support", text: "Get quick help from our friendly team." }
+  { icon: <Heart size={32} className="text-red-500" />, title: "Verified Sellers", text: "Shop only with authenticated, reviewed stores.", color: "from-red-500 to-pink-500" },
+  { icon: <Shield size={32} className="text-blue-500" />, title: "Secure Marketplace", text: "Safe payments & buyer protection always.", color: "from-blue-500 to-cyan-500" },
+  { icon: <ShoppingBag size={32} className="text-green-500" />, title: "Wide Selection", text: "4,000+ items in 30+ trusted categories.", color: "from-green-500 to-emerald-500" },
+  { icon: <Award size={32} className="text-purple-500" />, title: "Premium Quality", text: "Carefully curated products for excellence.", color: "from-purple-500 to-violet-500" }
+];
+
+const stats = [
+  { icon: <Users className="w-8 h-8" />, number: "50K+", label: "Happy Customers" },
+  { icon: <Globe className="w-8 h-8" />, number: "100+", label: "Cities Covered" },
+  { icon: <Zap className="w-8 h-8" />, number: "99.9%", label: "Uptime" },
+  { icon: <Award className="w-8 h-8" />, number: "4.9", label: "Rating" }
 ];
 
 const AboutUs = () => (
-  <section className="container mx-auto px-4 py-8" id="about">
-    <h2 className="text-2xl md:text-3xl font-bold mb-3">About Us</h2>
-    <div className="max-w-2xl mb-6 text-black/80">
-      Shoply is Pakistan’s trusted multi-vendor eCommerce platform for modern, verified, and seamless online shopping. 
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-7">
-      {aboutIcons.map((item) => (
-        <div className="bg-white border border-neutral-200 rounded-lg px-3 py-4 flex flex-col items-center text-center shadow-sm hover:scale-105 transition-all" key={item.title}>
-          <div>{item.icon}</div>
-          <div className="font-semibold mt-2">{item.title}</div>
-          <div className="text-xs text-black/70 mt-1">{item.text}</div>
-        </div>
-      ))}
-    </div>
-    <div className="flex flex-col md:flex-row gap-4">
-      <div className="bg-black text-white rounded-xl p-5 flex-1">
-        <h3 className="text-xl font-bold mb-2">Our Mission</h3>
-        <div>Empower every Pakistani to shop, sell, and trust eCommerce—safely and locally.</div>
+  <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50" id="about">
+    <div className="container mx-auto px-4 max-w-7xl">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+          Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Shoply</span>
+        </h2>
+        <p className="max-w-3xl mx-auto text-gray-600 text-lg md:text-xl leading-relaxed">
+          Pakistan's most trusted multi-vendor eCommerce platform, revolutionizing online shopping with innovation and reliability.
+        </p>
+        <div className="mt-6 w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
       </div>
-      <div className="bg-neutral-100 text-black rounded-xl p-5 flex-1">
-        <h3 className="text-xl font-bold mb-2">Our Vision</h3>
-        <div>Create a verified, innovative marketplace for Pakistan’s future.</div>
+
+      {/* Stats Section */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        {stats.map((stat, index) => (
+          <div key={index} className="text-center p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="text-blue-600 flex justify-center mb-3">
+              {stat.icon}
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-1">{stat.number}</div>
+            <div className="text-gray-600">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Features Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        {aboutIcons.map((item, index) => (
+          <div key={item.title} className="bg-white border border-gray-100 rounded-3xl p-8 text-center shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
+            <div className={`w-20 h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+              <div className="text-white">
+                {item.icon}
+              </div>
+            </div>
+            <h3 className="font-bold text-xl text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+              {item.title}
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              {item.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Mission & Vision */}
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-1">
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
+            <Zap className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
+          <p className="text-blue-100 text-lg leading-relaxed">
+            Empower every Pakistani to shop, sell, and trust eCommerce—safely and locally. We're building the future of digital commerce.
+          </p>
+        </div>
+        
+        <div className="bg-white border-2 border-gray-100 rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-1">
+          <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+            <Globe className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Our Vision</h3>
+          <p className="text-gray-600 text-lg leading-relaxed">
+            Create a verified, innovative marketplace that defines Pakistan's digital future and connects communities nationwide.
+          </p>
+        </div>
       </div>
     </div>
   </section>
