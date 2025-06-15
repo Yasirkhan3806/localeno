@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, Search, User, LogIn, UserPlus, ShoppingCart, Heart, Calendar } from "lucide-react";
+import { Menu, X, LogIn, UserPlus, Search, User, ShoppingCart, Heart, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import IdentityVerification from "./IdentityVerification.jsx";
@@ -167,103 +167,67 @@ const Header = () => {
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-          
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="fixed top-0 left-0 w-full h-full z-50 bg-black/30 animate-fade-in">
-              <div className="fixed top-0 right-0 w-80 max-w-full h-full bg-white shadow-lg px-5 py-6 flex flex-col gap-4">
-                <div className="flex justify-between items-center pb-4 border-b mb-2">
-                  <span className="font-bold text-xl text-black">Shoply</span>
-                  <button
-                    className="p-2 rounded hover:bg-neutral-100"
-                    onClick={() => setMobileMenuOpen(false)}
-                    aria-label="Close menu"
-                  >
-                    <X size={28} />
-                  </button>
-                </div>
-
-                {/* Mobile Search */}
-                <form onSubmit={handleSearch} className="flex mb-4">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search products..."
-                    className="flex-1 px-3 py-2 border border-neutral-200 rounded-l-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-2 bg-black text-white rounded-r-lg"
-                  >
-                    <Search size={18} />
-                  </button>
-                </form>
-                
-                {/* Mobile Nav Tabs */}
-                <ul className="flex flex-col gap-2">
-                  {navTabs.map((tab) => (
-                    <li key={tab.name}>
-                      <button
-                        onClick={() => {
-                          navigate(tab.link);
-                          setMobileMenuOpen(false);
-                        }}
-                        className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium hover:bg-neutral-950 hover:text-white transition-all shadow-sm border border-transparent hover:border-neutral-900 bg-neutral-100"
-                      >
-                        {tab.name}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-
-                {isAuthenticated ? (
-                  <div className="mt-6 flex flex-col gap-2">
-                    <button
-                      onClick={() => {
-                        navigate('/user/home');
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg shadow hover:bg-gray-900 transition"
-                    >
-                      Dashboard
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                ) : (
-                  <div className="mt-6 flex flex-col gap-2">
-                    <button 
-                      onClick={() => {
-                        navigate('/login');
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg shadow hover:bg-neutral-900 transition"
-                    >
-                      <LogIn size={18} className="inline-block mr-1 -mt-1" />
-                      Login
-                    </button>
-                    <button 
-                      onClick={() => {
-                        navigate('/signup');
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg shadow hover:bg-neutral-200 transition"
-                    >
-                      <UserPlus size={18} className="inline-block mr-1 -mt-1" />
-                      Sign Up
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </nav>
       </header>
+      
+      {/* Mobile Sidebar Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-black/30 animate-fade-in">
+          {/* Sidebar slides from the left */}
+          <div className="fixed top-0 left-0 h-full w-64 max-w-full bg-white shadow-xl px-5 py-8 flex flex-col gap-6">
+            <div className="flex items-center justify-between pb-4 border-b">
+              <span className="font-bold text-xl text-black">Shoply</span>
+              <button
+                className="p-2 rounded hover:bg-neutral-100"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={28} />
+              </button>
+            </div>
+            <ul className="flex flex-col gap-2 mt-3">
+              {navTabs.map((tab) => (
+                <li key={tab.name}>
+                  <button
+                    onClick={() => {
+                      navigate(tab.link);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-3 py-2 rounded-lg text-base font-medium hover:bg-neutral-950 hover:text-white transition-all shadow-sm border border-transparent hover:border-neutral-900 bg-neutral-100"
+                  >
+                    {tab.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-col gap-2 pt-6 border-t border-neutral-100">
+              <button 
+                onClick={() => {
+                  navigate('/login');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full px-4 py-2 bg-black text-white font-semibold rounded-lg hover:scale-105 hover:bg-neutral-900 transition"
+              >
+                <LogIn size={18} className="inline-block mr-1 -mt-1" />
+                Login
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/signup');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full px-4 py-2 bg-neutral-100 text-neutral-900 font-semibold rounded-lg hover:scale-105 hover:bg-neutral-200 transition"
+              >
+                <UserPlus size={18} className="inline-block mr-1 -mt-1" />
+                Sign Up
+              </button>
+            </div>
+          </div>
+          {/* Click overlay closes sidebar */}
+          <div className="fixed inset-0 z-40" onClick={() => setMobileMenuOpen(false)} />
+        </div>
+      )}
+
       {/* Identity Verification Modal */}
       <IdentityVerification
         isOpen={showVerification}
