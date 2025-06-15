@@ -1,12 +1,12 @@
 
 // Main marketplace landing page UI
 
-import Header from "../components/Header.js";
+import Header from "../components/Header.jsx";
 import HeroCarousel from "../components/HeroCarousel.js";
 import CategoriesGrid from "../components/CategoriesGrid.js";
 import AboutUs from "../components/AboutUs.js";
 import ContactUs from "../components/ContactUs.js";
-import Footer from "../components/Footer.js";
+import Footer from "../components/Footer.jsx";
 import ProductDetailModal from "../components/ProductDetailModal.js";
 import React, { useState } from "react";
 
@@ -49,3 +49,4 @@ const Index = () => {
 };
 
 export default Index;
+
