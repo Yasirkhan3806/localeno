@@ -1,3 +1,4 @@
+
 import React from "react";
 import CategoryCard from "./CategoryCard.jsx";
 
@@ -41,8 +42,13 @@ const categories = [
 
 const CategoriesGrid = ({ onProductClick }) => (
   <section className="container mx-auto px-4 max-w-6xl">
-    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">Shop by Category</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 animate-fade-in">
+    <h2 className="text-3xl md:text-4xl font-extrabold text-foreground mb-8 text-center tracking-tight">
+      Shop by Category
+    </h2>
+    <p className="max-w-2xl mx-auto text-muted-foreground mb-8 text-center text-base md:text-lg">
+      Discover our curated selection across all categories. Browse the latest and most popular products hand-picked for you.
+    </p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 animate-fade-in">
       {categories.map((cat) => (
         <CategoryCard
           key={cat.title}
