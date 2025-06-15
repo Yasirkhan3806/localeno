@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductFilters from "./ProductFilters";
@@ -174,7 +173,11 @@ const Products = () => {
         products={filtered}
         onEdit={handleEdit}
         onDelete={product => setDeleteModal({ open: true, product })}
-        onViewDetail={product => navigate(`/seller/my-products/${product.id}`)}
+        onViewDetail={product => {
+          // Pick the right route as per your app structure, here `/product/:id`:
+          navigate(`/product/${product.id}`);
+          // If you want seller's detail: navigate(`/seller/my-products/${product.id}`);
+        }}
         mobile={isMobile}
       />
 
