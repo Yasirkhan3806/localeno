@@ -1,8 +1,8 @@
-
 import React from "react";
-import { Star, Heart } from "lucide-react";
+import { Star } from "lucide-react";
 import ReviewCard from "./ReviewCard";
 
+// Updated reviewStats: remove "Total Likes", simplify "Average Rating"
 const reviewStats = [
   {
     label: "Total Reviews",
@@ -24,11 +24,6 @@ const reviewStats = [
         <Star size={20} className="text-yellow-400" />
       </span>
     ),
-  },
-  {
-    label: "Total Likes",
-    value: 40,
-    icon: <Heart size={20} className="text-red-400" />,
   },
 ];
 
@@ -78,13 +73,15 @@ export default function SellerReviews() {
   return (
     <div className="w-full max-w-5xl mx-auto mt-3">
       {/* Top Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-7">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-7">
         {reviewStats.map((stat) => (
           <div
             key={stat.label}
             className="bg-white rounded-xl p-5 flex items-center gap-4 shadow border"
           >
-            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-gray-50 border">{stat.icon}</div>
+            <div className="w-11 h-11 flex items-center justify-center rounded-full bg-gray-50 border">
+              {stat.icon}
+            </div>
             <div>
               <div className="text-xs text-gray-500 font-medium">{stat.label}</div>
               <div className="text-2xl font-bold text-gray-900 flex items-center gap-1 mt-1">
