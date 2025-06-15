@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+// Import Home icon for sidebar button
 import { 
   Home, 
   ShoppingBag, 
   ShoppingCart, 
   Heart, 
   Package, 
-  Calendar, 
   User, 
   Star, 
   MessageCircle, 
@@ -32,7 +32,6 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
     { icon: Package, label: 'My Orders', path: '/user/orders' },
-    { icon: Calendar, label: 'Rentals', path: '/user/rentals' },
     { icon: Star, label: 'Reviews', path: '/user/reviews' },
     { icon: MessageCircle, label: 'Messages', path: '/user/chats' },
     { icon: Settings, label: 'Settings', path: '/user/settings' },
@@ -95,6 +94,18 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
               </NavLink>
             ))}
           </nav>
+          {/* Back to Home Button */}
+          <div className="px-4 pb-4 mt-auto">
+            <button
+              className="w-full flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg"
+              style={{ justifyContent: 'center' }}
+              onClick={() => navigate('/user/home')}
+              aria-label="Back to Home"
+            >
+              <Home size={20} />
+              <span>Back to Home</span>
+            </button>
+          </div>
           {/* Logout */}
           <div className="p-4 border-t border-gray-200">
             <button

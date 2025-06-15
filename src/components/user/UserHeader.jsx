@@ -1,16 +1,42 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, Search, ShoppingCart, Heart, Calendar, Bell, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Search, ShoppingCart, Heart, Bell, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Icons visibility state
-  const [iconsVisible, setIconsVisible] = useState(true);
+  // Per-icon visibility state
+  const [iconStates, setIconStates] = useState({
+    cart: true,
+    wishlist: true,
+    notification: true,
+  });
+
+  // Handler: single-click shows icon again
+  const handleIconSingleClick = (icon) =>
+    setIconStates((s) => ({ ...s, [icon]: true }));
+
+  // Handler: double-click hides icon
+  const handleIconDoubleClick = (icon) =>
+    setIconStates((s) => ({ ...s, [icon]: false }));
+
+  // For detail pages, auto-hide icon if user double-clicked previously
+  // Map of detail routes and their icons
+  const routeToIcon = {
+    '/user/cart': 'cart',
+    '/user/wishlist': 'wishlist',
+    '/user/notifications': 'notification', // example notifications detail route
+  };
+  const currentRouteIcon = routeToIcon[location.pathname];
+
+  // Only show icon if its state is true OR we are not on its detail page
+  // For detail page, keep hidden if toggled.
+  // For now, Wishlist and Cart; Notifications only if such detail page exists.
 
   // Mock notifications
   const [notifications] = useState([
@@ -49,10 +75,6 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
     }
   };
 
-  // Handlers for single/double click
-  const handleIconSingleClick = () => setIconsVisible(true);
-  const handleIconDoubleClick = () => setIconsVisible(false);
-
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
@@ -76,99 +98,97 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
           {/* Right - User + Actions */}
           <div
             className="flex items-center gap-0 md:gap-2"
-            onClick={handleIconSingleClick}
-            onDoubleClick={handleIconDoubleClick}
             style={{ userSelect: "none", cursor: "pointer" }}
           >
             {/* Cart */}
-            {iconsVisible && (
-              <>
-                <button 
-                  onClick={() => navigate('/user/cart')}
-                  className="p-2 rounded-full group hover:bg-gray-100 transition relative"
-                  aria-label="View cart"
+            {iconStates.cart && location.pathname !== "/user/cart" && (
+              <button
+                onClick={() => navigate('/user/cart')}
+                onClickCapture={() => handleIconSingleClick("cart")}
+                onDoubleClick={() => handleIconDoubleClick("cart")}
+                className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+                aria-label="View cart"
+              >
+                <ShoppingCart size={22} className="text-gray-900 group-hover:text-black transition" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">2</span>
+              </button>
+            )}
+            {/* Wishlist */}
+            {iconStates.wishlist && location.pathname !== "/user/wishlist" && (
+              <button
+                onClick={() => navigate('/user/wishlist')}
+                onClickCapture={() => handleIconSingleClick("wishlist")}
+                onDoubleClick={() => handleIconDoubleClick("wishlist")}
+                className="p-2 rounded-full group hover:bg-gray-100 transition relative"
+                aria-label="Wishlist"
+              >
+                <Heart size={22} className="text-gray-900 group-hover:text-black transition" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">5</span>
+              </button>
+            )}
+            {/* Notifications */}
+            {iconStates.notification && location.pathname !== "/user/notifications" && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  onClickCapture={() => handleIconSingleClick("notification")}
+                  onDoubleClick={() => handleIconDoubleClick("notification")}
+                  className="p-2 rounded-full hover:bg-gray-100 transition relative"
+                  aria-label="Notifications"
                 >
-                  <ShoppingCart size={22} className="text-gray-900 group-hover:text-black transition" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">2</span>
+                  <Bell size={22} className="text-gray-900" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{unreadCount}</span>
+                  )}
                 </button>
-                {/* Wishlist */}
-                <button 
-                  onClick={() => navigate('/user/wishlist')}
-                  className="p-2 rounded-full group hover:bg-gray-100 transition relative"
-                  aria-label="Wishlist"
-                >
-                  <Heart size={22} className="text-gray-900 group-hover:text-black transition" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">5</span>
-                </button>
-                {/* Rental */}
-                <button 
-                  onClick={() => navigate('/user/rentals')}
-                  className="p-2 rounded-full hover:bg-gray-100 transition"
-                  aria-label="Rentals"
-                >
-                  <Calendar size={22} className="text-gray-900 hover:text-black transition" />
-                </button>
-                {/* Notifications */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowNotifications(!showNotifications)}
-                    className="p-2 rounded-full hover:bg-gray-100 transition relative"
-                    aria-label="Notifications"
-                  >
-                    <Bell size={22} className="text-gray-900" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">{unreadCount}</span>
-                    )}
-                  </button>
-                  {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-fade-in">
-                      <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
-                        <button
-                          onClick={() => setShowNotifications(false)}
-                          className="p-2 hover:bg-gray-100 rounded"
-                          aria-label="Close notifications"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                      <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
-                        {notifications.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500">No notifications</div>
-                        ) : (
-                          notifications.map((notification) => (
-                            <div
-                              key={notification.id}
-                              className={`p-4 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50/40' : ''}`}
-                            >
-                              <div className="flex items-start gap-3">
-                                <div className={`w-2 h-2 rounded-full mt-2 ${!notification.read ? 'bg-blue-500' : 'bg-gray-300'}`} />
-                                <div>
-                                  <h4 className="font-semibold text-sm">{notification.title}</h4>
-                                  <p className="text-gray-700 text-sm">{notification.message}</p>
-                                  <span className="text-gray-400 text-xs">{notification.time}</span>
-                                </div>
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-fade-in">
+                    <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900">Notifications</h3>
+                      <button
+                        onClick={() => setShowNotifications(false)}
+                        className="p-2 hover:bg-gray-100 rounded"
+                        aria-label="Close notifications"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                    <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
+                      {notifications.length === 0 ? (
+                        <div className="p-4 text-center text-gray-500">No notifications</div>
+                      ) : (
+                        notifications.map((notification) => (
+                          <div
+                            key={notification.id}
+                            className={`p-4 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50/40' : ''}`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-2 h-2 rounded-full mt-2 ${!notification.read ? 'bg-blue-500' : 'bg-gray-300'}`} />
+                              <div>
+                                <h4 className="font-semibold text-sm">{notification.title}</h4>
+                                <p className="text-gray-700 text-sm">{notification.message}</p>
+                                <span className="text-gray-400 text-xs">{notification.time}</span>
                               </div>
                             </div>
-                          ))
-                        )}
-                      </div>
-                      <div className="p-3 border-t text-center">
-                        <button className="text-blue-700 hover:text-blue-900 font-medium text-sm">View All Notifications</button>
-                      </div>
+                          </div>
+                        ))
+                      )}
                     </div>
-                  )}
-                </div>
-                {/* User Avatar */}
-                <button
-                  onClick={() => navigate('/user/profile')}
-                  className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
-                  aria-label="User Profile"
-                >
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
-                </button>
-              </>
+                    <div className="p-3 border-t text-center">
+                      <button className="text-blue-700 hover:text-blue-900 font-medium text-sm">View All Notifications</button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
+            {/* User Avatar */}
+            <button
+              onClick={() => navigate('/user/profile')}
+              className="w-11 h-11 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
+              aria-label="User Profile"
+            >
+              {user?.firstName?.[0]}{user?.lastName?.[0]}
+            </button>
           </div>
         </div>
         {/* Search bar under nav right side */}

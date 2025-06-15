@@ -99,7 +99,7 @@ const Header = () => {
             {iconsVisible && (
               isAuthenticated ? (
                 <>
-                  {/* Cart, Wishlist, Rental Icons */}
+                  {/* Cart, Wishlist Icons only, Calendar removed */}
                   <button 
                     onClick={() => navigate('/user/cart')}
                     className="p-2 rounded-lg hover:bg-accent transition-colors relative"
@@ -114,12 +114,7 @@ const Header = () => {
                     <Heart size={20} />
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
                   </button>
-                  <button 
-                    onClick={() => navigate('/user/rentals')}
-                    className="p-2 rounded-lg hover:bg-accent"
-                  >
-                    <Calendar size={20} />
-                  </button>
+                  {/* Calendar (Rent) icon removed */}
                   {/* User Menu */}
                   <div className="relative group">
                     <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-accent">
