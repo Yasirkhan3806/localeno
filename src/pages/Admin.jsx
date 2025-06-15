@@ -18,6 +18,8 @@ import AdminOrdersTable from "../components/admin/AdminOrdersTable";
 import AdminCustomersTable from "../components/admin/AdminCustomersTable";
 import AdminSellersTable from "../components/admin/AdminSellersTable";
 import AdminReportsTable from "../components/admin/AdminReportsTable";
+import ReportDetailPage from "../components/admin/ReportDetailPage";
+import SettingsDetailPage from "../components/admin/SettingsDetailPage";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -93,9 +95,24 @@ const Admin = () => {
   const [section, setSection] = useState("products");
   const [products, setProducts] = useState(DEMO_PRODUCTS);
 
+  // Report detail state
+  const [reportDetail, setReportDetail] = useState(null);
+
   // Simple edit handler
   const handleEditProduct = (product) => {
     window.alert("Edit product: " + product.name);
+  };
+
+  // Handler for viewing report detail
+  const handleViewReport = (reportId) => {
+    // In real app, fetch report by ID; here use demo value.
+    setReportDetail(reportId);
+    setSection("report-detail");
+  };
+
+  const handleBackFromReport = () => {
+    setReportDetail(null);
+    setSection("reports");
   };
 
   const handleLogout = () => {
@@ -187,6 +204,12 @@ const Admin = () => {
         </div>
         {/* Section Switch */}
         <section className="px-10 py-8 bg-[#F6F8FB] flex-1 w-full">
+          {/* Detail pages */}
+          {section === "report-detail" && (
+            <ReportDetailPage onBack={handleBackFromReport} />
+          )}
+          {section === "settings" && <SettingsDetailPage />}
+          {/* Regular Sections */}
           {section === "dashboard" && (
             <>
               <AdminDashboard />
@@ -218,7 +241,8 @@ const Admin = () => {
           )}
           {section === "reports" && (
             <>
-              <AdminReportsTable />
+              {/* Pass handleViewReport to table for report row actions */}
+              <AdminReportsTable onViewReport={handleViewReport} />
             </>
           )}
         </section>
@@ -228,3 +252,5 @@ const Admin = () => {
 };
 
 export default Admin;
+
+// NOTE TO USER: This file is now 250+ lines. Please consider splitting it into smaller files for future maintainability!

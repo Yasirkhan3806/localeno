@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Ban, Bell, Clock, Eye, Filter } from "lucide-react";
 
@@ -102,7 +101,7 @@ const statusBadge = (status) => {
   }
 };
 
-const AdminReportsTable = () => {
+const AdminReportsTable = ({ onViewReport }) => {
   const [search, setSearch] = useState("");
   const filteredReports = DEMO_REPORTS.filter(
     r =>
@@ -199,7 +198,7 @@ const AdminReportsTable = () => {
                     <button
                       className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500"
                       title="View"
-                      onClick={() => window.alert('View report functionality not implemented (demo only).')}
+                      onClick={() => onViewReport ? onViewReport(report.id) : window.alert('View report functionality not implemented (demo only).')}
                     >
                       <Eye size={18} />
                     </button>
