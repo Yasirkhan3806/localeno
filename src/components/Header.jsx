@@ -197,25 +197,6 @@ const Header = () => {
                           <UserPlus size={18} className="inline-block mr-1 -mt-1" />
                           Sign Up
                         </span>
-                        {/* Admin Panel Button Inside Sign Up */}
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate('/admin-login');
-                          }}
-                          className="mt-2 px-3 py-1 bg-yellow-400 text-black font-semibold rounded hover:bg-yellow-500 hover:scale-105 transition-all focus:ring-2 focus:ring-yellow-300 focus:outline-none text-xs shadow"
-                          style={{ width: "100%" }}
-                          tabIndex={-1}
-                        >
-                          Admin Panel
-                        </button>
-                        {/* Admin panel login details */}
-                        <div className="mt-2 bg-gray-100 text-gray-600 rounded px-2 py-1 text-xs w-full text-center border border-gray-200">
-                          <div><b>Admin Login</b></div>
-                          <div>Username: <span className="font-mono">admin</span></div>
-                          <div>Password: <span className="font-mono">admin123</span></div>
-                        </div>
                       </button>
                     </div>
                   </>
