@@ -1,4 +1,6 @@
+
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const images = [
   {
@@ -20,6 +22,7 @@ const images = [
 
 function HeroCarousel() {
   const [curr, setCurr] = useState(0);
+  const navigate = useNavigate();
 
   const goto = (i) => setCurr(i);
   const next = () => setCurr((curr + 1) % images.length);
@@ -60,6 +63,7 @@ function HeroCarousel() {
               </button>
               <button
                 className="py-2 px-4 sm:px-5 rounded-lg border border-primary/60 bg-background/70 text-primary font-semibold text-sm shadow hover:bg-primary/10 focus:outline-none transition-all"
+                onClick={() => navigate("/about")}
               >
                 Learn More
               </button>
@@ -100,3 +104,4 @@ function HeroCarousel() {
 }
 
 export default HeroCarousel;
+
