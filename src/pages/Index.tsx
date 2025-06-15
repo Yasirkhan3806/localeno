@@ -2,12 +2,12 @@
 // Main marketplace landing page UI
 
 import Header from "../components/Header.jsx";
-import HeroCarousel from "../components/HeroCarousel.js";
-import CategoriesGrid from "../components/CategoriesGrid.js";
-import AboutUs from "../components/AboutUs.js";
-import ContactUs from "../components/ContactUs.js";
+import HeroCarousel from "../components/HeroCarousel.jsx";
+import CategoriesGrid from "../components/CategoriesGrid.jsx";
+import AboutUs from "../components/AboutUs.jsx";
+import ContactUs from "../components/ContactUs.jsx";
 import Footer from "../components/Footer.jsx";
-import ProductDetailModal from "../components/ProductDetailModal.js";
+import ProductDetailModal from "../components/ProductDetailModal.jsx";
 import React, { useState } from "react";
 
 // Demo state (drop in a basic product modal system; more can be wired later)
@@ -49,4 +49,3 @@ const Index = () => {
 };
 
 export default Index;
-
