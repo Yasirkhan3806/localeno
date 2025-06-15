@@ -1,7 +1,9 @@
-
 import React, { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import SellerSidebar from "../SellerSidebar";
+import SellerDashboardHeader from "./SellerDashboardHeader";
+import SellerDashboardWelcomeSection from "./SellerDashboardWelcomeSection";
+import SellerDashboardStatCards from "./SellerDashboardStatCards";
 
 // ICONS (use allowed lucide-react icons, mapping as close as possible)
 import { Box, RotateCw, Star, Menu, User } from "lucide-react";
@@ -55,39 +57,9 @@ export default function SellerDashboardOverview() {
 
   return (
     <div className="relative min-h-screen bg-[#f8f8f8] font-inter">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 h-14 flex items-center px-3 sm:px-6">
-        {/* Hamburger: Mobile/Tablet */}
-        <button
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Open sidebar"
-          className="lg:hidden flex items-center justify-center h-10 w-10 rounded-2xl hover:bg-[#f8f8f8] hover:ring-2 hover:ring-black/10 transition"
-        >
-          <Menu size={24} />
-        </button>
-        {/* Mobile Center label */}
-        <span className="text-lg font-bold mx-auto block lg:hidden">
-          Dashboard
-        </span>
-        {/* Right: avatar */}
-        <div className="ml-auto flex items-center gap-2">
-          <div className="hidden sm:flex flex-col text-xs text-neutral-500 mr-2 leading-tight text-right">
-            <span className="font-semibold text-black/80">
-              {sellerName}
-            </span>
-            <span className="text-neutral-400">
-              Seller
-            </span>
-          </div>
-          <span className="bg-[#f8f8f8] text-black rounded-full w-9 h-9 flex items-center justify-center border border-gray-200 font-bold text-base select-none shadow-sm">
-            {sellerName[0] || "S"}
-          </span>
-        </div>
-      </header>
-
+      <SellerDashboardHeader onOpenSidebar={() => setSidebarOpen(true)} />
       {/* Sidebar (modal for mobile/tablet) */}
       <aside>
-        {/* Overlay */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity animate-fade-in"
@@ -97,7 +69,6 @@ export default function SellerDashboardOverview() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        {/* Slide-in nav */}
         <div
           className={`
             fixed top-0 left-0 z-50 h-full w-64 bg-white border-r
@@ -109,86 +80,11 @@ export default function SellerDashboardOverview() {
           <SellerSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
         </div>
       </aside>
-
       {/* Content layout */}
       <main className="w-full max-w-5xl mx-auto px-2 sm:px-5 pt-6 pb-6">
-        {/* Welcome animated section */}
-        <section
-          className="mb-8 mt-2 px-1 animate-fade-in flex flex-col gap-0"
-          style={{
-            animation: "fade-in 0.6s cubic-bezier(.24,1.4,.47,.98)",
-            animationDelay: "80ms",
-            animationFillMode: "backwards",
-          }}
-          aria-label="Welcome section"
-        >
-          <h1 className="font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight text-black mb-1">
-            Dashboard Overview
-          </h1>
-          <div className="flex items-center gap-2">
-            <User size={20} className="text-black/80" aria-hidden="true" />
-            <span className="text-lg sm:text-xl font-semibold text-black" data-testid="welcome-user">
-              Welcome back, {sellerName}!
-            </span>
-          </div>
-          <p className="mt-1 text-gray-500 text-base mb-1">
-            {getGreeting()}, here’s what’s happening with your store today.
-          </p>
-        </section>
-
-        {/* Stats cards: Responsive grid/flex/stack */}
-        <section className="
-          grid gap-4
-          grid-cols-1
-          sm:grid-cols-2
-          lg:grid-cols-3
-          w-full
-          animate-none
-        ">
-          {STATS.map((stat, i) => (
-            <a
-              key={stat.label}
-              href={stat.link}
-              aria-label={stat.label}
-              className={`
-                group relative flex flex-col justify-between p-4 min-h-[140px]
-                bg-white border border-gray-200
-                rounded-2xl shadow-md transition
-                hover:shadow-lg
-                focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2
-                cursor-pointer
-                hover:scale-[1.03] active:scale-100
-                ${stat.border}
-                animate-card-slide-up
-              `}
-              style={getAnimDelay(i)}
-              tabIndex={0}
-            >
-              {/* Icon circle */}
-              <div className={`absolute top-4 right-5 z-0`}>
-                <span className={`w-12 h-12 flex items-center justify-center rounded-full ${stat.iconBg} shadow-sm`}>
-                  <stat.icon size={26} strokeWidth={2.2} aria-hidden="true" />
-                </span>
-              </div>
-              {/* Title & stat */}
-              <div className="z-30 mt-8">
-                <span className="block text-gray-700 font-medium text-base mb-1">{stat.label}</span>
-                <span className="text-3xl md:text-4xl font-extrabold text-black tracking-tight">
-                  {stat.value}
-                </span>
-              </div>
-              {/* View link */}
-              <span className="
-                mt-3 absolute bottom-4 right-7 z-30 text-xs font-semibold uppercase
-                tracking-wider text-gray-400 group-hover:text-black group-hover:underline transition
-              ">
-                View
-              </span>
-            </a>
-          ))}
-        </section>
+        <SellerDashboardWelcomeSection />
+        <SellerDashboardStatCards />
       </main>
-
       {/* Animations for cards */}
       <style>
         {`
