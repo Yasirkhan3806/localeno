@@ -1,10 +1,11 @@
 
 import React, { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Box, RotateCw, Star, Menu, User } from "lucide-react";
 import SellerSidebar from "../SellerSidebar";
 
-// Helper for greeting
+// ICONS (use allowed lucide-react icons, mapping as close as possible)
+import { Box, RotateCw, Star, Menu, User } from "lucide-react";
+
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) return "Good morning";
@@ -54,7 +55,7 @@ export default function SellerDashboardOverview() {
 
   return (
     <div className="relative min-h-screen bg-[#f8f8f8] font-inter">
-      {/* Sticky header */}
+      {/* Sticky Header */}
       <header className="sticky top-0 z-40 bg-white border-b border-gray-200 h-14 flex items-center px-3 sm:px-6">
         {/* Hamburger: Mobile/Tablet */}
         <button
