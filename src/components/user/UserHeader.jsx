@@ -85,13 +85,16 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
               }}
               aria-label="Go to home"
             >
-              <img 
-                src="/lovable-uploads/30e44ece-5d85-45dc-9308-5bd7308ea047.png"
-                alt="Site Logo"
-                className="h-8 md:h-10 max-w-[158px] md:max-w-[210px] object-contain border-2 border-black rounded-lg"
-                style={{ display: 'block' }}
+              <span
+                className="h-8 md:h-10 flex items-center justify-center px-4 md:px-6 bg-white border-2 border-black rounded-lg font-bold text-lg md:text-2xl text-black select-none"
+                style={{
+                  minWidth: '96px',
+                  maxWidth: '210px',
+                }}
                 draggable="false"
-              />
+              >
+                Shoply
+              </span>
             </button>
           </div>
 
