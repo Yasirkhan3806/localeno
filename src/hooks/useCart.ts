@@ -2,13 +2,18 @@
 import * as React from 'react';
 
 export function useCart() {
-  const [cart, setCart] = React.useState(() => {
-    const stored = localStorage.getItem('user_cart');
-    return stored ? JSON.parse(stored) : [];
+  const [cart, setCart] = React.useState<any[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem('user_cart');
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
   });
 
   React.useEffect(() => {
-    localStorage.setItem('user_cart', JSON.stringify(cart));
+    if (typeof window !== "undefined") {
+      localStorage.setItem('user_cart', JSON.stringify(cart));
+    }
   }, [cart]);
 
   const addToCart = (product: any) => {
