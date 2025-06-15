@@ -103,6 +103,7 @@ export default function SellerChat() {
 
   // Messaging state
   const [reply, setReply] = useState("");
+
   const handleSend = (e) => {
     e.preventDefault();
     if (!selectedId || !reply.trim()) return;
@@ -112,15 +113,38 @@ export default function SellerChat() {
             ...conv,
             messages: [
               ...conv.messages,
-              { id: Date.now(), sender: "seller", text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+              {
+                id: Date.now(),
+                sender: "seller",
+                text: reply,
+                time: new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+              },
             ],
             lastMessage: reply,
-            unread: 0,
+            unread: 0, // always 0 after seller sends
           }
         : conv
     );
     setConversations(updated);
     setReply("");
+  };
+
+  // NEW: Mark conversation as read on selection
+  const handleSelectConversation = (id) => {
+    setSelectedId(id);
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv.id === id
+          ? {
+              ...conv,
+              unread: 0, // mark as read when opened
+            }
+          : conv
+      )
+    );
   };
 
   return (
@@ -151,18 +175,24 @@ export default function SellerChat() {
             {conversations.map((conv) => (
               <button
                 key={conv.id}
-                onClick={() => setSelectedId(conv.id)}
-                className={`w-full text-left px-4 py-3 border-b last:border-b-0 flex gap-3 items-center hover:bg-gray-100 transition ${selectedId === conv.id ? "bg-blue-50" : ""}`}
+                onClick={() => handleSelectConversation(conv.id)}
+                className={`w-full text-left px-4 py-3 border-b last:border-b-0 flex gap-3 items-center hover:bg-gray-100 transition ${
+                  selectedId === conv.id ? "bg-blue-50" : ""
+                }`}
               >
                 <span className="relative w-10 h-10 flex items-center justify-center rounded-full overflow-hidden bg-gray-100 border">
                   {conv.user.avatar ? (
                     <img src={conv.user.avatar} alt={conv.user.name} className="object-cover w-10 h-10" />
                   ) : (
-                    <span className="w-10 h-10 flex items-center justify-center font-bold text-lg text-gray-800">{getInitials(conv.user.name)}</span>
+                    <span className="w-10 h-10 flex items-center justify-center font-bold text-lg text-gray-800">
+                      {getInitials(conv.user.name)}
+                    </span>
                   )}
                   {/* Unread badge */}
                   {!!conv.unread && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">{conv.unread}</span>
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">
+                      {conv.unread}
+                    </span>
                   )}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -241,3 +271,5 @@ export default function SellerChat() {
     </div>
   );
 }
+
+// ----------------- END OF FILE -----------------
