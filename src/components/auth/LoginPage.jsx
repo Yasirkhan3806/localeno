@@ -1,8 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Eye, EyeOff, Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
+
+const ROLES = [
+  { key: 'customer', label: 'Sign in as Customer' },
+  { key: 'seller', label: 'Sign in as Seller' },
+];
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -11,13 +16,21 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  // Read mode from localStorage on load, default to customer
+  const [mode, setMode] = useState(
+    () => localStorage.getItem('loginMode') || 'customer'
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('loginMode', mode);
+  }, [mode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     // Simulate login API call
     setTimeout(() => {
       const userData = {
@@ -25,13 +38,16 @@ const LoginPage = () => {
         firstName: 'John',
         lastName: 'Doe',
         email: formData.email,
-        accountType: 'customer',
+        accountType: mode,
         avatar: null
       };
-      
       login(userData);
       setLoading(false);
-      navigate('/user/home');
+      if (mode === 'seller') {
+        navigate('/seller/dashboard');
+      } else {
+        navigate('/user/home');
+      }
     }, 1000);
   };
 
@@ -43,6 +59,27 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* Mode Toggle Buttons */}
+        <div className="flex justify-center gap-2 mb-6">
+          {ROLES.map(({ key, label }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setMode(key)}
+              className={`px-4 py-2 rounded-full font-semibold transition-colors text-sm border
+                ${
+                  mode === key
+                    ? "bg-black text-white border-black shadow"
+                    : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100"
+                }
+                focus:outline-none focus:ring-2 focus:ring-black`}
+              style={{ minWidth: 140 }}
+              data-testid={`login-mode-${key}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <div className="text-center">
           <button
             onClick={() => navigate('/')}
@@ -51,11 +88,9 @@ const LoginPage = () => {
             <ArrowLeft size={20} className="mr-2" />
             Back to Home
           </button>
-          
           <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
           <p className="mt-2 text-gray-600">Sign in to your account</p>
         </div>
-
         <div className="bg-white rounded-2xl shadow-md p-8">
           {/* Social Login Buttons */}
           <div className="space-y-3 mb-6">
@@ -74,7 +109,6 @@ const LoginPage = () => {
               Continue with Facebook
             </button>
           </div>
-
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300" />
@@ -83,7 +117,6 @@ const LoginPage = () => {
               <span className="px-2 bg-white text-gray-500">Or continue with email</span>
             </div>
           </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -101,7 +134,6 @@ const LoginPage = () => {
                 />
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -125,7 +157,6 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
-
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -138,12 +169,10 @@ const LoginPage = () => {
                   Remember me
                 </label>
               </div>
-
               <Link to="/forgot-password" className="text-sm text-black hover:underline">
                 Forgot password?
               </Link>
             </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -152,7 +181,6 @@ const LoginPage = () => {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
           <p className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{' '}
             <Link to="/signup" className="text-black font-semibold hover:underline">
