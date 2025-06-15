@@ -15,6 +15,7 @@ import { useAuth } from "../contexts/AuthContext";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminProductTable from "../components/admin/AdminProductTable";
 import AdminOrdersTable from "../components/admin/AdminOrdersTable";
+import AdminCustomersTable from "../components/admin/AdminCustomersTable";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -201,6 +202,11 @@ const Admin = () => {
           {section === "orders" && (
             <>
               <AdminOrdersTable />
+            </>
+          )}
+          {section === "customers" && (
+            <>
+              <AdminCustomersTable />
             </>
           )}
         </section>
