@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Heart } from "lucide-react";
 
@@ -72,21 +71,23 @@ const Footer = () => (
         ))}
       </div>
 
-      {/* Newsletter Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
+      {/* Newsletter Section (Stay Updated) */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl px-5 py-7 sm:px-8 sm:py-8 mb-8">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
+          <div className="w-full md:w-auto text-center md:text-left">
             <h4 className="text-2xl font-bold text-white mb-2">Stay Updated</h4>
-            <p className="text-blue-100">Get the latest deals and updates delivered to your inbox</p>
+            <p className="text-blue-100 max-w-xs mx-auto md:mx-0">
+              Get the latest deals and updates delivered to your inbox
+            </p>
           </div>
-          <form className="flex gap-3 flex-shrink-0 w-full md:w-auto">
+          <form className="flex flex-col sm:flex-row gap-2 w-full md:w-auto max-w-md sm:max-w-none mx-auto">
             <input
               type="email"
-              className="flex-1 md:w-80 px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-gray-900"
+              className="flex-1 px-4 py-3 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-white/60 text-gray-900 bg-white shadow-sm transition-all text-base"
               placeholder="Enter your email address"
             />
             <button
-              className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 whitespace-nowrap"
+              className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition-all hover:scale-[1.035] whitespace-nowrap text-base shadow"
               type="submit"
             >
               Subscribe
