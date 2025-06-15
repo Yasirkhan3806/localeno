@@ -10,57 +10,52 @@ import { buttonVariants } from "@/components/ui/button";
 const DEMO_PRODUCTS = [
   {
     id: "1",
-    name: "Modern Wooden Coffee Table",
-    category: "Furniture",
-    price: 180,
+    name: "Table Lamp",
+    category: "Home & Living",
+    price: 45,
     stock: 14,
     status: "Active",
-    image:
-      "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80",
     dateAdded: "2024-06-08"
   },
   {
     id: "2",
-    name: "Handmade Ceramic Vase",
-    category: "Handicrafts",
-    price: 45,
+    name: "Leather Bag",
+    category: "Accessories",
+    price: 75,
     stock: 7,
     status: "In Review",
-    image:
-      "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80",
     dateAdded: "2024-06-10"
   },
   {
     id: "3",
-    name: "Embroidered Cotton Kurti",
-    category: "Clothing & Accessories",
+    name: "Denim Jacket",
+    category: "Clothing",
     price: 38,
     stock: 6,
     status: "Active",
-    image:
-      "https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80",
     dateAdded: "2024-06-11"
   },
   {
     id: "4",
-    name: "Wall Mounted LED Lamp",
-    category: "Home Decor",
+    name: "Bluetooth Speaker",
+    category: "Electronics",
     price: 73,
     stock: 0,
     status: "Rejected",
-    image:
-      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
     dateAdded: "2024-06-09"
   },
   {
     id: "5",
-    name: "Herbal Aloe Vera Face Cream",
-    category: "Health & Beauty",
-    price: 15,
+    name: "Gold Watch",
+    category: "Accessories",
+    price: 150,
     stock: 23,
     status: "Active",
-    image:
-      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
     dateAdded: "2024-06-06"
   }
 ];

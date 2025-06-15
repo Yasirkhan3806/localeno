@@ -17,12 +17,9 @@ const UserProducts = () => {
   const categories = [
     'All Products',
     'Electronics',
-    'Fashion',
-    'Home & Garden',
-    'Sports',
-    'Books',
-    'Toys',
-    'Beauty'
+    'Clothing',
+    'Accessories',
+    'Home & Living',
   ];
 
   const products = [
@@ -54,12 +51,44 @@ const UserProducts = () => {
       price: 199,
       rentPrice: 20,
       image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=300&q=80',
-      category: 'Home & Garden',
+      category: 'Home & Living',
       rating: 4.3,
       reviews: 67,
       inStock: false
     },
-    // Add more products...
+    {
+      id: 4,
+      name: 'Denim Jacket',
+      price: 49,
+      rentPrice: 7,
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80',
+      category: 'Clothing',
+      rating: 4.4,
+      reviews: 40,
+      inStock: true
+    },
+    {
+      id: 5,
+      name: 'Leather Bag',
+      price: 80,
+      rentPrice: 10,
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80',
+      category: 'Accessories',
+      rating: 4.3,
+      reviews: 22,
+      inStock: true
+    },
+    {
+      id: 6,
+      name: 'Table Lamp',
+      price: 29,
+      rentPrice: 5,
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80',
+      category: 'Home & Living',
+      rating: 4.3,
+      reviews: 51,
+      inStock: true
+    },
   ];
 
   const { addToCart } = useCart();
