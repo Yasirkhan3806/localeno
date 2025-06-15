@@ -1,10 +1,19 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, TrendingUp, Star, Clock } from 'lucide-react';
 
 const UserHome = () => {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Responsive check for mobile
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const quickStats = [
     { label: 'Total Orders', value: '12', icon: ShoppingBag, color: 'bg-blue-500' },
@@ -97,35 +106,63 @@ const UserHome = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Product</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentOrders.map((order) => (
-                <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4">{order.product}</td>
-                  <td className="py-4 px-4 text-gray-600">{order.date}</td>
-                  <td className="py-4 px-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                      order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 font-semibold">{order.amount}</td>
+        {/* Responsive orders: table for md+ and cards for mobile */}
+        <div>
+          {/* Table (md+) */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Product</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-4">{order.product}</td>
+                    <td className="py-4 px-4 text-gray-600">{order.date}</td>
+                    <td className="py-4 px-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                        order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 font-semibold">{order.amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Card view (mobile) */}
+          <div className="block md:hidden space-y-4">
+            {recentOrders.map((order) => (
+              <div
+                key={order.id}
+                className="border border-gray-200 rounded-xl shadow-sm p-4 flex flex-col"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-gray-900">{order.product}</span>
+                  <span className="font-semibold">{order.amount}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+                  <span>{order.date}</span>
+                  <span className={`px-2 py-1 rounded-full font-medium text-xs ${
+                    order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                    order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {order.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
