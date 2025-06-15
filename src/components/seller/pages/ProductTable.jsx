@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Eye, Pencil, MoreVertical, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
@@ -30,6 +30,75 @@ function ProductTable({
     );
   }
 
+  // Mobile layout - card list
+  if (mobile) {
+    return (
+      <div className="flex flex-col gap-4">
+        {products.map(product => (
+          <div
+            key={product.id}
+            className="bg-white rounded-xl shadow-sm p-4 flex flex-col gap-3 border"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="flex flex-col flex-1 min-w-0">
+                <div className="font-semibold text-gray-900 truncate" title={product.name}>
+                  {product.name}
+                </div>
+                <span className={`mt-1 px-2 py-1 rounded-full text-xs font-semibold ${categoryColors[product.category] || "bg-gray-100 text-gray-600"}`}>
+                  {product.category}
+                </span>
+                <span className="mt-2 font-bold text-gray-800">${product.price}</span>
+                <div className="text-xs mt-1">
+                  {product.stock > 0
+                    ? <span className="text-green-700">{product.stock} in stock</span>
+                    : <span className="text-red-600">Out of stock</span>}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-between pt-1 border-t mt-3">
+              <span className={`px-2 py-1 text-xs rounded-full font-semibold ${statusColors[product.status] || "bg-gray-100 text-gray-600"}`}>
+                {product.status}
+              </span>
+              <span className="text-gray-500 text-xs">{product.dateAdded}</span>
+              <div className="flex gap-2 ml-auto">
+                <button
+                  onClick={() => onViewDetail(product)}
+                  className="p-2 rounded-full hover:bg-gray-100 focus:ring-2 transition"
+                  aria-label="View details"
+                >
+                  <Eye className="w-5 h-5 text-gray-600" />
+                </button>
+                <button
+                  onClick={() => onEdit(product)}
+                  className="p-2 rounded-full hover:bg-gray-100 focus:ring-2 transition"
+                  aria-label="Edit"
+                >
+                  <Pencil className="w-5 h-5 text-gray-600" />
+                </button>
+                <button
+                  onClick={() => onDelete(product)}
+                  className="p-2 rounded-full hover:bg-gray-100 focus:ring-2 transition"
+                  aria-label="Delete"
+                >
+                  <Trash2 className="w-5 h-5 text-red-500" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Desktop/tablet layout - table
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-x-auto min-w-full border">
       <Table className="min-w-[700px] md:min-w-full">
@@ -112,8 +181,6 @@ function ProductTable({
                   >
                     <Trash2 className="w-4 h-4 text-red-500" />
                   </button>
-                  {/* More menu (mobile/tablet) could go here */}
-                  {/* <button ...><MoreVertical /></button> */}
                 </div>
               </TableCell>
             </TableRow>
@@ -125,3 +192,4 @@ function ProductTable({
 }
 
 export default ProductTable;
+
