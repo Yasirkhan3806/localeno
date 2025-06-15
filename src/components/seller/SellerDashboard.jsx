@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import SellerSidebar from "./SellerSidebar";
@@ -9,6 +8,7 @@ import SellerRentals from "./pages/Rentals";
 import SellerReviews from "./pages/Reviews";
 import SellerChat from "./pages/Chat";
 import SellerSettings from "./pages/Settings";
+import DashboardOverviewDetail from "./pages/DashboardOverviewDetail";
 import { Menu } from "lucide-react";
 
 export default function SellerDashboard() {
@@ -40,6 +40,7 @@ export default function SellerDashboard() {
         <main className="flex-1 p-4 md:p-8 lg:ml-64 w-full max-w-full animate-fade-in">
           <Routes>
             <Route path="/dashboard" element={<SellerDashboardOverview />} />
+            <Route path="/dashboard/detail" element={<DashboardOverviewDetail />} />
             <Route path="/products" element={<SellerProducts />} />
             <Route path="/products/add" element={<SellerAddProduct />} />
             <Route path="/rentals" element={<SellerRentals />} />
