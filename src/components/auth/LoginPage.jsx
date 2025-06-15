@@ -176,7 +176,19 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`
+                w-full py-3 px-4 rounded-xl font-semibold transition
+                bg-gradient-to-tr from-primary to-gray-900
+                text-white shadow-lg
+                hover:scale-105 hover:shadow-2xl hover:from-gray-900 hover:to-primary
+                focus-visible:ring-4 focus-visible:ring-primary/40 focus-visible:ring-offset-2
+                transition-transform duration-200 
+                disabled:opacity-50 disabled:cursor-not-allowed
+                animate-fade-in
+              `}
+              style={{
+                letterSpacing: '0.5px'
+              }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
