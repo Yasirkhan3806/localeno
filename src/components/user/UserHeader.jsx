@@ -15,24 +15,8 @@ const UserHeader = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Per-icon visibility state
-  const [iconStates, setIconStates] = useState({
-    cart: true,
-    wishlist: true,
-    notification: true
-  });
-
-  // Handler: single-click shows icon again
-  const handleIconSingleClick = icon => setIconStates(s => ({
-    ...s,
-    [icon]: true
-  }));
-
-  // Handler: double-click hides icon
-  const handleIconDoubleClick = icon => setIconStates(s => ({
-    ...s,
-    [icon]: false
-  }));
+  // Remove per-icon manual state. Instead, manage which detail panel is open on mobile.
+  const [openMobilePanel, setOpenMobilePanel] = useState(null); // null | 'cart' | 'wishlist' | 'notification'
 
   // Mock notifications
   const [notifications] = useState([{
@@ -58,12 +42,100 @@ const UserHeader = ({
     type: "rental"
   }]);
   const unreadCount = notifications.filter(n => !n.read).length;
+
   const handleSearch = e => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
+
+  // Handlers for icon clicks: On mobile, open/close the associated detail view
+  const handleMobilePanelToggle = (panel) => {
+    setOpenMobilePanel(current => (current === panel ? null : panel));
+  };
+
+  // Utility to determine mobile view (Tailwind md:hidden logic)
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Simple summary content for panels—replace with your actual cart/wishlist panel for real data
+  const renderMobilePanel = () => {
+    if (!openMobilePanel) return null;
+
+    let title = "";
+    let content = null;
+
+    if (openMobilePanel === "cart") {
+      title = "My Cart";
+      content = (
+        <div className="p-6">
+          {/* Replace with actual mini cart component if you have it */}
+          <p className="text-gray-700">You have <span className="font-semibold">2</span> items in your cart.</p>
+          <button
+            className="mt-4 w-full bg-black text-white py-2 rounded-xl font-semibold"
+            onClick={() => navigate('/user/cart')}
+          >
+            View Cart
+          </button>
+        </div>
+      );
+    }
+    if (openMobilePanel === "wishlist") {
+      title = "Wishlist";
+      content = (
+        <div className="p-6">
+          {/* Replace with actual wishlist component if you have it */}
+          <p className="text-gray-700">You have <span className="font-semibold">5</span> items in your wishlist.</p>
+          <button
+            className="mt-4 w-full bg-black text-white py-2 rounded-xl font-semibold"
+            onClick={() => navigate('/user/wishlist')}
+          >
+            View Wishlist
+          </button>
+        </div>
+      );
+    }
+    if (openMobilePanel === "notification") {
+      title = "Notifications";
+      content = (
+        <div className="p-6 space-y-4">
+          {notifications.length === 0 && (
+            <div className="text-center text-gray-500">No notifications</div>
+          )}
+          {notifications.map(notification => (
+            <div key={notification.id} className={`p-2 rounded-lg ${!notification.read ? 'bg-blue-50/90' : ''}`}>
+              <div className="font-semibold text-sm">{notification.title}</div>
+              <div className="text-xs text-gray-600">{notification.message}</div>
+              <span className="text-xs text-gray-400">{notification.time}</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // Panel slides over rest of content, overlays are under the header
+    return (
+      <>
+        {/* Semi-transparent overlay */}
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={() => setOpenMobilePanel(null)}
+          aria-label="Close details"
+        />
+        {/* Sliding detail panel */}
+        <div className="fixed top-16 right-0 z-50 w-[85vw] max-w-xs bg-white h-[calc(100dvh-4rem)] md:hidden shadow-xl border-l border-gray-200 transition-transform">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <span className="font-semibold text-gray-900">{title}</span>
+            <button className="p-2 rounded hover:bg-gray-100" onClick={() => setOpenMobilePanel(null)}>
+              <X size={18} />
+            </button>
+          </div>
+          <div className="overflow-y-auto h-[calc(100dvh-8rem)]">{content}</div>
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
@@ -139,49 +211,93 @@ const UserHeader = ({
 
           {/* Right - Icons and Avatar */}
           <div className="flex items-center gap-0 md:gap-1 min-w-fit" style={{
-          userSelect: "none",
-          cursor: "pointer"
-        }}>
+            userSelect: "none",
+            cursor: "pointer"
+          }}>
             {/* Cart */}
-            {iconStates.cart && location.pathname !== "/user/cart" && <button onClick={() => navigate('/user/cart')} onClickCapture={() => handleIconSingleClick("cart")} onDoubleClick={() => handleIconDoubleClick("cart")} className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative" aria-label="View cart">
-                <ShoppingCart size={20} className="text-gray-900 group-hover:text-black transition" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">2</span>
-              </button>}
+            <button
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  handleMobilePanelToggle('cart');
+                } else {
+                  navigate('/user/cart');
+                }
+              }}
+              className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative"
+              aria-label="View cart"
+            >
+              <ShoppingCart size={20} className="text-gray-900 group-hover:text-black transition" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">2</span>
+            </button>
+
             {/* Wishlist */}
-            {iconStates.wishlist && location.pathname !== "/user/wishlist" && <button onClick={() => navigate('/user/wishlist')} onClickCapture={() => handleIconSingleClick("wishlist")} onDoubleClick={() => handleIconDoubleClick("wishlist")} className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative" aria-label="Wishlist">
-                <Heart size={20} className="text-gray-900 group-hover:text-black transition" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">5</span>
-              </button>}
+            <button
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  handleMobilePanelToggle('wishlist');
+                } else {
+                  navigate('/user/wishlist');
+                }
+              }}
+              className="p-1.5 md:p-2 rounded-full group hover:bg-gray-100 transition relative"
+              aria-label="Wishlist"
+            >
+              <Heart size={20} className="text-gray-900 group-hover:text-black transition" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">5</span>
+            </button>
+
             {/* Notifications */}
-            {iconStates.notification && location.pathname !== "/user/notifications" && <div className="relative">
-                <button onClick={() => setShowNotifications(!showNotifications)} onClickCapture={() => handleIconSingleClick("notification")} onDoubleClick={() => handleIconDoubleClick("notification")} className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 transition relative" aria-label="Notifications">
-                  <Bell size={20} className="text-gray-900" />
-                  {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">{unreadCount}</span>}
-                </button>
-                {showNotifications && <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-fade-in">
-                    <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900">Notifications</h3>
-                      <button onClick={() => setShowNotifications(false)} className="p-2 hover:bg-gray-100 rounded" aria-label="Close notifications">
-                        <X size={16} />
-                      </button>
-                    </div>
-                    <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
-                      {notifications.length === 0 ? <div className="p-4 text-center text-gray-500">No notifications</div> : notifications.map(notification => <div key={notification.id} className={`p-4 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50/40' : ''}`}>
-                            <div className="flex items-start gap-3">
-                              <div className={`w-2 h-2 rounded-full mt-2 ${!notification.read ? 'bg-blue-500' : 'bg-gray-300'}`} />
-                              <div>
-                                <h4 className="font-semibold text-sm">{notification.title}</h4>
-                                <p className="text-gray-700 text-sm">{notification.message}</p>
-                                <span className="text-gray-400 text-xs">{notification.time}</span>
-                              </div>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  if (window.innerWidth < 768) {
+                    handleMobilePanelToggle('notification');
+                  } else {
+                    setShowNotifications((open) => !open);
+                  }
+                }}
+                className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 transition relative"
+                aria-label="Notifications"
+              >
+                <Bell size={20} className="text-gray-900" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">{unreadCount}</span>
+                )}
+              </button>
+              {/* Notification dropdown (desktop only) */}
+              {showNotifications && window.innerWidth >= 768 && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-fade-in">
+                  <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 className="font-semibold text-gray-900">Notifications</h3>
+                    <button onClick={() => setShowNotifications(false)} className="p-2 hover:bg-gray-100 rounded" aria-label="Close notifications">
+                      <X size={16} />
+                    </button>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
+                    {notifications.length === 0 ? (
+                      <div className="p-4 text-center text-gray-500">No notifications</div>
+                    ) : (
+                      notifications.map(notification => (
+                        <div key={notification.id} className={`p-4 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50/40' : ''}`}>
+                          <div className="flex items-start gap-3">
+                            <div className={`w-2 h-2 rounded-full mt-2 ${!notification.read ? 'bg-blue-500' : 'bg-gray-300'}`} />
+                            <div>
+                              <h4 className="font-semibold text-sm">{notification.title}</h4>
+                              <p className="text-gray-700 text-sm">{notification.message}</p>
+                              <span className="text-gray-400 text-xs">{notification.time}</span>
                             </div>
-                          </div>)}
-                    </div>
-                    <div className="p-3 border-t text-center">
-                      <button className="text-blue-700 hover:text-blue-900 font-medium text-sm">View All Notifications</button>
-                    </div>
-                  </div>}
-              </div>}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  <div className="p-3 border-t text-center">
+                    <button className="text-blue-700 hover:text-blue-900 font-medium text-sm">View All Notifications</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* User Avatar */}
             <button onClick={() => navigate('/user/profile')} className="w-8 h-8 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-base md:text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-1 md:ml-2" aria-label="User Profile">
               {user?.firstName?.[0]}{user?.lastName?.[0]}
@@ -198,8 +314,14 @@ const UserHeader = ({
           </form>
         </div>
       </header>
-      {/* Notification overlay */}
-      {showNotifications && <div className="fixed inset-0 z-30" onClick={() => setShowNotifications(false)} />}
+
+      {/* Mobile detail panel (cart, wishlist, notification) */}
+      {isMobile && renderMobilePanel()}
+
+      {/* Notification overlay for desktop */}
+      {showNotifications && window.innerWidth >= 768 && (
+        <div className="fixed inset-0 z-30" onClick={() => setShowNotifications(false)} />
+      )}
     </>
   );
 };
