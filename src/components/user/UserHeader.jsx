@@ -65,9 +65,9 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
-        <div className="h-14 md:h-12 px-2 md:px-6 flex items-center justify-between gap-4 transition-all">
+        <div className="h-16 md:h-14 px-2 md:px-6 flex items-center justify-between gap-2 md:gap-4 transition-all">
           {/* Left: Hamburger and Logo */}
-          <div className="flex items-center gap-2 min-w-fit">
+          <div className="flex items-center gap-1 min-w-fit">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
@@ -75,74 +75,64 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             >
               <Menu size={22} />
             </button>
-            {/* Custom Logo - now smaller */}
+            {/* Custom Logo, extra small & responsive */}
             <button
               onClick={() => navigate('/')}
-              className="flex flex-col px-0.5 md:px-1 py-0.5 rounded-xl focus:outline-none hover:scale-105 transition-transform items-start bg-transparent border-none"
-              style={{
-                height: '32px',
-                minHeight: 'unset',
-              }}
+              className="flex flex-col items-start bg-transparent border-none p-0 m-0 focus:outline-none"
+              style={{ minWidth: 0, minHeight: 0, lineHeight: 1 }}
               aria-label="Go to home"
             >
               <span
                 className="
-                  flex items-center
-                  bg-white border-2 border-black rounded-lg
-                  font-extrabold text-[1rem] md:text-lg
-                  text-gray-800 select-none shadow-md
-                  px-2.5 md:px-4 py-0.5 tracking-wider
-                  font-inter
+                  flex flex-col items-center justify-center
+                  bg-white border-2 border-black rounded-lg shadow-md
+                  px-2 py-1 md:px-2.5 md:py-1.5
+                  transition-transform hover:scale-105
+                  font-inter min-w-0 min-h-0
                 "
                 style={{
-                  letterSpacing: '0.03em',
-                  lineHeight: 1.05,
-                  minHeight: '28px',
-                  minWidth: '84px',
-                  maxWidth: '170px',
+                  maxWidth: '150px',
+                  minWidth: '80px',
+                  padding: '4px 8px',
+                  lineHeight: 1.1,
                 }}
                 draggable="false"
               >
-                <span style={{ letterSpacing: '0.08em' }}>LOC</span>
-                <span className="inline-flex mx-0.5 items-center justify-center">
-                  <ShoppingCart
-                    size={20}
-                    className="mx-0 text-green-500"
-                    strokeWidth={2.4}
-                  />
+                {/* Main LOC(LucideCart)LENA text */}
+                <span className="flex items-center text-[13px] md:text-[18px] font-extrabold text-gray-900 tracking-tight" style={{ letterSpacing: '0.06em' }}>
+                  <span style={{ letterSpacing: '0.12em', marginRight: '2px' }}>LOC</span>
+                  <span className="inline-flex items-center justify-center mx-0.5">
+                    <ShoppingCart size={16} className="text-green-500" strokeWidth={2.2} />
+                  </span>
+                  <span style={{ letterSpacing: '0.12em', marginLeft: '2px' }}>LENA</span>
                 </span>
-                <span style={{ letterSpacing: '0.08em' }}>LENA</span>
-              </span>
-              <span
-                className="
-                  text-green-500 text-[10px] md:text-xs
-                  font-semibold mt-0.5 ml-1 md:ml-2 whitespace-nowrap
-                  tracking-wide
-                "
-                style={{
-                  textShadow: '0 1px 1px #fff',
-                  letterSpacing: '0.04em',
-                }}
-                draggable="false"
-              >
-                BUY LOCAL, SUPPORT LOCAL
+                {/* Slogan below, inside logo */}
+                <span
+                  className="text-[8px] md:text-[11px] text-green-500 font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap"
+                  style={{
+                    textShadow: '0 0.5px 0.5px #fff',
+                    letterSpacing: '0.06em',
+                  }}
+                >
+                  BUY LOCAL, SUPPORT LOCAL
+                </span>
               </span>
             </button>
           </div>
 
           {/* Center: Search Bar */}
-          <div className="hidden md:flex flex-1 justify-center">
+          <div className="hidden md:flex flex-1 justify-center min-w-0">
             <form onSubmit={handleSearch} className="flex w-full max-w-sm items-center">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products…"
-                className="w-44 md:w-72 pl-3 pr-10 py-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-black focus:border-black text-sm"
+                className="w-32 md:w-60 lg:w-72 pl-3 pr-10 py-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-black focus:border-black text-sm"
               />
               <button
                 type="submit"
-                className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-900 transition"
+                className="bg-black text-white px-3 md:px-4 py-2 rounded-r-lg hover:bg-gray-900 transition"
                 aria-label="Search"
               >
                 <Search size={18} />
@@ -239,7 +229,7 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             {/* User Avatar */}
             <button
               onClick={() => navigate('/user/profile')}
-              className="w-9 h-9 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-base md:text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-2"
+              className="w-8 h-8 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-extrabold text-base md:text-lg border-2 border-gray-200 shadow hover:scale-105 transition ml-1 md:ml-2"
               aria-label="User Profile"
             >
               {user?.firstName?.[0]}{user?.lastName?.[0]}
@@ -254,14 +244,14 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search products…"
-              className="flex-1 px-3 py-2 border border-gray-200 rounded-l-lg focus:ring focus:ring-black focus:border-black"
+              className="flex-1 px-2 py-1.5 border border-gray-200 rounded-l-lg focus:ring focus:ring-black focus:border-black text-sm"
             />
             <button
               type="submit"
-              className="px-3 py-2 bg-black text-white rounded-r-lg hover:bg-gray-900 transition"
+              className="px-3 py-1.5 bg-black text-white rounded-r-lg hover:bg-gray-900 transition"
               aria-label="Search"
             >
-              <Search size={18} />
+              <Search size={16} />
             </button>
           </form>
         </div>
