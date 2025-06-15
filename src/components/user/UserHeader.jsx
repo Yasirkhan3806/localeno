@@ -246,16 +246,10 @@ const UserHeader = ({
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow">5</span>
             </button>
 
-            {/* Notifications */}
-            <div className="relative">
+            {/* Notifications -- DESKTOP ONLY */}
+            <div className="relative hidden md:inline-flex">
               <button
-                onClick={() => {
-                  if (window.innerWidth < 768) {
-                    handleMobilePanelToggle('notification');
-                  } else {
-                    setShowNotifications((open) => !open);
-                  }
-                }}
+                onClick={() => setShowNotifications((open) => !open)}
                 className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 transition relative"
                 aria-label="Notifications"
               >
