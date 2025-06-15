@@ -16,6 +16,7 @@ import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminProductTable from "../components/admin/AdminProductTable";
 import AdminOrdersTable from "../components/admin/AdminOrdersTable";
 import AdminCustomersTable from "../components/admin/AdminCustomersTable";
+import AdminSellersTable from "../components/admin/AdminSellersTable";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -207,6 +208,11 @@ const Admin = () => {
           {section === "customers" && (
             <>
               <AdminCustomersTable />
+            </>
+          )}
+          {section === "sellers" && (
+            <>
+              <AdminSellersTable />
             </>
           )}
         </section>
