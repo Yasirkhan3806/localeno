@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import UserSidebar from './UserSidebar';
@@ -32,8 +31,6 @@ const UserDashboard = () => {
           <main className="pt-20 p-4 lg:p-8">
             <Routes>
               <Route path="/home" element={<UserHome />} />
-              <Route path="/products" element={<UserProducts />} />
-              <Route path="/products/category/:categoryName" element={<UserProducts />} />
               <Route path="/cart" element={<UserCart />} />
               <Route path="/checkout" element={<UserCheckout />} />
               <Route path="/wishlist" element={<UserWishlist />} />

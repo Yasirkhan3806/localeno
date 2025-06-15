@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -29,7 +28,6 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/user/home' },
-    { icon: ShoppingBag, label: 'Products', path: '/user/products' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
     { icon: Package, label: 'My Orders', path: '/user/orders' },
