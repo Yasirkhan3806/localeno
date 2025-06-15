@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +15,8 @@ import SignupPage from "./components/auth/SignupPage";
 import UserDashboard from "./components/user/UserDashboard";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SellerDashboard from "./components/seller/SellerDashboard";
+import AdminLogin from "./components/admin/AdminLogin.jsx";
+import AdminPanel from "./components/admin/AdminPanel.jsx";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +34,8 @@ const App = () => (
             <Route path="/about" element={<AboutUs />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminPanel />} />
 
             <Route path="/user/*" element={
               <ProtectedRoute>
