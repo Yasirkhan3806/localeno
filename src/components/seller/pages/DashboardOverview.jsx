@@ -1,10 +1,10 @@
 
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { User, Package, Star, Box } from "lucide-react";
+import React, { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
+import { Box, RotateCw, Star, Menu, User } from "lucide-react";
+import SellerSidebar from "../SellerSidebar";
 
-// Helper: Timely greeting
+// Helper for greeting
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) return "Good morning";
@@ -13,138 +13,199 @@ function getGreeting() {
 }
 
 export default function SellerDashboardOverview() {
-  const { currentUser } = useAuth();
-  const sellerName = currentUser && currentUser.firstName ? currentUser.firstName : "Seller";
-  const navigate = useNavigate();
+  const { currentUser } = useAuth() || {};
+  const sellerName =
+    (currentUser && currentUser.firstName) ? currentUser.firstName : "Seller";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Example data (replace with real fetch later)
-  const stats = [
+  // Key stats (replace with real data)
+  const STATS = [
     {
-      title: "Total Products",
-      value: 18,
+      label: "Total Products",
+      value: 45,
       icon: Box,
-      bg: "from-gray-200/80 via-gray-50/80 to-gray-100/80",
-      iconBg: "bg-gradient-to-br from-gray-300/60 to-white/80 text-black",
-      shadow: "shadow-[0_2px_32px_0_rgba(80,80,80,0.10)]",
-      onClick: () => navigate("/seller/products"),
+      iconBg: "bg-[#f8f8f8] text-black",
+      link: "/seller/products",
+      border: "hover:border-black/20",
     },
     {
-      title: "Active Rentals",
-      value: 7,
-      icon: Package,
-      bg: "from-black/5 via-gray-100/95 to-gray-200/100",
-      iconBg: "bg-gradient-to-br from-gray-800/10 to-gray-300/20 text-black",
-      shadow: "shadow-[0_2px_32px_0_rgba(60,90,120,0.07)]",
-      onClick: () => navigate("/seller/rentals"),
+      label: "Active Rentals",
+      value: 8,
+      icon: RotateCw,
+      iconBg: "bg-[#f8f8f8] text-black",
+      link: "/seller/rentals",
+      border: "hover:border-black/20",
     },
     {
-      title: "Pending Reviews",
-      value: 3,
+      label: "Pending Reviews",
+      value: 5,
       icon: Star,
-      bg: "from-yellow-100/60 via-white/80 to-yellow-50/80",
-      iconBg: "bg-gradient-to-br from-yellow-200/85 to-yellow-100/90 text-yellow-600",
-      shadow: "shadow-[0_2px_32px_0_rgba(200,150,40,0.09)]",
-      onClick: () => navigate("/seller/reviews"),
-      highlight: true,
+      iconBg: "bg-[#f8f8f8] text-yellow-500",
+      link: "/seller/reviews",
+      border: "hover:border-yellow-400",
     },
   ];
 
+  // For animation stagger
+  const getAnimDelay = idx => ({
+    animationDelay: `${180 + idx * 160}ms`,
+    animationFillMode: "backwards",
+  });
+
   return (
-    <div className="w-full max-w-5xl mx-auto px-1 md:px-6 py-2">
-      {/* Header Section */}
-      <header className="mb-8 mt-2 animate-fade-in">
-        <h1 className="font-extrabold text-3xl md:text-4xl tracking-tight text-gray-900 mb-2">
-          Dashboard Overview
-        </h1>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-3">
-          <div className="flex items-center">
-            <User size={22} className="text-black/80 mr-1.5" aria-hidden="true" />
-            <span className="font-semibold text-lg text-gray-900">
-              Welcome back, <span className="text-black">{sellerName}</span>
+    <div className="relative min-h-screen bg-[#f8f8f8] font-inter">
+      {/* Sticky header */}
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 h-14 flex items-center px-3 sm:px-6">
+        {/* Hamburger: Mobile/Tablet */}
+        <button
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open sidebar"
+          className="lg:hidden flex items-center justify-center h-10 w-10 rounded-2xl hover:bg-[#f8f8f8] hover:ring-2 hover:ring-black/10 transition"
+        >
+          <Menu size={24} />
+        </button>
+        {/* Mobile Center label */}
+        <span className="text-lg font-bold mx-auto block lg:hidden">
+          Dashboard
+        </span>
+        {/* Right: avatar */}
+        <div className="ml-auto flex items-center gap-2">
+          <div className="hidden sm:flex flex-col text-xs text-neutral-500 mr-2 leading-tight text-right">
+            <span className="font-semibold text-black/80">
+              {sellerName}
+            </span>
+            <span className="text-neutral-400">
+              Seller
             </span>
           </div>
+          <span className="bg-[#f8f8f8] text-black rounded-full w-9 h-9 flex items-center justify-center border border-gray-200 font-bold text-base select-none shadow-sm">
+            {sellerName[0] || "S"}
+          </span>
         </div>
-        <p className="mt-2 text-gray-500 text-base">
-          {getGreeting()}, here’s what’s happening with your store today.
-        </p>
       </header>
 
-      {/* Stats Grid */}
-      <section
-        className="
-          grid grid-cols-1
-          gap-6
-          sm:grid-cols-2 
-          lg:grid-cols-3
-        "
-      >
-        {stats.map((card, i) => (
-          <button
-            type="button"
-            aria-label={card.title}
-            key={card.title}
-            tabIndex={0}
-            onClick={card.onClick}
-            className={`
-              group relative flex flex-col items-start justify-between
-              rounded-2xl border border-gray-200
-              bg-gradient-to-tr ${card.bg}
-              ${card.shadow}
-              transition-all duration-200
-              animate-fade-in
-              hover:scale-[1.03] hover:shadow-lg
-              active:scale-100
-              focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-              px-7 py-7
-              cursor-pointer
-              min-h-[180px]
-              ring-1 ring-transparent
-              ${card.highlight ? "ring-yellow-200" : ""}
-            `}
-            style={{
-              animationDelay: `${i * 120}ms`,
-              animationFillMode: "backwards",
-            }}
-          >
-            {/* Floating icon background */}
-            <div
-              className={`
-                absolute top-5 right-6 z-0 w-14 h-14 rounded-full
-                filter blur-[3px] opacity-50
-                ${card.iconBg}
-                pointer-events-none
-              `}
-            />
-            {/* Icon foreground */}
-            <div
-              className={`
-                flex items-center justify-center absolute top-6 left-7 z-10
-                w-12 h-12 rounded-xl shadow-sm
-                ${card.iconBg}
-                group-hover:shadow-md
-                transition-shadow
-                text-2xl
-              `}
-            >
-              <card.icon size={28} aria-hidden="true" />
-            </div>
-            <div className="z-20 mt-20">
-              <span className="block text-gray-800 font-medium text-base mb-1">{card.title}</span>
-              <span className="text-3xl font-extrabold text-black tracking-tight">{card.value}</span>
-            </div>
-            <span
-              className={`
-                mt-3 absolute bottom-5 right-8 z-30
-                text-xs font-semibold uppercase tracking-wider
-                group-hover:underline group-hover:text-black transition
-                ${card.highlight ? "text-yellow-700" : "text-gray-400"}
-              `}
-            >
-              View
+      {/* Sidebar (modal for mobile/tablet) */}
+      <aside>
+        {/* Overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity animate-fade-in"
+            style={{ animation: "fade-in 0.18s ease" }}
+            aria-label="Sidebar overlay"
+            tabIndex={-1}
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        {/* Slide-in nav */}
+        <div
+          className={`
+            fixed top-0 left-0 z-50 h-full w-64 bg-white border-r
+            shadow-2xl transition-transform duration-300 ease-in-out
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+            lg:static lg:translate-x-0 lg:h-screen
+          `}
+        >
+          <SellerSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+        </div>
+      </aside>
+
+      {/* Content layout */}
+      <main className="w-full max-w-5xl mx-auto px-2 sm:px-5 pt-6 pb-6">
+        {/* Welcome animated section */}
+        <section
+          className="mb-8 mt-2 px-1 animate-fade-in flex flex-col gap-0"
+          style={{
+            animation: "fade-in 0.6s cubic-bezier(.24,1.4,.47,.98)",
+            animationDelay: "80ms",
+            animationFillMode: "backwards",
+          }}
+          aria-label="Welcome section"
+        >
+          <h1 className="font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight text-black mb-1">
+            Dashboard Overview
+          </h1>
+          <div className="flex items-center gap-2">
+            <User size={20} className="text-black/80" aria-hidden="true" />
+            <span className="text-lg sm:text-xl font-semibold text-black" data-testid="welcome-user">
+              Welcome back, {sellerName}!
             </span>
-          </button>
-        ))}
-      </section>
+          </div>
+          <p className="mt-1 text-gray-500 text-base mb-1">
+            {getGreeting()}, here’s what’s happening with your store today.
+          </p>
+        </section>
+
+        {/* Stats cards: Responsive grid/flex/stack */}
+        <section className="
+          grid gap-4
+          grid-cols-1
+          sm:grid-cols-2
+          lg:grid-cols-3
+          w-full
+          animate-none
+        ">
+          {STATS.map((stat, i) => (
+            <a
+              key={stat.label}
+              href={stat.link}
+              aria-label={stat.label}
+              className={`
+                group relative flex flex-col justify-between p-4 min-h-[140px]
+                bg-white border border-gray-200
+                rounded-2xl shadow-md transition
+                hover:shadow-lg
+                focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2
+                cursor-pointer
+                hover:scale-[1.03] active:scale-100
+                ${stat.border}
+                animate-card-slide-up
+              `}
+              style={getAnimDelay(i)}
+              tabIndex={0}
+            >
+              {/* Icon circle */}
+              <div className={`absolute top-4 right-5 z-0`}>
+                <span className={`w-12 h-12 flex items-center justify-center rounded-full ${stat.iconBg} shadow-sm`}>
+                  <stat.icon size={26} strokeWidth={2.2} aria-hidden="true" />
+                </span>
+              </div>
+              {/* Title & stat */}
+              <div className="z-30 mt-8">
+                <span className="block text-gray-700 font-medium text-base mb-1">{stat.label}</span>
+                <span className="text-3xl md:text-4xl font-extrabold text-black tracking-tight">
+                  {stat.value}
+                </span>
+              </div>
+              {/* View link */}
+              <span className="
+                mt-3 absolute bottom-4 right-7 z-30 text-xs font-semibold uppercase
+                tracking-wider text-gray-400 group-hover:text-black group-hover:underline transition
+              ">
+                View
+              </span>
+            </a>
+          ))}
+        </section>
+      </main>
+
+      {/* Animations for cards */}
+      <style>
+        {`
+        @media (prefers-reduced-motion: no-preference) {
+          .animate-card-slide-up {
+            opacity: 0;
+            transform: translateY(32px);
+            animation: dash-slide-up 0.72s cubic-bezier(.22,1.05,.54,.97) forwards;
+          }
+          @keyframes dash-slide-up {
+            to {
+              opacity: 1;
+              transform: none;
+            }
+          }
+        }
+        `}
+      </style>
     </div>
   );
 }
