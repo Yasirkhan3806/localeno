@@ -1,8 +1,10 @@
 
 import React, { useState } from "react";
 import { Camera, Upload, X, Check, AlertCircle } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const IdentityVerification = ({ isOpen, onClose, onVerificationComplete }) => {
+  const { verifyIdentity } = useAuth();
   const [step, setStep] = useState(1);
   const [verificationData, setVerificationData] = useState({
     cnicFront: null,
@@ -33,6 +35,10 @@ const IdentityVerification = ({ isOpen, onClose, onVerificationComplete }) => {
     setIsVerifying(true);
     // Simulate verification process
     await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Update auth context
+    verifyIdentity();
+    
     setIsVerifying(false);
     onVerificationComplete(true);
     onClose();
