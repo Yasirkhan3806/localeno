@@ -45,10 +45,27 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-30 bg-background/95 backdrop-blur font-inter shadow-none border-b border-neutral-200">
         <nav className="container mx-auto flex items-center justify-between h-20 relative">
-          {/* Logo */}
+          {/* Localena Logo */}
           <div className="flex items-center gap-2 text-2xl font-bold">
-            <button onClick={() => navigate('/')} className="text-foreground tracking-tight">
-              <span className="rounded bg-neutral-900 text-white px-2 py-1 font-bold text-xl">Shoply</span>
+            <button
+              onClick={() => navigate('/')}
+              className="group flex items-center space-x-2 focus:outline-none"
+              aria-label="Go to home"
+            >
+              <span
+                className="bg-gradient-to-tr from-primary to-secondary text-transparent bg-clip-text font-extrabold text-3xl tracking-tight drop-shadow-lg group-hover:scale-105 transition-transform duration-200"
+                style={{
+                  fontFamily: `'Playfair Display', serif`,
+                  letterSpacing: "0.05em"
+                }}
+              >
+                localena
+              </span>
+              <span
+                className="rounded-xl ml-2 px-2.5 py-1 text-sm font-semibold tracking-wide bg-primary text-white shadow group-hover:bg-secondary transition-colors"
+              >
+                style
+              </span>
             </button>
           </div>
           
