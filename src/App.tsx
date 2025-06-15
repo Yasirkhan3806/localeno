@@ -14,7 +14,6 @@ import SignupPage from "./components/auth/SignupPage";
 import UserDashboard from "./components/user/UserDashboard";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SellerDashboard from "./components/seller/SellerDashboard";
-import AdminDetail from "./components/admin/AdminDetail.jsx";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +31,6 @@ const App = () => (
             <Route path="/about" element={<AboutUs />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/admin" element={<AdminDetail />} />
             <Route path="/user/*" element={
               <ProtectedRoute>
                 <UserDashboard />
