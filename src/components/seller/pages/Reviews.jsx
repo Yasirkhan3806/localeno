@@ -16,14 +16,7 @@ const reviewStats = [
   {
     label: "Average Rating",
     value: 4.3,
-    icon: (
-      <span className="flex items-center gap-1">
-        {[...Array(4)].map((_, idx) => (
-          <Star key={idx} size={20} className="text-yellow-400 fill-yellow-400" />
-        ))}
-        <Star size={20} className="text-yellow-400" />
-      </span>
-    ),
+    // icon removed! We'll handle dynamic stars in the card rendering below.
   },
 ];
 
@@ -107,6 +100,32 @@ const reviews = [
   }
 ];
 
+function renderStars(rating) {
+  const fullStars = Math.floor(rating);
+  const fraction = rating - fullStars;
+  let halfStar = false;
+  if (fraction >= 0.25 && fraction < 0.75) halfStar = true;
+  const stars = [];
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<Star key={"full-" + i} size={20} className="text-yellow-400 fill-yellow-400" />);
+  }
+  if (halfStar) {
+    // Render a half star by overlaying a filled star and an empty star
+    stars.push(
+      <span key="half" style={{ position: "relative", display: "inline-block", width: 20, height: 20 }}>
+        <Star size={20} className="text-yellow-400 fill-yellow-400" style={{ position: "absolute", left: 0, clipPath: "inset(0 50% 0 0)" }} />
+        <Star size={20} className="text-gray-200" style={{ position: "absolute", left: 0, clipPath: "inset(0 0 0 50%)" }} />
+      </span>
+    );
+  }
+  // Fill up to 5 stars
+  const total = halfStar ? fullStars + 1 : fullStars;
+  for (let i = total; i < 5; i++) {
+    stars.push(<Star key={"empty-" + i} size={20} className="text-gray-200" />);
+  }
+  return <span className="flex items-center gap-1">{stars}</span>;
+}
+
 export default function SellerReviews() {
   return (
     <div className="w-full max-w-5xl mx-auto mt-3">
@@ -125,12 +144,7 @@ export default function SellerReviews() {
               <div className="text-2xl font-bold text-gray-900 flex items-center gap-1 mt-1">
                 {stat.value}
                 {stat.label === "Average Rating" && (
-                  <span className="ml-1 flex items-center">
-                    {[...Array(Math.floor(stat.value))].map((_, j) => (
-                      <Star key={j} size={16} className="text-yellow-400 fill-yellow-400" />
-                    ))}
-                    {stat.value % 1 !== 0 && <Star size={16} className="text-yellow-400" />}
-                  </span>
+                  <span className="ml-2">{renderStars(stat.value)}</span>
                 )}
               </div>
             </div>
