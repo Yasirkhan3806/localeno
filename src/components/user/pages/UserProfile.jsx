@@ -1,10 +1,29 @@
-
-import React, { useState } from 'react';
+import React from "react";
 import { useAuth } from '../../../contexts/AuthContext';
 import { Camera, Save, Edit, Upload, User, Shield } from 'lucide-react';
+import { useCart } from "../../../hooks/useCart";
+import { useWishlist } from "../../../hooks/useWishlist";
+import { ShoppingCart, Heart } from "lucide-react";
+
+const mockProducts = [
+  {
+    id: 11,
+    name: "Pro Camera",
+    price: 599,
+    image: "https://images.unsplash.com/photo-1482062364825-616fd23b8fc1?auto=format&fit=crop&w=200&q=80"
+  },
+  {
+    id: 12,
+    name: "Bluetooth Speaker",
+    price: 89,
+    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=200&q=80"
+  }
+];
 
 const UserProfile = () => {
   const { user } = useAuth();
+  const { addToCart, cart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('personal');
   const [formData, setFormData] = useState({
@@ -54,7 +73,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
         <button
@@ -312,6 +331,43 @@ const UserProfile = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Example Section: "My Products" with Add to Cart/Wishlist */}
+      <div>
+        <h2 className="mb-3 text-lg font-bold text-gray-900">Frequently Purchased Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {mockProducts.map((prod) => (
+            <div
+              key={prod.id}
+              className="bg-white border rounded-2xl shadow-sm p-4 flex flex-col items-center text-center group transition hover:shadow-lg"
+            >
+              <img src={prod.image} alt={prod.name} className="w-20 h-20 rounded-lg object-cover mb-2" />
+              <div className="font-semibold text-gray-900">{prod.name}</div>
+              <div className="text-xl font-bold text-black mb-1">${prod.price}</div>
+              <div className="flex gap-2">
+                <button
+                  className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded-lg hover:bg-gray-900 transition"
+                  onClick={() => addToCart(prod)}
+                >
+                  <ShoppingCart size={16} />
+                  <span>Add to Cart</span>
+                </button>
+                <button
+                  className={`flex items-center gap-1 px-3 py-1 rounded-lg transition ${
+                    isWishlisted(prod.id)
+                      ? "bg-red-500 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-red-100"
+                  }`}
+                  onClick={() => toggleWishlist(prod)}
+                >
+                  <Heart size={16} fill={isWishlisted(prod.id) ? "#fff" : "none"} />
+                  <span>{isWishlisted(prod.id) ? "Wishlisted" : "Wishlist"}</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -99,10 +99,23 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
           <div className="p-4 border-t border-gray-200">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl font-semibold transition"
+              className="
+                flex items-center gap-3 w-full px-4 py-3 
+                bg-gradient-to-r from-black via-gray-800 to-gray-900
+                text-white hover:from-gray-800 hover:to-black
+                rounded-xl font-semibold transition
+                shadow-lg shadow-black/5
+                border-2 border-transparent
+                hover:border-red-500
+                group
+                relative
+                overflow-hidden
+                focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+              "
             >
-              <LogOut size={20} />
-              <span>Logout</span>
+              <LogOut size={22} className="text-red-100 group-hover:text-red-500 transition" />
+              <span className="font-bold">Logout</span>
+              <span className="absolute right-4 top-3 text-xs text-gray-400 group-hover:text-red-400 transition">Sign out</span>
             </button>
           </div>
         </div>
