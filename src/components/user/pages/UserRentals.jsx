@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { Calendar, Clock, AlertTriangle, CheckCircle, Eye, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserRentals = () => {
   const navigate = useNavigate();
@@ -127,6 +127,7 @@ const UserRentals = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Rentals</h1>
         <div className="text-sm text-gray-500">

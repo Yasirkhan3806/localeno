@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { Star, Edit, Trash2, Camera, Send } from 'lucide-react';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserReviews = () => {
   const [reviews, setReviews] = useState([
@@ -127,6 +127,7 @@ const UserReviews = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Reviews</h1>
         <button

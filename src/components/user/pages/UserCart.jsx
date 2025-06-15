@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserCart = () => {
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ const UserCart = () => {
   if (cartItems.length === 0) {
     return (
       <div className="text-center py-12">
+        <BackToHomeButton />
         <ShoppingBag size={64} className="mx-auto text-gray-400 mb-4" />
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
         <p className="text-gray-600 mb-6">Start shopping to add items to your cart</p>
@@ -61,6 +62,7 @@ const UserCart = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
         <span className="text-gray-600">{cartItems.length} items</span>

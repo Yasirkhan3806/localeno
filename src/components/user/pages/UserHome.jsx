@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, TrendingUp, Star, Clock } from 'lucide-react';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ const UserHome = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-black to-gray-800 text-white rounded-2xl p-8">
         <h1 className="text-3xl font-bold mb-2">Welcome back!</h1>

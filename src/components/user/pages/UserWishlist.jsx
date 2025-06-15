@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { Heart, ShoppingCart, Eye, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserWishlist = () => {
   const navigate = useNavigate();
@@ -54,6 +54,7 @@ const UserWishlist = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Wishlist</h1>
         <div className="text-sm text-gray-500">

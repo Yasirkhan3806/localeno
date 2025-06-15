@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackToHomeButton from '../BackToHomeButton';
 
 const mockAddresses = [
   { id: 1, label: "Home", address: "123 Main St, Springfield, USA" },
@@ -27,6 +28,7 @@ const UserCheckout = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
       <div className="flex flex-col md:flex-row gap-8">
         {/* Left: Address & Payment */}

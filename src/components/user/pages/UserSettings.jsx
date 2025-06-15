@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { Bell, Globe, Shield, CreditCard, Trash2, Download, Moon, Sun } from 'lucide-react';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserSettings = () => {
   const [settings, setSettings] = useState({
@@ -58,6 +58,7 @@ const UserSettings = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
 
       <div className="bg-white rounded-2xl shadow-md border border-gray-200">

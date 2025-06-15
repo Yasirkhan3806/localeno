@@ -4,6 +4,7 @@ import { Camera, Save, Edit, Upload, User, Shield } from 'lucide-react';
 import { useCart } from "../../../hooks/useCart";
 import { useWishlist } from "../../../hooks/useWishlist";
 import { ShoppingCart, Heart } from "lucide-react";
+import BackToHomeButton from '../BackToHomeButton';
 
 const mockProducts = [
   {
@@ -73,7 +74,8 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
         <button

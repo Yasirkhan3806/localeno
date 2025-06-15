@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Search, Filter, Grid, List, Heart, ShoppingCart, Calendar } from 'lucide-react';
 import { useCart } from '../../../hooks/useCart';
 import { useWishlist } from '../../../hooks/useWishlist';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserProducts = () => {
   const { categoryName } = useParams();
@@ -152,7 +153,8 @@ const UserProducts = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      <BackToHomeButton />
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>

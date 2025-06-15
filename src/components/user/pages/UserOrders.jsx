@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { Package, Clock, CheckCircle, XCircle, Eye, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BackToHomeButton from '../BackToHomeButton';
 
 const UserOrders = () => {
   const navigate = useNavigate();
@@ -94,6 +94,7 @@ const UserOrders = () => {
 
   return (
     <div className="space-y-8">
+      <BackToHomeButton />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>
         <div className="text-sm text-gray-500">
