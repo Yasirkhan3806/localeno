@@ -1,13 +1,12 @@
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// Responsive button sizes: mobile = larger by default, md: reverts to old
+// Responsive button sizes: mobile = smaller by default, md: same or larger if desired
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base md:text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 md:[&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm md:text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 md:[&_svg]:size-5 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -22,14 +21,13 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        // mobile: h-14, px-6, py-3 (default); md: h-10, px-4, py-2
-        default: "h-14 px-6 py-3 md:h-10 md:px-4 md:py-2",
-        // mobile: h-12, px-5; md: h-9, px-3
-        sm: "h-12 rounded-md px-5 md:h-9 md:px-3",
-        // mobile: h-16, px-10; md: h-11, px-8
-        lg: "h-16 rounded-md px-10 md:h-11 md:px-8",
-        // mobile: h-14, w-14; md: h-10, w-10
-        icon: "h-14 w-14 md:h-10 md:w-10",
+        // mobile: h-9, px-3, py-2 (smaller); md: h-10, px-4, py-2
+        default: "h-9 px-3 py-2 md:h-10 md:px-4 md:py-2",
+        // mobile: h-8, px-2; md: h-9, px-3 (even smaller)
+        sm: "h-8 rounded-md px-2 md:h-9 md:px-3",
+        // large (optional)
+        lg: "h-11 rounded-md px-8",
+        icon: "h-9 w-9 md:h-10 md:w-10",
       },
     },
     defaultVariants: {
@@ -60,4 +58,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-
