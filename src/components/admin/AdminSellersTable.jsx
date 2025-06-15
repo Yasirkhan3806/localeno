@@ -116,7 +116,7 @@ const statusBadge = (status) => {
   }
 };
 
-const AdminSellersTable = () => {
+const AdminSellersTable = ({ onViewSeller }) => {
   const [search, setSearch] = useState("");
 
   const filteredSellers = DEMO_SELLERS.filter(
@@ -125,6 +125,35 @@ const AdminSellersTable = () => {
       s.owner.toLowerCase().includes(search.toLowerCase()) ||
       s.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleAddSeller = () => {
+    window.alert('Add Seller functionality will be implemented soon!\n\nThis will open a form to register a new seller with fields for:\n- Store Name\n- Owner Name\n- Email\n- Phone\n- Business License\n- Product Categories');
+  };
+
+  const handleViewSeller = (seller) => {
+    window.alert(`View Seller Details:\n\nStore: ${seller.name}\nOwner: ${seller.owner}\nEmail: ${seller.email}\nPhone: ${seller.phone}\nProducts: ${seller.products}\nTotal Sales: $${seller.sales.toLocaleString()}\nRating: ${seller.rating}⭐\nStatus: ${seller.status}\n\nFull seller profile functionality will be implemented soon!`);
+  };
+
+  const handleEditSeller = (seller) => {
+    window.alert(`Edit Seller: ${seller.name}\n\nThis will open an edit form with current seller information:\n- Store details\n- Contact information\n- Business settings\n- Commission rates\n- Status management\n\nEdit functionality will be implemented soon!`);
+  };
+
+  const handleMoreActions = (seller) => {
+    const actions = [
+      'View Products',
+      'View Sales Reports',
+      'Send Message',
+      'Change Status',
+      'View Reviews',
+      'Export Data'
+    ];
+    
+    const action = window.prompt(`More actions for ${seller.name}:\n\n${actions.map((a, i) => `${i+1}. ${a}`).join('\n')}\n\nEnter number (1-${actions.length}):`);
+    
+    if (action && parseInt(action) >= 1 && parseInt(action) <= actions.length) {
+      window.alert(`${actions[parseInt(action)-1]} for ${seller.name} - This functionality will be implemented soon!`);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -148,14 +177,14 @@ const AdminSellersTable = () => {
             />
           </div>
           <button
-            onClick={() => window.alert('Filter not implemented (demo only).')}
+            onClick={() => window.alert('Filter functionality will be implemented soon!')}
             className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition"
           >
             <Filter size={18} className="text-gray-500" />
             Filter
           </button>
           <button
-            onClick={() => window.alert('Add Seller not implemented (demo only).')}
+            onClick={handleAddSeller}
             className="flex items-center gap-1 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition text-sm"
           >
             <Plus size={18} className="mr-1" />
@@ -224,21 +253,21 @@ const AdminSellersTable = () => {
                       <button
                         className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                         title="View Seller"
-                        onClick={() => window.alert('View seller functionality not implemented (demo only).')}
+                        onClick={() => handleViewSeller(seller)}
                       >
                         <Eye size={18} />
                       </button>
                       <button
                         className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                         title="Edit Seller"
-                        onClick={() => window.alert('Edit seller functionality not implemented (demo only).')}
+                        onClick={() => handleEditSeller(seller)}
                       >
                         <Edit size={18} />
                       </button>
                       <button
                         className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                         title="More actions"
-                        onClick={() => window.alert('More actions not implemented (demo only).')}
+                        onClick={() => handleMoreActions(seller)}
                       >
                         <MoreHorizontal size={18} />
                       </button>
@@ -255,4 +284,3 @@ const AdminSellersTable = () => {
 };
 
 export default AdminSellersTable;
-

@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Eye, Edit, MoreHorizontal, Filter as FilterIcon } from "lucide-react";
+import { Eye, Edit, MoreHorizontal, Filter as FilterIcon, Plus } from "lucide-react";
 import ProductDetailModal from "./ProductDetailModal";
 
 const STATUS_STYLES = {
@@ -9,7 +9,7 @@ const STATUS_STYLES = {
   "Out of Stock": "bg-red-100 text-red-600",
 };
 
-const AdminProductTable = ({ products, onEditProduct }) => {
+const AdminProductTable = ({ products, onEditProduct, onViewProduct }) => {
   const [searchText, setSearchText] = useState("");
   const [filterActive, setFilterActive] = useState(false);
   const [viewProduct, setViewProduct] = useState(null);
@@ -17,6 +17,25 @@ const AdminProductTable = ({ products, onEditProduct }) => {
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const handleAddProduct = () => {
+    window.alert("Add Product functionality will be implemented soon!");
+    // You can implement actual product addition logic here
+  };
+
+  const handleEditProduct = (product) => {
+    window.alert(`Edit Product: ${product.name}\nThis functionality will be implemented soon!`);
+    // You can implement actual product editing logic here
+  };
+
+  const handleMoreActions = (product) => {
+    const action = window.confirm(`More actions for "${product.name}":\n\nClick OK to delete or Cancel to duplicate`);
+    if (action) {
+      window.alert(`Delete "${product.name}" - This functionality will be implemented soon!`);
+    } else {
+      window.alert(`Duplicate "${product.name}" - This functionality will be implemented soon!`);
+    }
+  };
 
   return (
     <>
@@ -39,9 +58,10 @@ const AdminProductTable = ({ products, onEditProduct }) => {
         </div>
         <button
           className="ml-auto flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition"
-          onClick={() => window.alert("Add product clicked")}
+          onClick={handleAddProduct}
         >
-          + Add Product
+          <Plus size={18} />
+          Add Product
         </button>
       </div>
 
@@ -96,14 +116,14 @@ const AdminProductTable = ({ products, onEditProduct }) => {
                     <button
                       className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                       title="Edit product"
-                      onClick={() => onEditProduct(p)}
+                      onClick={() => handleEditProduct(p)}
                     >
                       <Edit size={18} />
                     </button>
                     <button
                       className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                       title="More actions"
-                      onClick={() => window.alert("More Actions!")}
+                      onClick={() => handleMoreActions(p)}
                     >
                       <MoreHorizontal size={18} />
                     </button>

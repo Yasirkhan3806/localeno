@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Package,
@@ -7,7 +8,6 @@ import {
   FileWarning,
   Settings,
   LogOut,
-  Bell,
   Box,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -116,6 +116,11 @@ const Admin = () => {
   const [orderDetail, setOrderDetail] = useState(null);
   const [customerDetail, setCustomerDetail] = useState(null);
   const [sellerDetail, setSellerDetail] = useState(null);
+
+  // Handler for dashboard "View All" orders
+  const handleViewAllOrders = () => {
+    setSection("orders");
+  };
 
   // Handlers
   const handleEditProduct = (product) => {
@@ -233,7 +238,7 @@ const Admin = () => {
       </aside>
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
-        {/* Topbar */}
+        {/* Topbar - Removed Bell Icon */}
         <div className="h-20 px-10 flex items-center justify-between border-b border-gray-200 bg-white sticky top-0 z-20">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 capitalize">
             {section === "dashboard"
@@ -241,13 +246,6 @@ const Admin = () => {
               : section.charAt(0).toUpperCase() + section.slice(1)}
           </h2>
           <div className="flex items-center gap-4">
-            {/* Notification */}
-            <div className="relative">
-              <button className="p-2 rounded-full bg-white hover:bg-gray-100 border border-gray-200 relative">
-                <Bell size={20} className="text-gray-500" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5 pt-0.5 pb-0 w-5 h-5 flex items-center justify-center">2</span>
-              </button>
-            </div>
             {/* Admin info */}
             <div className="flex items-center gap-3 pl-4">
               <div className="w-10 h-10 bg-black text-white flex items-center justify-center rounded-full font-bold text-lg border-2 border-white">A</div>
@@ -285,7 +283,7 @@ const Admin = () => {
           {/* Regular Sections */}
           {section === "dashboard" && (
             <>
-              <AdminDashboard />
+              <AdminDashboard onViewAllOrders={handleViewAllOrders} />
             </>
           )}
           {section === "products" && (
@@ -324,5 +322,3 @@ const Admin = () => {
 };
 
 export default Admin;
-
-// NOTE TO USER: This file is now 250+ lines. Please consider splitting it into smaller files for future maintainability!

@@ -91,7 +91,7 @@ const statusBadge = (status) =>
     <span className="bg-green-100 text-green-700 rounded-full px-3 py-1 text-xs font-semibold">Active</span> :
     <span className="bg-red-100 text-red-500 rounded-full px-3 py-1 text-xs font-semibold">Inactive</span>;
 
-const AdminCustomersTable = () => {
+const AdminCustomersTable = ({ onViewCustomer }) => {
   const [search, setSearch] = useState("");
 
   const filteredCustomers = DEMO_CUSTOMERS.filter(
@@ -100,6 +100,30 @@ const AdminCustomersTable = () => {
       c.email.toLowerCase().includes(search.toLowerCase()) ||
       c.id.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleAddCustomer = () => {
+    window.alert('Add Customer functionality will be implemented soon!\n\nThis will open a form to add a new customer with fields for:\n- Name\n- Email\n- Phone\n- Address\n- Initial status');
+  };
+
+  const handleViewCustomer = (customer) => {
+    window.alert(`View Customer Details:\n\nName: ${customer.name}\nEmail: ${customer.email}\nPhone: ${customer.phone}\nOrders: ${customer.orders}\nTotal Spent: $${customer.totalSpent.toLocaleString()}\nStatus: ${customer.status}\nLast Order: ${customer.lastOrder}\n\nFull customer profile functionality will be implemented soon!`);
+  };
+
+  const handleMoreActions = (customer) => {
+    const actions = [
+      'Edit Customer',
+      'View Order History',
+      'Send Email',
+      'Block Customer',
+      'Delete Customer'
+    ];
+    
+    const action = window.prompt(`More actions for ${customer.name}:\n\n${actions.map((a, i) => `${i+1}. ${a}`).join('\n')}\n\nEnter number (1-${actions.length}):`);
+    
+    if (action && parseInt(action) >= 1 && parseInt(action) <= actions.length) {
+      window.alert(`${actions[parseInt(action)-1]} for ${customer.name} - This functionality will be implemented soon!`);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -120,14 +144,14 @@ const AdminCustomersTable = () => {
             />
           </div>
           <button
-            onClick={() => window.alert('Filter not implemented (demo only).')}
+            onClick={() => window.alert('Filter functionality will be implemented soon!')}
             className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition"
           >
             <Filter size={18} className="text-gray-500" />
             Filter
           </button>
           <button
-            onClick={() => window.alert('Add Customer not implemented (demo only).')}
+            onClick={handleAddCustomer}
             className="flex items-center gap-1 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition text-sm"
           >
             <Plus size={18} className="mr-1" />
@@ -193,14 +217,14 @@ const AdminCustomersTable = () => {
                       <button
                         className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                         title="View Customer"
-                        onClick={() => window.alert('View functionality not implemented (demo only).')}
+                        onClick={() => handleViewCustomer(customer)}
                       >
                         <Eye size={18} />
                       </button>
                       <button
                         className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                         title="More actions"
-                        onClick={() => window.alert('More actions not implemented (demo only).')}
+                        onClick={() => handleMoreActions(customer)}
                       >
                         <MoreHorizontal size={18} />
                       </button>

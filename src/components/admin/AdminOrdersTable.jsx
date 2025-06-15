@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Eye, Ellipsis } from "lucide-react";
+import { Eye, MoreHorizontal, Download } from "lucide-react";
 
 // Demo orders data
 const DEMO_ORDERS = [
@@ -45,7 +45,7 @@ const STATUS_STYLES = {
   "Pending": "bg-yellow-100 text-yellow-700",
 };
 
-const AdminOrdersTable = () => {
+const AdminOrdersTable = ({ onViewOrder }) => {
   const [search, setSearch] = useState("");
   const [orderData] = useState(DEMO_ORDERS);
 
@@ -55,15 +55,53 @@ const AdminOrdersTable = () => {
     || order.customer.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Dummy handlers
   const handleFilter = () => {
-    window.alert('Filter not implemented (demo only).');
+    window.alert('Filter functionality will be implemented soon!');
   };
-  const handleExport = () => {
-    window.alert('Export CSV not implemented (demo only).');
+
+  const handleExportCSV = () => {
+    // Create CSV content
+    const headers = ['Order ID', 'Customer', 'Date', 'Amount', 'Items', 'Status'];
+    const csvContent = [
+      headers.join(','),
+      ...filteredOrders.map(order => [
+        order.id,
+        order.customer,
+        order.date,
+        order.amount,
+        order.items,
+        order.status
+      ].join(','))
+    ].join('\n');
+
+    // Download CSV
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'orders_export.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
   };
+
   const handleViewOrder = (order) => {
-    window.alert(`View order functionality not implemented.\nOrder ID: ${order.id}`);
+    window.alert(`View Order Details:\n\nOrder ID: ${order.id}\nCustomer: ${order.customer}\nAmount: $${order.amount}\nStatus: ${order.status}\n\nFull order details functionality will be implemented soon!`);
+  };
+
+  const handleMoreActions = (order) => {
+    const actions = [
+      'Edit Order',
+      'Cancel Order', 
+      'Duplicate Order',
+      'Send Invoice',
+      'Print Order'
+    ];
+    
+    const action = window.prompt(`More actions for ${order.id}:\n\n${actions.map((a, i) => `${i+1}. ${a}`).join('\n')}\n\nEnter number (1-${actions.length}):`);
+    
+    if (action && parseInt(action) >= 1 && parseInt(action) <= actions.length) {
+      window.alert(`${actions[parseInt(action)-1]} for ${order.id} - This functionality will be implemented soon!`);
+    }
   };
 
   return (
@@ -91,9 +129,10 @@ const AdminOrdersTable = () => {
             Filter
           </button>
           <button
-            onClick={handleExport}
-            className="inline-flex items-center px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition text-sm"
+            onClick={handleExportCSV}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition text-sm"
           >
+            <Download size={16} />
             Export CSV
           </button>
         </div>
@@ -121,7 +160,7 @@ const AdminOrdersTable = () => {
                 </tr>
               ) : (
                 filteredOrders.map((order, idx) => (
-                  <tr key={order.id} className="border-b last:border-0">
+                  <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
                     <td className="px-6 py-3 font-semibold text-primary">{order.id}</td>
                     <td className="py-3">{order.customer}</td>
                     <td className="py-3">{order.date}</td>
@@ -144,8 +183,9 @@ const AdminOrdersTable = () => {
                         <button
                           className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                           title="More actions"
+                          onClick={() => handleMoreActions(order)}
                         >
-                          <Ellipsis size={18} />
+                          <MoreHorizontal size={18} />
                         </button>
                       </div>
                     </td>

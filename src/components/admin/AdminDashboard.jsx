@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const kpiCards = [
   {
@@ -66,55 +67,70 @@ const statusColors = {
   Refunded: "bg-red-100 text-red-700"
 };
 
-const AdminDashboard = () => (
-  <>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {kpiCards.map(card => (
-        <div key={card.label} className="p-6 rounded-2xl bg-gradient-to-tr from-indigo-500 to-black text-white shadow flex flex-col gap-2 min-w-[170px] relative overflow-hidden">
-          <span className="absolute right-4 top-4 opacity-20">{card.icon}</span>
-          <div className="font-medium text-[1.05rem]">{card.label}</div>
-          <div className="text-3xl font-black">{card.value}</div>
-          <div className="flex items-center gap-3 text-xs font-medium">
-            <span className="bg-white/10 px-2 rounded text-green-200 tracking-wider">{card.diff}</span>
-            <span className="text-slate-200">{card.desc}</span>
-          </div>
-        </div>
-      ))}
-    </div>
+const AdminDashboard = ({ onViewAllOrders }) => {
+  const navigate = useNavigate();
 
-    <div className="mt-8 rounded-xl bg-white shadow border border-gray-100">
-      <div className="flex justify-between items-center border-b px-6 py-4">
-        <span className="font-semibold text-xl text-gray-900">Recent Orders</span>
-        <a href="#" className="text-sm font-semibold text-primary hover:underline">View All</a>
+  const handleViewAll = () => {
+    if (onViewAllOrders) {
+      onViewAllOrders();
+    }
+  };
+
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {kpiCards.map(card => (
+          <div key={card.label} className="p-6 rounded-2xl bg-gradient-to-tr from-indigo-500 to-black text-white shadow flex flex-col gap-2 min-w-[170px] relative overflow-hidden">
+            <span className="absolute right-4 top-4 opacity-20">{card.icon}</span>
+            <div className="font-medium text-[1.05rem]">{card.label}</div>
+            <div className="text-3xl font-black">{card.value}</div>
+            <div className="flex items-center gap-3 text-xs font-medium">
+              <span className="bg-white/10 px-2 rounded text-green-200 tracking-wider">{card.diff}</span>
+              <span className="text-slate-200">{card.desc}</span>
+            </div>
+          </div>
+        ))}
       </div>
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-gray-400 text-xs border-b">
-            <th className="py-3 text-left px-6">Order ID</th>
-            <th className="py-3 text-left">Product</th>
-            <th className="py-3 text-left">Customer</th>
-            <th className="py-3 text-left">Total</th>
-            <th className="py-3 text-left">Status</th>
-            <th className="py-3 text-left">Date</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-900">
-          {recentOrders.map((order) => (
-            <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
-              <td className="py-3 px-6 font-semibold text-primary">{order.id}</td>
-              <td className="py-3">{order.product}</td>
-              <td className="py-3">{order.customer}</td>
-              <td className="py-3">${order.total.toFixed(2)}</td>
-              <td className="py-3">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[order.status]}`}>{order.status}</span>
-              </td>
-              <td className="py-3">{order.date}</td>
+
+      <div className="mt-8 rounded-xl bg-white shadow border border-gray-100">
+        <div className="flex justify-between items-center border-b px-6 py-4">
+          <span className="font-semibold text-xl text-gray-900">Recent Orders</span>
+          <button 
+            onClick={handleViewAll}
+            className="text-sm font-semibold text-primary hover:underline cursor-pointer"
+          >
+            View All
+          </button>
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-gray-400 text-xs border-b">
+              <th className="py-3 text-left px-6">Order ID</th>
+              <th className="py-3 text-left">Product</th>
+              <th className="py-3 text-left">Customer</th>
+              <th className="py-3 text-left">Total</th>
+              <th className="py-3 text-left">Status</th>
+              <th className="py-3 text-left">Date</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </>
-);
+          </thead>
+          <tbody className="text-gray-900">
+            {recentOrders.map((order) => (
+              <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
+                <td className="py-3 px-6 font-semibold text-primary">{order.id}</td>
+                <td className="py-3">{order.product}</td>
+                <td className="py-3">{order.customer}</td>
+                <td className="py-3">${order.total.toFixed(2)}</td>
+                <td className="py-3">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[order.status]}`}>{order.status}</span>
+                </td>
+                <td className="py-3">{order.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};
 
 export default AdminDashboard;
