@@ -20,6 +20,10 @@ import AdminSellersTable from "../components/admin/AdminSellersTable";
 import AdminReportsTable from "../components/admin/AdminReportsTable";
 import ReportDetailPage from "../components/admin/ReportDetailPage";
 import SettingsDetailPage from "../components/admin/SettingsDetailPage";
+import AdminProductDetail from "../components/admin/AdminProductDetail";
+import AdminOrderDetail from "../components/admin/AdminOrderDetail";
+import AdminCustomerDetail from "../components/admin/AdminCustomerDetail";
+import AdminSellerDetail from "../components/admin/AdminSellerDetail";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -79,6 +83,17 @@ const DEMO_PRODUCTS = [
   },
 ];
 
+// DEMO Customers/Sellers/Orders for new details, can extend this as needed.
+const DEMO_CUSTOMERS = [
+  { id: 1, name: "Samantha Yu", email: "sam.yu@email.com", joined: "2023-06-14" },
+];
+const DEMO_SELLERS = [
+  { id: 1, name: "CraftMakers", email: "contact@craftmakers.com", registered: "2023-04-11" },
+];
+const DEMO_ORDERS = [
+  { id: "ORD-102", customer: "Samantha Yu", status: "Completed", date: "2024-01-14" },
+];
+
 const SIDEBAR_MENU = [
   { label: "Dashboard", icon: Box, key: "dashboard" },
   { label: "Products", icon: Package, key: "products" },
@@ -93,26 +108,72 @@ const Admin = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [section, setSection] = useState("products");
-  const [products, setProducts] = useState(DEMO_PRODUCTS);
+  const [products] = useState(DEMO_PRODUCTS);
 
-  // Report detail state
+  // Detail page state for every type
   const [reportDetail, setReportDetail] = useState(null);
+  const [productDetail, setProductDetail] = useState(null);
+  const [orderDetail, setOrderDetail] = useState(null);
+  const [customerDetail, setCustomerDetail] = useState(null);
+  const [sellerDetail, setSellerDetail] = useState(null);
 
-  // Simple edit handler
+  // Handlers
   const handleEditProduct = (product) => {
     window.alert("Edit product: " + product.name);
   };
 
-  // Handler for viewing report detail
+  // Report
   const handleViewReport = (reportId) => {
-    // In real app, fetch report by ID; here use demo value.
     setReportDetail(reportId);
     setSection("report-detail");
   };
-
   const handleBackFromReport = () => {
     setReportDetail(null);
     setSection("reports");
+  };
+
+  // Product
+  const handleViewProduct = (productId) => {
+    const product = products.find((p) => p.id === productId);
+    setProductDetail(product);
+    setSection("product-detail");
+  };
+  const handleBackFromProduct = () => {
+    setProductDetail(null);
+    setSection("products");
+  };
+
+  // Orders (demo)
+  const handleViewOrder = (orderId) => {
+    const order = DEMO_ORDERS.find((o) => o.id === orderId);
+    setOrderDetail(order);
+    setSection("order-detail");
+  };
+  const handleBackFromOrder = () => {
+    setOrderDetail(null);
+    setSection("orders");
+  };
+
+  // Customers (demo)
+  const handleViewCustomer = (customerId) => {
+    const customer = DEMO_CUSTOMERS.find((c) => c.id === customerId);
+    setCustomerDetail(customer);
+    setSection("customer-detail");
+  };
+  const handleBackFromCustomer = () => {
+    setCustomerDetail(null);
+    setSection("customers");
+  };
+
+  // Sellers (demo)
+  const handleViewSeller = (sellerId) => {
+    const seller = DEMO_SELLERS.find((s) => s.id === sellerId);
+    setSellerDetail(seller);
+    setSection("seller-detail");
+  };
+  const handleBackFromSeller = () => {
+    setSellerDetail(null);
+    setSection("sellers");
   };
 
   const handleLogout = () => {
@@ -209,6 +270,18 @@ const Admin = () => {
             <ReportDetailPage onBack={handleBackFromReport} />
           )}
           {section === "settings" && <SettingsDetailPage />}
+          {section === "product-detail" && !!productDetail && (
+            <AdminProductDetail product={productDetail} onBack={handleBackFromProduct} />
+          )}
+          {section === "order-detail" && !!orderDetail && (
+            <AdminOrderDetail order={orderDetail} onBack={handleBackFromOrder} />
+          )}
+          {section === "customer-detail" && !!customerDetail && (
+            <AdminCustomerDetail customer={customerDetail} onBack={handleBackFromCustomer} />
+          )}
+          {section === "seller-detail" && !!sellerDetail && (
+            <AdminSellerDetail seller={sellerDetail} onBack={handleBackFromSeller} />
+          )}
           {/* Regular Sections */}
           {section === "dashboard" && (
             <>
@@ -221,27 +294,26 @@ const Admin = () => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-1">Products</h3>
                 <span className="text-gray-500 text-base font-normal">Manage your product inventory</span>
               </div>
-              <AdminProductTable products={products} onEditProduct={handleEditProduct} />
+              <AdminProductTable products={products} onEditProduct={handleEditProduct} onViewProduct={handleViewProduct} />
             </>
           )}
           {section === "orders" && (
             <>
-              <AdminOrdersTable />
+              <AdminOrdersTable onViewOrder={handleViewOrder} />
             </>
           )}
           {section === "customers" && (
             <>
-              <AdminCustomersTable />
+              <AdminCustomersTable onViewCustomer={handleViewCustomer} />
             </>
           )}
           {section === "sellers" && (
             <>
-              <AdminSellersTable />
+              <AdminSellersTable onViewSeller={handleViewSeller} />
             </>
           )}
           {section === "reports" && (
             <>
-              {/* Pass handleViewReport to table for report row actions */}
               <AdminReportsTable onViewReport={handleViewReport} />
             </>
           )}
