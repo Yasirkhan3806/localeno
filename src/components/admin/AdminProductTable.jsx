@@ -9,7 +9,7 @@ const STATUS_STYLES = {
   "Out of Stock": "bg-red-100 text-red-600",
 };
 
-const AdminProductTable = ({ products, onEditProduct, onViewProduct }) => {
+const AdminProductTable = ({ products, onEditProduct, onViewProduct, onAddProduct, onProductActions }) => {
   const [searchText, setSearchText] = useState("");
   const [filterActive, setFilterActive] = useState(false);
   const [viewProduct, setViewProduct] = useState(null);
@@ -18,31 +18,12 @@ const AdminProductTable = ({ products, onEditProduct, onViewProduct }) => {
     p.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const handleAddProduct = () => {
-    window.alert("Add Product functionality will be implemented soon!");
-    // You can implement actual product addition logic here
-  };
-
-  const handleEditProduct = (product) => {
-    window.alert(`Edit Product: ${product.name}\nThis functionality will be implemented soon!`);
-    // You can implement actual product editing logic here
-  };
-
-  const handleMoreActions = (product) => {
-    const action = window.confirm(`More actions for "${product.name}":\n\nClick OK to delete or Cancel to duplicate`);
-    if (action) {
-      window.alert(`Delete "${product.name}" - This functionality will be implemented soon!`);
-    } else {
-      window.alert(`Duplicate "${product.name}" - This functionality will be implemented soon!`);
-    }
-  };
-
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <input
-            className="bg-white border border-gray-200 rounded-lg px-4 py-2 placeholder-gray-400 focus:ring-2 focus:ring-black focus:outline-none text-sm transition"
+            className="bg-white border border-gray-200 rounded-lg px-4 py-2 placeholder-gray-400 focus:ring-2 focus:ring-black focus:outline-none text-sm transition w-full sm:w-auto"
             placeholder="Search products..."
             value={searchText}
             style={{ minWidth: 220 }}
@@ -57,83 +38,86 @@ const AdminProductTable = ({ products, onEditProduct, onViewProduct }) => {
           </button>
         </div>
         <button
-          className="ml-auto flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition"
-          onClick={handleAddProduct}
+          className="w-full sm:w-auto flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition"
+          onClick={onAddProduct}
         >
           <Plus size={18} />
           Add Product
         </button>
       </div>
 
-      <div className="w-full bg-white rounded-xl shadow border border-gray-100">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-gray-400 text-xs font-semibold border-b">
-              <th className="px-4 py-3 text-left font-semibold">PRODUCT</th>
-              <th className="px-4 py-3 text-left font-semibold">CATEGORY</th>
-              <th className="px-4 py-3 text-left font-semibold">PRICE</th>
-              <th className="px-4 py-3 text-left font-semibold">STOCK</th>
-              <th className="px-4 py-3 text-left font-semibold">STATUS</th>
-              <th className="px-4 py-3 text-left font-semibold">ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-900">
-            {filteredProducts.length === 0 && (
-              <tr>
-                <td colSpan={6} className="py-5 text-center text-gray-400">
-                  No products found.
-                </td>
+      <div className="w-full bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-gray-400 text-xs font-semibold border-b">
+                <th className="px-4 py-3 text-left font-semibold min-w-[200px]">PRODUCT</th>
+                <th className="px-4 py-3 text-left font-semibold">CATEGORY</th>
+                <th className="px-4 py-3 text-left font-semibold">PRICE</th>
+                <th className="px-4 py-3 text-left font-semibold">STOCK</th>
+                <th className="px-4 py-3 text-left font-semibold">STATUS</th>
+                <th className="px-4 py-3 text-left font-semibold">ACTIONS</th>
               </tr>
-            )}
-            {filteredProducts.map((p) => (
-              <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50 transition">
-                <td className="px-4 py-3 font-medium flex items-center gap-3 min-w-[230px]">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-10 h-10 object-cover rounded-lg border border-gray-200"
-                    loading="lazy"
-                  />
-                  <span>{p.name}</span>
-                </td>
-                <td className="px-4 py-3">{p.category}</td>
-                <td className="px-4 py-3">${p.price.toFixed(2)}</td>
-                <td className="px-4 py-3">{p.stock}</td>
-                <td className="px-4 py-3">
-                  <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${STATUS_STYLES[p.status] || "bg-gray-200 text-gray-600"}`}>
-                    {p.status}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <button
-                      className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                      title="View product"
-                      onClick={() => setViewProduct(p)}
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                      title="Edit product"
-                      onClick={() => handleEditProduct(p)}
-                    >
-                      <Edit size={18} />
-                    </button>
-                    <button
-                      className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                      title="More actions"
-                      onClick={() => handleMoreActions(p)}
-                    >
-                      <MoreHorizontal size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-900">
+              {filteredProducts.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="py-5 text-center text-gray-400">
+                    No products found.
+                  </td>
+                </tr>
+              )}
+              {filteredProducts.map((p) => (
+                <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50 transition">
+                  <td className="px-4 py-3 font-medium flex items-center gap-3 min-w-[200px]">
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="w-10 h-10 object-cover rounded-lg border border-gray-200 flex-shrink-0"
+                      loading="lazy"
+                    />
+                    <span className="truncate">{p.name}</span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">{p.category}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">${p.price.toFixed(2)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{p.stock}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${STATUS_STYLES[p.status] || "bg-gray-200 text-gray-600"}`}>
+                      {p.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                        title="View product"
+                        onClick={() => setViewProduct(p)}
+                      >
+                        <Eye size={18} />
+                      </button>
+                      <button
+                        className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                        title="Edit product"
+                        onClick={() => onEditProduct(p)}
+                      >
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                        title="More actions"
+                        onClick={() => onProductActions(p)}
+                      >
+                        <MoreHorizontal size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+      
       {/* Product detail modal */}
       <ProductDetailModal
         product={viewProduct}
