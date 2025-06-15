@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,11 +27,11 @@ function HeroCarousel() {
   const next = () => setCurr((curr + 1) % images.length);
   const prev = () => setCurr((curr - 1 + images.length) % images.length);
 
-  // Custom colors for theme "Shoply"
+  // Replace gradientButton and buttonText for a vibrant look using your theme
   const gradientButton =
-    "bg-gradient-to-r from-black via-neutral-900 to-gray-700";
+    "bg-gradient-to-tr from-primary via-gray-900 to-secondary shadow-lg hover:shadow-xl hover:from-gray-900 hover:via-primary hover:to-gray-900 focus-visible:ring-4 focus-visible:ring-primary/50 ring-offset-2 transition-all";
   const buttonText =
-    "text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.20)]";
+    "text-white font-semibold tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.23)]";
 
   return (
     <section className="relative w-full mx-auto max-w-6xl h-[340px] sm:h-[410px] rounded-2xl overflow-hidden shadow-sm bg-neutral-200 animate-fade-in">
@@ -57,7 +56,11 @@ function HeroCarousel() {
             <p className="text-base sm:text-lg opacity-90 mt-2 mb-5">{img.subtitle}</p>
             <div className="flex gap-3">
               <button
-                className="py-2 px-4 sm:px-5 rounded-lg bg-primary text-primary-foreground text-sm shadow-lg font-semibold hover:bg-primary/90 focus:outline-none transition-all"
+                className={`${gradientButton} ${buttonText} px-7 py-3 rounded-2xl text-lg shadow-lg transform hover:scale-105 active:scale-98 focus:outline-none outline-none transition-all duration-200 border border-transparent`}
+                style={{
+                  boxShadow: "0 4px 20px 0 rgba(0,0,0,0.10)",
+                  letterSpacing: "0.01em"
+                }}
               >
                 Shop Now
               </button>
@@ -104,4 +107,3 @@ function HeroCarousel() {
 }
 
 export default HeroCarousel;
-
