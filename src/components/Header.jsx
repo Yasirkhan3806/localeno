@@ -49,7 +49,13 @@ const Header = () => {
             {navTabs.map((tab) => (
               <li key={tab.name}>
                 <button
-                  onClick={() => navigate(tab.link)}
+                  onClick={() => {
+                    if (tab.name === "Home") {
+                      navigate('/');
+                    } else {
+                      navigate(tab.link);
+                    }
+                  }}
                   className="px-4 py-2 rounded-lg bg-background hover:bg-accent text-foreground hover:text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
                 >
                   {tab.name}
@@ -190,7 +196,11 @@ const Header = () => {
                 <li key={tab.name}>
                   <button
                     onClick={() => {
-                      navigate(tab.link);
+                      if (tab.name === "Home") {
+                        navigate('/');
+                      } else {
+                        navigate(tab.link);
+                      }
                       setMobileMenuOpen(false);
                     }}
                     className="block w-full text-left px-3 py-2 rounded-lg bg-background text-foreground font-medium hover:bg-accent hover:text-primary transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
