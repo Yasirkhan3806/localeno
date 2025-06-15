@@ -75,39 +75,58 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             >
               <Menu size={22} />
             </button>
+            {/* Custom Logo */}
             <button
               onClick={() => navigate('/')}
-              className="flex items-center px-1 md:px-2 py-1 rounded-xl focus:outline-none hover:scale-105 transition-transform"
+              className="flex flex-col px-1 md:px-2 py-1 rounded-xl focus:outline-none hover:scale-105 transition-transform items-start bg-transparent border-none"
               style={{
                 height: '40px',
-                background: 'transparent',
-                border: 'none',
               }}
               aria-label="Go to home"
             >
               <span
                 className="
-                  flex items-center justify-center
+                  flex items-center
                   bg-white border-2 border-black rounded-lg
                   font-extrabold text-lg md:text-2xl
-                  text-black select-none shadow-md
-                  px-5 md:px-8 py-1 md:py-2
-                  tracking-wide font-inter
+                  text-gray-800 select-none shadow-md
+                  px-4 md:px-6 py-0.5 md:py-1 tracking-wider
+                  font-inter
                 "
                 style={{
-                  minWidth: '96px',
-                  maxWidth: '210px',
-                  letterSpacing: '0.06em',
-                  boxShadow: '0 6px 20px 0 rgba(0,0,0,0.07), 0 1.5px 3px 0 rgba(0,0,0,0.04)',
+                  letterSpacing: '0.03em',
+                  lineHeight: 1.1,
                 }}
                 draggable="false"
               >
-                Shoply
+                <span style={{ letterSpacing: '0.08em' }}>LOC</span>
+                <span className="inline-flex mx-1 items-center justify-center">
+                  <ShoppingCart
+                    size={30}
+                    className="mx-0 text-green-500"
+                    strokeWidth={2.8}
+                  />
+                </span>
+                <span style={{ letterSpacing: '0.08em' }}>LENA</span>
+              </span>
+              <span
+                className="
+                  text-green-500 text-xs md:text-sm
+                  font-semibold mt-0.5 ml-2 md:ml-3 whitespace-nowrap
+                  tracking-wide
+                "
+                style={{
+                  textShadow: '0 1px 1px #fff',
+                  letterSpacing: '0.04em',
+                }}
+                draggable="false"
+              >
+                BUY LOCAL, SUPPORT LOCAL
               </span>
             </button>
           </div>
 
-          {/* Center: Search Bar on desktop */}
+          {/* Center: Search Bar */}
           <div className="hidden md:flex flex-1 justify-center">
             <form onSubmit={handleSearch} className="flex w-full max-w-sm items-center">
               <input
@@ -223,7 +242,7 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
             </button>
           </div>
         </div>
-        {/* Mobile search bar (below nav for small screens) */}
+        {/* Mobile search bar */}
         <div className="md:hidden px-2 py-2 border-t border-gray-100">
           <form onSubmit={handleSearch} className="flex">
             <input
