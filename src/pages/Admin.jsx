@@ -9,26 +9,12 @@ import {
   Settings,
   LogOut,
   Bell,
-  Search,
   Box,
-  Eye,
-  Edit,
-  MoreHorizontal,
-  Filter as FilterIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-
-// Sidebar items
-const SIDEBAR_MENU = [
-  { label: "Dashboard", icon: Box },
-  { label: "Products", icon: Package, active: true },
-  { label: "Orders", icon: ShoppingCart },
-  { label: "Customers", icon: Users },
-  { label: "Sellers", icon: UserCheck },
-  { label: "Reports", icon: FileWarning },
-  { label: "Settings", icon: Settings },
-];
+import AdminDashboard from "../components/admin/AdminDashboard";
+import AdminProductTable from "../components/admin/AdminProductTable";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -88,35 +74,30 @@ const DEMO_PRODUCTS = [
   },
 ];
 
-const STATUS_STYLES = {
-  Active: "bg-green-100 text-green-600",
-  "Low Stock": "bg-yellow-100 text-yellow-700",
-  "Out of Stock": "bg-red-100 text-red-600",
-};
+const SIDEBAR_MENU = [
+  { label: "Dashboard", icon: Box, key: "dashboard" },
+  { label: "Products", icon: Package, key: "products" },
+  { label: "Orders", icon: ShoppingCart, key: "orders" },
+  { label: "Customers", icon: Users, key: "customers" },
+  { label: "Sellers", icon: UserCheck, key: "sellers" },
+  { label: "Reports", icon: FileWarning, key: "reports" },
+  { label: "Settings", icon: Settings, key: "settings" },
+];
 
 const Admin = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-
-  // State for product search
-  const [searchText, setSearchText] = useState("");
-  // Filter for product status/category (for demo, only toggles input UI)
-  const [filterActive, setFilterActive] = useState(false);
+  const [section, setSection] = useState("products");
   const [products, setProducts] = useState(DEMO_PRODUCTS);
 
-  // Search logic
-  const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchText.toLowerCase())
-  );
+  // Simple edit handler
+  const handleEditProduct = (product) => {
+    window.alert("Edit product: " + product.name);
+  };
 
   const handleLogout = () => {
     logout();
     navigate("/login");
-  };
-
-  // Demo for actions
-  const handleAction = (type, product) => {
-    window.alert(`${type} clicked for "${product.name}"`);
   };
 
   return (
@@ -141,17 +122,18 @@ const Admin = () => {
         <nav className="flex-1 py-4 flex flex-col gap-1">
           {SIDEBAR_MENU.map((item) => (
             <button
-              key={item.label}
+              key={item.key}
               className={
                 `flex items-center gap-3 w-full px-6 py-2 text-[15px] rounded-lg font-medium mb-1
-                ${item.active
+                ${section === item.key
                   ? "bg-black text-white"
                   : "text-gray-700 hover:bg-gray-100 transition-colors"
                 }`
               }
               tabIndex={0}
+              onClick={() => setSection(item.key)}
             >
-              <item.icon size={20} className={item.active ? "text-white" : "text-gray-400"} />
+              <item.icon size={20} className={section === item.key ? "text-white" : "text-gray-400"} />
               <span>{item.label}</span>
             </button>
           ))}
@@ -172,19 +154,12 @@ const Admin = () => {
       <main className="flex-1 flex flex-col">
         {/* Topbar */}
         <div className="h-20 px-10 flex items-center justify-between border-b border-gray-200 bg-white sticky top-0 z-20">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 capitalize">
+            {section === "dashboard"
+              ? "Dashboard"
+              : section.charAt(0).toUpperCase() + section.slice(1)}
+          </h2>
           <div className="flex items-center gap-4">
-            {/* Search input */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchText}
-                onChange={e => setSearchText(e.target.value)}
-                className="pl-11 pr-3 py-2 rounded-lg border border-gray-200 bg-[#F5F6FA] text-gray-900 text-sm w-64 focus:border-black focus:ring-2 focus:ring-black transition"
-              />
-              <Search size={18} className="absolute left-3 top-2.5 text-gray-400" />
-            </div>
             {/* Notification */}
             <div className="relative">
               <button className="p-2 rounded-full bg-white hover:bg-gray-100 border border-gray-200 relative">
@@ -207,108 +182,22 @@ const Admin = () => {
             </button>
           </div>
         </div>
-        {/* Product Content */}
+        {/* Section Switch */}
         <section className="px-10 py-8 bg-[#F6F8FB] flex-1 w-full">
-          <div className="mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">Products</h3>
-            <span className="text-gray-500 text-base font-normal">Manage your product inventory</span>
-          </div>
-          {/* Search, Filter, Add Product Row */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-            <div className="flex gap-2">
-              <input
-                className="bg-white border border-gray-200 rounded-lg px-4 py-2 placeholder-gray-400 focus:ring-2 focus:ring-black focus:outline-none text-sm transition"
-                placeholder="Search products..."
-                value={searchText}
-                style={{ minWidth: 220 }}
-                onChange={e => setSearchText(e.target.value)}
-              />
-              <button
-                onClick={() => setFilterActive((prev) => !prev)}
-                className={`flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition ${filterActive ? "ring-2 ring-black" : ""}`}
-              >
-                <FilterIcon className="text-gray-500" size={18} />
-                Filter
-              </button>
-            </div>
-            <button
-              className="ml-auto flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition"
-              onClick={() => window.alert("Add product clicked")}
-            >
-              + Add Product
-            </button>
-          </div>
-
-          {/* Table */}
-          <div className="w-full bg-white rounded-xl shadow border border-gray-100">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-gray-400 text-xs font-semibold border-b">
-                  <th className="px-4 py-3 text-left font-semibold">PRODUCT</th>
-                  <th className="px-4 py-3 text-left font-semibold">CATEGORY</th>
-                  <th className="px-4 py-3 text-left font-semibold">PRICE</th>
-                  <th className="px-4 py-3 text-left font-semibold">STOCK</th>
-                  <th className="px-4 py-3 text-left font-semibold">STATUS</th>
-                  <th className="px-4 py-3 text-left font-semibold">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-900">
-                {filteredProducts.length === 0 && (
-                  <tr>
-                    <td colSpan={6} className="py-5 text-center text-gray-400">
-                      No products found.
-                    </td>
-                  </tr>
-                )}
-                {filteredProducts.map((p) => (
-                  <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50 transition">
-                    <td className="px-4 py-3 font-medium flex items-center gap-3 min-w-[230px]">
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        className="w-10 h-10 object-cover rounded-lg border border-gray-200"
-                        loading="lazy"
-                      />
-                      <span>{p.name}</span>
-                    </td>
-                    <td className="px-4 py-3">{p.category}</td>
-                    <td className="px-4 py-3">${p.price.toFixed(2)}</td>
-                    <td className="px-4 py-3">{p.stock}</td>
-                    <td className="px-4 py-3">
-                      <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${STATUS_STYLES[p.status] || "bg-gray-200 text-gray-600"}`}>
-                        {p.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="View product"
-                          onClick={() => handleAction("View", p)}
-                        >
-                          <Eye size={18} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="Edit product"
-                          onClick={() => handleAction("Edit", p)}
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="More actions"
-                          onClick={() => handleAction("More", p)}
-                        >
-                          <MoreHorizontal size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {section === "dashboard" && (
+            <>
+              <AdminDashboard />
+            </>
+          )}
+          {section === "products" && (
+            <>
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-1">Products</h3>
+                <span className="text-gray-500 text-base font-normal">Manage your product inventory</span>
+              </div>
+              <AdminProductTable products={products} onEditProduct={handleEditProduct} />
+            </>
+          )}
         </section>
       </main>
     </div>
