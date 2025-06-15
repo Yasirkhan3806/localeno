@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Package,
@@ -15,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminProductTable from "../components/admin/AdminProductTable";
+import AdminOrdersTable from "../components/admin/AdminOrdersTable";
 
 // Demo Product Data
 const DEMO_PRODUCTS = [
@@ -196,6 +196,11 @@ const Admin = () => {
                 <span className="text-gray-500 text-base font-normal">Manage your product inventory</span>
               </div>
               <AdminProductTable products={products} onEditProduct={handleEditProduct} />
+            </>
+          )}
+          {section === "orders" && (
+            <>
+              <AdminOrdersTable />
             </>
           )}
         </section>
