@@ -100,7 +100,7 @@ const UserHeader = ({
                   marginRight: '2px'
                 }}>LOC</span>
                   <span className="inline-flex items-center justify-center mx-0.5">
-                    <ShoppingCart size={13} className="text-green-600" strokeWidth={2.2} />
+                    <ShoppingCart size={13} className="text-green-700" strokeWidth={2.2} />
                   </span>
                   <span style={{
                   letterSpacing: '0.12em',
@@ -109,11 +109,13 @@ const UserHeader = ({
                 </span>
                 {/* Slogan */}
                 <span style={{
-                textShadow: '0 0.5px 0.5px #fff',
-                letterSpacing: '0.06em',
-                lineHeight: 1.1,
-                width: "98%"
-              }} className="text-[6px] font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap text-center md:text-[[8px]] text-slate-950">BUY LOCAL, SUPPORT LOCAL</span>
+                  color: "#166534",
+                  textShadow: '0 0.5px 0.5px #fff',
+                  letterSpacing: '0.04em',
+                  lineHeight: 1.1,
+                  width: "98%"
+                }} className="text-[7px] md:text-[8px] font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap text-center text-green-800"
+                >Buy Local, Support Local</span>
               </span>
             </button>
           </div>

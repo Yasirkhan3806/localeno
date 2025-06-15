@@ -8,12 +8,17 @@ const BackToHomeButton = () => {
   return (
     <button
       onClick={() => navigate("/user/home")}
-      className="flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-gray-100 text-black hover:bg-gray-200 transition font-medium"
+      className="inline-flex items-center justify-center p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition text-green-700 border border-green-100 shadow"
       aria-label="Back to Home"
-      style={{ width: 'fit-content' }}
+      style={{
+        position: 'absolute',
+        top: 16, // give space from header, adjust as needed
+        left: 16,
+        zIndex: 30
+      }}
     >
-      <Home size={18} />
-      Back to Home
+      <Home size={22} strokeWidth={2.3} className="text-green-700" />
+      <span className="sr-only">Back to Home</span>
     </button>
   );
 };
