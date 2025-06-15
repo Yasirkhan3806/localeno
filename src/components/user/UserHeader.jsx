@@ -107,15 +107,6 @@ const UserHeader = ({
                   marginLeft: '2px'
                 }}>LENA</span>
                 </span>
-                {/* Slogan */}
-                <span style={{
-                  color: "#166534",
-                  textShadow: '0 0.5px 0.5px #fff',
-                  letterSpacing: '0.04em',
-                  lineHeight: 1.1,
-                  width: "98%"
-                }} className="text-[7px] md:text-[8px] font-semibold mt-0.5 uppercase tracking-wide whitespace-nowrap text-center text-green-800"
-                >Buy Local, Support Local</span>
               </span>
             </button>
           </div>
