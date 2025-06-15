@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -49,8 +48,8 @@ const LoginPage = () => {
           formData.adminPassword === ADMIN_CREDENTIALS.password
         ) {
           setAdminError('');
-          // Simulate admin login - no user context
           setLoading(false);
+          // Ensure redirect to /admin using router
           navigate('/admin');
         } else {
           setLoading(false);
@@ -322,4 +321,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
