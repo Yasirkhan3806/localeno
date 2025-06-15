@@ -1,16 +1,27 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, Grid2x2, Box, Plus, ClipboardList, Star, MessageSquare, Settings } from "lucide-react";
+import {
+  Menu,
+  X,
+  Box,
+  Plus,
+  ClipboardList,
+  Star,
+  MessageSquare,
+  Settings,
+  Grid2x2,
+  Repeat
+} from "lucide-react";
 
 const navItems = [
   { to: "/seller/dashboard", icon: Grid2x2, label: "Dashboard" },
   { to: "/seller/products", icon: Box, label: "My Products" },
   { to: "/seller/products/add", icon: Plus, label: "Add Product" },
-  { to: "/seller/rentals", icon: ClipboardList, label: "Rentals" },
-  { to: "/seller/reviews", icon: Star, label: "Reviews" },
-  { to: "/seller/chat", icon: MessageSquare, label: "Chat" },
-  { to: "/seller/settings", icon: Settings, label: "Settings" },
+  { to: "/seller/rentals", icon: Repeat, label: "Rental Management" },
+  { to: "/seller/reviews", icon: Star, label: "Customer Reviews" },
+  { to: "/seller/chat", icon: MessageSquare, label: "Real-Time Chat" },
+  { to: "/seller/settings", icon: Settings, label: "Settings" }
 ];
 
 function SellerSidebar({ open, setOpen }) {
@@ -56,11 +67,15 @@ function SellerSidebar({ open, setOpen }) {
               to={item.to}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors font-medium group
-                ${isActive ? "bg-black text-white shadow" : "text-gray-700 hover:bg-gray-100"}`
+                `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors transition-transform font-medium group
+                ${isActive ? "bg-black text-white shadow scale-[1.04]" : "text-gray-700 hover:bg-gray-100 hover:scale-105"}`
               }
+              style={{ transition: "transform 0.14s cubic-bezier(.4,0,.2,1)" }}
+              aria-label={item.label}
             >
-              <item.icon className="shrink-0" size={20} />
+              <span className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 transition group-hover:bg-gray-200 group-hover:scale-110">
+                <item.icon className="shrink-0" size={20} aria-hidden="true" />
+              </span>
               <span>{item.label}</span>
             </NavLink>
           ))}
