@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -13,7 +14,8 @@ import {
   Settings, 
   LogOut,
   X,
-  Menu
+  Menu,
+  Calendar // <-- import for Rentals tab icon
 } from 'lucide-react';
 
 const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -30,6 +32,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
+    { icon: Calendar, label: 'My Rentals', path: '/user/rentals' }, // <-- Added
     { icon: Package, label: 'My Orders', path: '/user/orders' },
     { icon: Star, label: 'Reviews', path: '/user/reviews' },
     { icon: MessageCircle, label: 'Messages', path: '/user/chats' },
@@ -137,3 +140,4 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 };
 
 export default UserSidebar;
+
