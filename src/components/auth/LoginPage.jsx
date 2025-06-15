@@ -71,6 +71,8 @@ const LoginPage = () => {
       };
       login(userData);
       setLoading(false);
+      
+      // Direct navigation based on account type
       if (mode === 'seller') {
         navigate('/seller/dashboard');
       } else {
