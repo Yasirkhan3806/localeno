@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Search, ShoppingCart, Heart, Bell, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+
 const UserHeader = ({
   sidebarOpen,
   setSidebarOpen
@@ -63,49 +64,64 @@ const UserHeader = ({
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
-  return <>
+  return (
+    <>
       <header className="fixed top-0 left-0 right-0 z-40 bg-white shadow border-b border-gray-200 font-inter">
         <div className="h-16 md:h-14 px-2 md:px-6 flex items-center justify-between gap-2 md:gap-4 transition-all">
           {/* Left: Hamburger and Logo */}
           <div className="flex items-center gap-1 min-w-fit">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition" aria-label="Open sidebar">
+            <button 
+              onClick={() => setSidebarOpen(!sidebarOpen)} 
+              className="lg:hidden p-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition" 
+              aria-label="Open sidebar"
+            >
               <Menu size={22} />
             </button>
 
-            {/* Responsive Custom Logo */}
-            <button onClick={() => navigate('/')} className="flex flex-col items-start bg-transparent border-none p-0 m-0 focus:outline-none" style={{
-            minWidth: 0,
-            minHeight: 0,
-            lineHeight: 1
-          }} aria-label="Go to home">
-              <span className="
+            {/* Responsive Custom Logo (border removed, text size increased) */}
+            <button 
+              onClick={() => navigate('/')} 
+              className="flex flex-col items-start bg-transparent border-none p-0 m-0 focus:outline-none" 
+              style={{
+                minWidth: 0,
+                minHeight: 0,
+                lineHeight: 1
+              }} 
+              aria-label="Go to home"
+            >
+              <span
+                className="
                   flex flex-col items-center justify-center
-                  bg-white border-2 border-black rounded-lg shadow-md
+                  bg-white rounded-lg shadow-md
                   px-1.5 py-0.5 md:px-2 md:py-1
                   transition-transform hover:scale-105
                   font-inter min-w-0 min-h-0
                   w-auto
-                " style={{
-              maxWidth: '110px',
-              minWidth: '78px',
-              padding: '2px 4px',
-              lineHeight: 1.1
-            }} draggable="false">
-                {/* Main LOC(LucideCart)LENA text */}
-                <span className="flex items-center text-[11px] md:text-[14px] font-extrabold text-gray-900 tracking-tight" style={{
-                letterSpacing: '0.06em'
-              }}>
+                "
+                style={{
+                  maxWidth: '130px',
+                  minWidth: '82px',
+                  padding: '2px 6px',
+                  lineHeight: 1.1
+                }}
+                draggable="false"
+              >
+                {/* Main LOC(LucideCart)LENA text -- font size increased and border removed */}
+                <span className="flex items-center text-[14px] md:text-[18px] font-extrabold text-gray-900 tracking-tight"
+                  style={{
+                    letterSpacing: '0.08em'
+                  }}>
                   <span style={{
-                  letterSpacing: '0.12em',
-                  marginRight: '2px'
-                }}>LOC</span>
+                    letterSpacing: '0.13em',
+                    marginRight: '3px'
+                  }}>LOC</span>
                   <span className="inline-flex items-center justify-center mx-0.5">
-                    <ShoppingCart size={13} className="text-green-700" strokeWidth={2.2} />
+                    <ShoppingCart size={18} className="text-green-700" strokeWidth={2.2} />
                   </span>
                   <span style={{
-                  letterSpacing: '0.12em',
-                  marginLeft: '2px'
-                }}>LENA</span>
+                    letterSpacing: '0.13em',
+                    marginLeft: '3px'
+                  }}>LENA</span>
                 </span>
               </span>
             </button>
@@ -184,6 +200,8 @@ const UserHeader = ({
       </header>
       {/* Notification overlay */}
       {showNotifications && <div className="fixed inset-0 z-30" onClick={() => setShowNotifications(false)} />}
-    </>;
+    </>
+  );
 };
+
 export default UserHeader;
