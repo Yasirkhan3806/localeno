@@ -1,6 +1,5 @@
-
 import React from "react";
-import CategoryCard from "./CategoryCard.js";
+import CategoryCard from "./CategoryCard.jsx";
 
 // Demo category data (real UI would fetch these!)
 const categories = [
