@@ -86,10 +86,19 @@ const UserHeader = ({ sidebarOpen, setSidebarOpen }) => {
               aria-label="Go to home"
             >
               <span
-                className="h-8 md:h-10 flex items-center justify-center px-4 md:px-6 bg-white border-2 border-black rounded-lg font-bold text-lg md:text-2xl text-black select-none"
+                className="
+                  flex items-center justify-center
+                  bg-white border-2 border-black rounded-lg
+                  font-extrabold text-lg md:text-2xl
+                  text-black select-none shadow-md
+                  px-5 md:px-8 py-1 md:py-2
+                  tracking-wide font-inter
+                "
                 style={{
                   minWidth: '96px',
                   maxWidth: '210px',
+                  letterSpacing: '0.06em',
+                  boxShadow: '0 6px 20px 0 rgba(0,0,0,0.07), 0 1.5px 3px 0 rgba(0,0,0,0.04)',
                 }}
                 draggable="false"
               >
