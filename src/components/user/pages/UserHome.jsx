@@ -87,45 +87,6 @@ const UserHome = () => {
     { id: '3', product: 'Bluetooth Speaker', date: '2024-01-10', status: 'Processing', amount: '$79' },
   ];
 
-  const featuredCategories = [
-    { 
-      name: 'Handicrafts', 
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=300&q=80', 
-      count: '150+ items',
-      id: 'Handicrafts'
-    },
-    { 
-      name: 'Home Decor', 
-      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=300&q=80', 
-      count: '200+ items',
-      id: 'Home Decor'
-    },
-    { 
-      name: 'Furniture', 
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80', 
-      count: '180+ items',
-      id: 'Furniture'
-    },
-    { 
-      name: 'Health & Beauty', 
-      image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80', 
-      count: '120+ items',
-      id: 'Health & Beauty'
-    },
-    { 
-      name: 'Clothing', 
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80', 
-      count: '300+ items',
-      id: 'Clothing'
-    },
-    { 
-      name: 'Accessories', 
-      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80', 
-      count: '90+ items',
-      id: 'Accessories'
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto p-4 lg:p-8 space-y-8">
@@ -143,7 +104,7 @@ const UserHome = () => {
         </div>
 
         <DashboardOverview dashboardOverview={dashboardOverview} />
-        <CategoriesSection featuredCategories={featuredCategories} />
+        <CategoriesSection />
         <RecentOrdersSection recentOrders={recentOrders} />
       </div>
     </div>

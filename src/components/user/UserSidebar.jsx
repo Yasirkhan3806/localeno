@@ -14,7 +14,6 @@ import {
   Settings, 
   LogOut,
   X,
-  Menu,
   Calendar,
   BarChart3
 } from 'lucide-react';
@@ -28,7 +27,6 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     navigate('/');
   };
 
-  // Dashboard at the top, then Profile
   const menuItems = [
     { icon: BarChart3, label: 'Dashboard', path: '/user/home' },
     { icon: User, label: 'Profile', path: '/user/profile' },
@@ -106,19 +104,6 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Bottom section */}
         <div className="mt-auto">
-          {/* Back to Home Button */}
-          <div className="px-3 sm:px-4 pb-3 sm:pb-4">
-            <button
-              className="w-full flex items-center gap-2 bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white px-3 sm:px-4 py-3 sm:py-4 rounded-2xl font-bold hover:from-gray-800 hover:to-black transition-all duration-300 transform hover:scale-105 shadow-lg text-sm sm:text-base"
-              style={{ justifyContent: 'center' }}
-              onClick={() => navigate('/user/home')}
-              aria-label="Dashboard Home"
-            >
-              <Home size={18} className="sm:w-[20px] sm:h-[20px] flex-shrink-0" />
-              <span>Dashboard Home</span>
-            </button>
-          </div>
-
           {/* Logout */}
           <div className="p-3 sm:p-4 border-t border-gray-200">
             <button

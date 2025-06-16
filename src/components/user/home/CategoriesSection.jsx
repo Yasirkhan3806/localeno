@@ -6,6 +6,45 @@ import { Grid3x3 } from 'lucide-react';
 const CategoriesSection = ({ featuredCategories }) => {
   const navigate = useNavigate();
 
+  const updatedCategories = [
+    { 
+      name: 'Handicrafts', 
+      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=300&q=80', 
+      count: '10 items',
+      id: 'Handicrafts'
+    },
+    { 
+      name: 'Home Decor', 
+      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=300&q=80', 
+      count: '8 items',
+      id: 'Home Decor'
+    },
+    { 
+      name: 'Furniture', 
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80', 
+      count: '7 items',
+      id: 'Furniture'
+    },
+    { 
+      name: 'Health & Beauty', 
+      image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80', 
+      count: '6 items',
+      id: 'Health & Beauty'
+    },
+    { 
+      name: 'Clothing', 
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80', 
+      count: '8 items',
+      id: 'Clothing'
+    },
+    { 
+      name: 'Accessories', 
+      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80', 
+      count: '5 items',
+      id: 'Accessories'
+    },
+  ];
+
   return (
     <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
       <div className="flex items-center justify-between mb-6">
@@ -22,7 +61,7 @@ const CategoriesSection = ({ featuredCategories }) => {
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
-        {featuredCategories.map((category, index) => (
+        {updatedCategories.map((category, index) => (
           <div
             key={index}
             onClick={() => navigate(`/user/products?category=${encodeURIComponent(category.id)}`)}
