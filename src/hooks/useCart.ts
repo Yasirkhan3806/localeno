@@ -30,13 +30,18 @@ export function useCart() {
   const clearCart = () => setCart([]);
 
   // Increase/decrease quantity
-  const updateQuantity = (productId: any, qty: number) => {
+  const updateQuantity = (productId: any, change: number) => {
     setCart((prev: any[]) =>
       prev.map(item =>
-        item.id === productId ? { ...item, quantity: Math.max(1, qty) } : item
+        item.id === productId ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
       )
     );
   };
 
-  return { cart, addToCart, removeFromCart, clearCart, updateQuantity };
+  // Calculate cart total
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+  };
+
+  return { cart, addToCart, removeFromCart, clearCart, updateQuantity, getCartTotal };
 }
