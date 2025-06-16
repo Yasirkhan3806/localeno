@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import { Search, Filter, Eye, Edit, MoreHorizontal, Package, TrendingUp, Clock, CheckCircle } from "lucide-react";
+import ViewDetailModal from "./ViewDetailModal";
 
 // Demo orders data
 const DEMO_ORDERS = [
@@ -94,6 +94,7 @@ const statusBadge = (status) => {
 
 const AdminOrdersTable = ({ onViewOrder, onEditOrder }) => {
   const [search, setSearch] = useState("");
+  const [viewOrder, setViewOrder] = useState(null);
 
   const filteredOrders = DEMO_ORDERS.filter(
     o =>
@@ -118,121 +119,195 @@ const AdminOrdersTable = ({ onViewOrder, onEditOrder }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-3 flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
-        <div>
-          <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-0">Orders</h2>
-          <div className="text-gray-500 font-normal text-sm lg:text-base">Track and manage all customer orders</div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
-          <div className="flex-1 lg:flex-none flex items-center bg-white border border-gray-200 rounded-lg">
-            <Search className="text-gray-400 w-5 h-5 ml-3" />
-            <input
-              type="text"
-              placeholder="Search orders..."
-              className="w-full px-3 py-2 text-sm bg-transparent rounded-lg outline-none min-w-0 lg:min-w-[180px]"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+    <>
+      <div className="w-full">
+        <div className="mb-3 flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
+          <div>
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-0">Orders</h2>
+            <div className="text-gray-500 font-normal text-sm lg:text-base">Track and manage all customer orders</div>
           </div>
-          <button
-            onClick={() => window.alert('Filter functionality will be implemented soon!')}
-            className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition"
-          >
-            <Filter size={18} className="text-gray-500" />
-            Filter
-          </button>
-        </div>
-      </div>
-      
-      {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
-        {KPI.map((k, i) => (
-          <div key={i} className="bg-white rounded-xl px-4 lg:px-6 py-4 lg:py-5 flex gap-3 lg:gap-4 items-center border border-gray-100 min-w-0">
-            <div className="flex-shrink-0">{k.icon}</div>
-            <div className="min-w-0">
-              <div className="text-gray-500 text-sm lg:text-[.98rem] font-medium truncate">{k.label}</div>
-              <div className="text-xl lg:text-2xl font-extrabold text-gray-900">{k.value}</div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+            <div className="flex-1 lg:flex-none flex items-center bg-white border border-gray-200 rounded-lg">
+              <Search className="text-gray-400 w-5 h-5 ml-3" />
+              <input
+                type="text"
+                placeholder="Search orders..."
+                className="w-full px-3 py-2 text-sm bg-transparent rounded-lg outline-none min-w-0 lg:min-w-[180px]"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
             </div>
+            <button
+              onClick={() => window.alert('Filter functionality will be implemented soon!')}
+              className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition"
+            >
+              <Filter size={18} className="text-gray-500" />
+              <span className="hidden sm:inline">Filter</span>
+            </button>
           </div>
-        ))}
-      </div>
-      
-      {/* Table */}
-      <div className="rounded-2xl shadow border border-gray-100 bg-white overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="text-xs text-gray-400 font-semibold border-b">
-                <th className="pl-4 lg:pl-6 py-3 text-left min-w-[120px]">ORDER ID</th>
-                <th className="py-3 text-left min-w-[150px]">CUSTOMER</th>
-                <th className="py-3 text-left">ITEMS</th>
-                <th className="py-3 text-left">TOTAL</th>
-                <th className="py-3 text-left">STATUS</th>
-                <th className="py-3 text-left">DATE</th>
-                <th className="py-3 text-left">PAYMENT</th>
-                <th className="py-3 text-left">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-900">
-              {filteredOrders.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="py-5 text-center text-gray-400">
-                    No orders found.
-                  </td>
-                </tr>
-              ) : (
-                filteredOrders.map(order => (
-                  <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
-                    <td className="pl-4 lg:pl-6 py-3 font-semibold min-w-[120px]">
-                      {order.id}
-                    </td>
-                    <td className="py-3 min-w-[150px]">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
-                          {order.customer.split(" ").map(n => n[0]).join("").slice(0, 2)}
+        </div>
+        
+        {/* KPIs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
+          {KPI.map((k, i) => (
+            <div key={i} className="bg-white rounded-xl px-4 lg:px-6 py-4 lg:py-5 flex gap-3 lg:gap-4 items-center border border-gray-100 min-w-0">
+              <div className="flex-shrink-0">{k.icon}</div>
+              <div className="min-w-0">
+                <div className="text-gray-500 text-sm lg:text-[.98rem] font-medium truncate">{k.label}</div>
+                <div className="text-xl lg:text-2xl font-extrabold text-gray-900">{k.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Mobile Cards View */}
+        <div className="block lg:hidden rounded-2xl shadow border border-gray-100 bg-white overflow-hidden">
+          {filteredOrders.length === 0 ? (
+            <div className="py-8 text-center text-gray-400">
+              No orders found.
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {filteredOrders.map(order => (
+                <div key={order.id} className="p-4 hover:bg-gray-50 transition">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                        {order.customer.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="font-semibold text-gray-900">{order.id}</h3>
+                            <p className="text-sm text-gray-600 truncate">{order.customer}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="font-semibold text-gray-900">${order.total.toFixed(2)}</span>
+                              <span className="text-sm text-gray-500">• {order.items} items</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="truncate">{order.customer}</div>
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex flex-col gap-1">
+                            {statusBadge(order.status)}
+                            <span className="text-xs text-gray-500">{order.date}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500"
+                              title="View Order"
+                              onClick={() => setViewOrder(order)}
+                            >
+                              <Eye size={16} />
+                            </button>
+                            <button
+                              className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500"
+                              title="Edit Order"
+                              onClick={() => onEditOrder(order)}
+                            >
+                              <Edit size={16} />
+                            </button>
+                            <button
+                              className="p-2 rounded-full hover:bg-gray-100 transition text-gray-500"
+                              title="More actions"
+                              onClick={() => handleMoreActions(order)}
+                            >
+                              <MoreHorizontal size={16} />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </td>
-                    <td className="py-3 whitespace-nowrap">{order.items}</td>
-                    <td className="py-3 whitespace-nowrap font-semibold">${order.total.toFixed(2)}</td>
-                    <td className="py-3 whitespace-nowrap">{statusBadge(order.status)}</td>
-                    <td className="py-3 whitespace-nowrap">{order.date}</td>
-                    <td className="py-3 whitespace-nowrap">{order.paymentMethod}</td>
-                    <td className="py-3 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="View Order"
-                          onClick={() => onViewOrder(order.id)}
-                        >
-                          <Eye size={18} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="Edit Order"
-                          onClick={() => onEditOrder(order)}
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button
-                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="More actions"
-                          onClick={() => handleMoreActions(order)}
-                        >
-                          <MoreHorizontal size={18} />
-                        </button>
-                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden lg:block rounded-2xl shadow border border-gray-100 bg-white overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="text-xs text-gray-400 font-semibold border-b">
+                  <th className="pl-4 lg:pl-6 py-3 text-left min-w-[120px]">ORDER ID</th>
+                  <th className="py-3 text-left min-w-[150px]">CUSTOMER</th>
+                  <th className="py-3 text-left">ITEMS</th>
+                  <th className="py-3 text-left">TOTAL</th>
+                  <th className="py-3 text-left">STATUS</th>
+                  <th className="py-3 text-left">DATE</th>
+                  <th className="py-3 text-left">PAYMENT</th>
+                  <th className="py-3 text-left">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-900">
+                {filteredOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-5 text-center text-gray-400">
+                      No orders found.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  filteredOrders.map(order => (
+                    <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
+                      <td className="pl-4 lg:pl-6 py-3 font-semibold min-w-[120px]">
+                        {order.id}
+                      </td>
+                      <td className="py-3 min-w-[150px]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                            {order.customer.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                          </div>
+                          <div className="truncate">{order.customer}</div>
+                        </div>
+                      </td>
+                      <td className="py-3 whitespace-nowrap">{order.items}</td>
+                      <td className="py-3 whitespace-nowrap font-semibold">${order.total.toFixed(2)}</td>
+                      <td className="py-3 whitespace-nowrap">{statusBadge(order.status)}</td>
+                      <td className="py-3 whitespace-nowrap">{order.date}</td>
+                      <td className="py-3 whitespace-nowrap">{order.paymentMethod}</td>
+                      <td className="py-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                            title="View Order"
+                            onClick={() => setViewOrder(order)}
+                          >
+                            <Eye size={18} />
+                          </button>
+                          <button
+                            className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                            title="Edit Order"
+                            onClick={() => onEditOrder(order)}
+                          >
+                            <Edit size={18} />
+                          </button>
+                          <button
+                            className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                            title="More actions"
+                            onClick={() => handleMoreActions(order)}
+                          >
+                            <MoreHorizontal size={18} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* View Detail Modal */}
+      <ViewDetailModal
+        item={viewOrder}
+        type="order"
+        isOpen={!!viewOrder}
+        onClose={() => setViewOrder(null)}
+      />
+    </>
   );
 };
 

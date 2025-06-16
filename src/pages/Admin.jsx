@@ -374,7 +374,7 @@ const Admin = () => {
             </svg>
           </button>
 
-          <h2 className="text-xl lg:text-2xl font-bold tracking-tight text-gray-900 capitalize">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-gray-900 capitalize truncate">
             {section === "dashboard" ? "Dashboard" :
              section === "add-product" ? "Add Product" :
              section === "edit-product" ? "Edit Product" :
@@ -391,7 +391,7 @@ const Admin = () => {
             {/* Admin info */}
             <div className="flex items-center gap-2 lg:gap-3">
               <div className="w-8 lg:w-10 h-8 lg:h-10 bg-black text-white flex items-center justify-center rounded-full font-bold text-sm lg:text-lg border-2 border-white">A</div>
-              <span className="hidden sm:inline text-gray-900 font-bold text-sm lg:text-base">Admin</span>
+              <span className="hidden sm:inline text-gray-900 font-bold text-sm lg:text-base truncate">Admin</span>
             </div>
             
             {/* Logout icon */}
