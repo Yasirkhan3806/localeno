@@ -1,16 +1,14 @@
 
-// Main marketplace landing page UI
-
 import Header from "../components/Header.jsx";
-import HeroCarousel from "../components/HeroCarousel.jsx";
+import Hero from "../components/Hero.jsx";
 import CategoriesGrid from "../components/CategoriesGrid.jsx";
+import FeaturedCollection from "../components/FeaturedCollection.jsx";
 import AboutUs from "../components/AboutUs.jsx";
 import ContactUs from "../components/ContactUs.jsx";
 import Footer from "../components/Footer.jsx";
 import ProductDetailModal from "../components/ProductDetailModal.jsx";
 import React, { useState } from "react";
 
-// Demo state (drop in a basic product modal system; more can be wired later)
 const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -21,11 +19,14 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="flex flex-col gap-10 sm:gap-12 md:gap-16 mt-0">
-        {/* Hero/Carousel */}
-        <HeroCarousel />
+        {/* Hero Section */}
+        <Hero />
 
-        {/* Categories Grid — includes featured products */}
-        <CategoriesGrid onProductClick={setSelectedProduct} />
+        {/* Categories Grid */}
+        <CategoriesGrid />
+
+        {/* Featured Collection */}
+        <FeaturedCollection />
 
         {/* About Us Section */}
         <AboutUs />
