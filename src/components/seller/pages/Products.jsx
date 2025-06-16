@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductFilters from "./ProductFilters";
@@ -12,7 +13,7 @@ const DEMO_PRODUCTS = [
     id: "1",
     name: "Table Lamp",
     category: "Home & Living",
-    price: 45,
+    price: 6750,
     stock: 14,
     status: "Active",
     image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80",
@@ -22,7 +23,7 @@ const DEMO_PRODUCTS = [
     id: "2",
     name: "Leather Bag",
     category: "Accessories",
-    price: 75,
+    price: 11250,
     stock: 7,
     status: "In Review",
     image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80",
@@ -32,7 +33,7 @@ const DEMO_PRODUCTS = [
     id: "3",
     name: "Denim Jacket",
     category: "Clothing",
-    price: 38,
+    price: 5700,
     stock: 6,
     status: "Active",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80",
@@ -42,7 +43,7 @@ const DEMO_PRODUCTS = [
     id: "4",
     name: "Bluetooth Speaker",
     category: "Electronics",
-    price: 73,
+    price: 10950,
     stock: 0,
     status: "Rejected",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
@@ -52,7 +53,7 @@ const DEMO_PRODUCTS = [
     id: "5",
     name: "Gold Watch",
     category: "Accessories",
-    price: 150,
+    price: 22500,
     stock: 23,
     status: "Active",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",

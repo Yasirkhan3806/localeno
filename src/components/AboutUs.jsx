@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { User, Heart, ShoppingBag, Shield, Award, Users, Globe, Zap, Send, Phone, Mail, MapPin } from "lucide-react";
 
@@ -142,48 +143,124 @@ const AboutUs = () => {
         </div>
 
         {/* Get in Touch Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 text-white text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 text-white">
           <div className="max-w-4xl mx-auto">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Send className="w-8 h-8 text-white" />
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Send className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold mb-4">Get in Touch</h3>
+              <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              </p>
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">Ready to Get Started?</h3>
-            <p className="text-blue-100 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
-              Join thousands of satisfied customers and experience the future of online shopping with Localena. 
-              Have questions? We're here to help you every step of the way.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                <Phone className="w-8 h-8 text-white mx-auto mb-3" />
-                <h4 className="font-semibold mb-2">Call Us</h4>
-                <p className="text-blue-100 text-sm">+92 42 9999 0001</p>
+
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Contact Info */}
+              <div className="space-y-6">
+                <div className="grid gap-4">
+                  <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <Phone className="w-6 h-6 text-white" />
+                      <div>
+                        <h4 className="font-semibold text-white">Call Us</h4>
+                        <p className="text-blue-100 text-sm">+92 42 9999 0001</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <Mail className="w-6 h-6 text-white" />
+                      <div>
+                        <h4 className="font-semibold text-white">Email Us</h4>
+                        <p className="text-blue-100 text-sm">support@localena.pk</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <MapPin className="w-6 h-6 text-white" />
+                      <div>
+                        <h4 className="font-semibold text-white">Visit Us</h4>
+                        <p className="text-blue-100 text-sm">123 Main Blvd, Lahore</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Contact Form */}
               <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                <Mail className="w-8 h-8 text-white mx-auto mb-3" />
-                <h4 className="font-semibold mb-2">Email Us</h4>
-                <p className="text-blue-100 text-sm">support@localena.pk</p>
+                <h4 className="text-xl font-bold text-white mb-4">Send us a Message</h4>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-100 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                        placeholder="Full Name"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-100 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                        placeholder="Email Address"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <input
+                      type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-100 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                      placeholder="Subject"
+                    />
+                  </div>
+                  
+                  <div>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-100 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent resize-none"
+                      placeholder="Your Message"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-white text-blue-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Send Message
+                      </>
+                    )}
+                  </button>
+                </form>
               </div>
-              <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
-                <h4 className="font-semibold mb-2">Visit Us</h4>
-                <p className="text-blue-100 text-sm">123 Main Blvd, Lahore</p>
-              </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a 
-                href="#contact" 
-                className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                Contact Us Today
-              </a>
-              <a 
-                href="tel:+924299990001" 
-                className="bg-white/20 border-2 border-white text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/30 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-              >
-                Call Now
-              </a>
             </div>
           </div>
         </div>

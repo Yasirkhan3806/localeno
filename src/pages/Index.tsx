@@ -4,7 +4,6 @@ import Hero from "../components/Hero.jsx";
 import CategoriesGrid from "../components/CategoriesGrid.jsx";
 import FeaturedCollection from "../components/FeaturedCollection.jsx";
 import AboutUs from "../components/AboutUs.jsx";
-import ContactUs from "../components/ContactUs.jsx";
 import Footer from "../components/Footer.jsx";
 import ProductDetailModal from "../components/ProductDetailModal.jsx";
 import React, { useState } from "react";
@@ -30,9 +29,6 @@ const Index = () => {
 
         {/* About Us Section */}
         <AboutUs />
-
-        {/* Contact Us */}
-        <ContactUs />
       </main>
 
       {/* Detail Modal, shown only when a product is selected */}

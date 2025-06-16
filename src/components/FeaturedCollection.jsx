@@ -1,14 +1,14 @@
 
 import React from "react";
-import { Star, Heart, ShoppingCart, Calendar } from "lucide-react";
+import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const featuredProducts = [
   {
     id: 1,
     name: "Handcrafted Wooden Table",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80",
-    price: "Rs. 2,500/day",
+    image: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&w=400&q=80",
+    price: "PKR 45,000/day",
     rating: 4.8,
     reviews: 24,
     seller: "Ahmad Furniture",
@@ -18,8 +18,8 @@ const featuredProducts = [
   {
     id: 2,
     name: "Vintage Ceramic Vase",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80",
-    price: "Rs. 800/day",
+    image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68d61?auto=format&fit=crop&w=400&q=80",
+    price: "PKR 12,000/day",
     rating: 4.9,
     reviews: 18,
     seller: "Pottery House",
@@ -29,8 +29,8 @@ const featuredProducts = [
   {
     id: 3,
     name: "Traditional Embroidered Dress",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80",
-    price: "Rs. 1,200/day",
+    image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=400&q=80",
+    price: "PKR 18,000/day",
     rating: 4.7,
     reviews: 22,
     seller: "Ethnic Wear Studio",
@@ -40,8 +40,8 @@ const featuredProducts = [
   {
     id: 4,
     name: "Handmade Leather Bag",
-    image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80",
-    price: "Rs. 600/day",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80",
+    price: "PKR 9,000/day",
     rating: 4.6,
     reviews: 15,
     seller: "Leather Craft Co.",
@@ -54,25 +54,8 @@ const FeaturedCollection = () => {
   const navigate = useNavigate();
 
   const handleProductClick = (product) => {
-    navigate(`/product/${product.id}`);
-  };
-
-  const handleAddToCart = (product, e) => {
-    e.stopPropagation();
-    navigate('/user/cart');
-    console.log('Added to cart:', product.name);
-  };
-
-  const handleRentNow = (product, e) => {
-    e.stopPropagation();
-    navigate('/user/rentals');
-    console.log('Rent now:', product.name);
-  };
-
-  const handleAddToWishlist = (product, e) => {
-    e.stopPropagation();
-    navigate('/user/wishlist');
-    console.log('Added to wishlist:', product.name);
+    // Redirect to login page since product details require authentication
+    navigate('/login');
   };
 
   return (
@@ -110,12 +93,6 @@ const FeaturedCollection = () => {
                     ✓ Verified
                   </div>
                 )}
-                <button
-                  onClick={(e) => handleAddToWishlist(product, e)}
-                  className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 hover:scale-105 transition-all duration-200"
-                >
-                  <Heart size={16} className="text-gray-600" />
-                </button>
               </div>
 
               <div className="p-4">
@@ -137,18 +114,9 @@ const FeaturedCollection = () => {
 
                 <div className="space-y-2">
                   <button
-                    onClick={(e) => handleRentNow(product, e)}
                     className="w-full bg-black text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
                   >
-                    Rent Now
-                  </button>
-                  
-                  <button
-                    onClick={(e) => handleAddToCart(product, e)}
-                    className="w-full bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
-                  >
-                    <ShoppingCart size={16} />
-                    Add to Cart
+                    View Details
                   </button>
                 </div>
               </div>

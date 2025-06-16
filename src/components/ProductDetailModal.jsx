@@ -9,7 +9,7 @@ const sampleProduct = {
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80"
   ],
-  price: "$49",
+  price: "PKR 7,350",
   description: "A powerful portable speaker with deep bass, Bluetooth 5.0, 12hr battery.",
   seller: "TechStore",
   verified: true,

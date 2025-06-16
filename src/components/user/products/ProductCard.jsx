@@ -19,6 +19,18 @@ const ProductCard = ({ product }) => {
     navigate(`/product/${product.id}`);
   };
 
+  // Convert dollar prices to PKR (assuming 1 USD = 150 PKR)
+  const convertToPKR = (dollarPrice) => {
+    const numericPrice = parseFloat(dollarPrice.replace('$', ''));
+    return `PKR ${Math.round(numericPrice * 150).toLocaleString()}`;
+  };
+
+  const convertRentToPKR = (rentPrice) => {
+    if (!rentPrice) return null;
+    const numericPrice = parseFloat(rentPrice.replace('$', '').replace('/day', ''));
+    return `PKR ${Math.round(numericPrice * 150).toLocaleString()}/day`;
+  };
+
   return (
     <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
       <div className="relative">
@@ -72,10 +84,10 @@ const ProductCard = ({ product }) => {
         
         <div className="mb-4">
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-gray-900">${product.price}</span>
+            <span className="text-2xl font-bold text-gray-900">{convertToPKR(product.price)}</span>
             {product.rentPrice && (
               <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">
-                ${product.rentPrice}/day
+                {convertRentToPKR(product.rentPrice)}
               </span>
             )}
           </div>

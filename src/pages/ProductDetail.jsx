@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart, MessageCircle, Share2, Star, Camera, Send, ArrowLeft, Plus, Minus } from "lucide-react";
@@ -5,6 +6,7 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import IdentityVerificationModal from "../components/IdentityVerificationModal.jsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 // Sample product data with new categories
 const sampleProducts = {
@@ -12,9 +14,9 @@ const sampleProducts = {
     id: 1,
     name: "Handcrafted Wooden Dining Table",
     brand: "FurniCraft",
-    price: "$299",
-    originalPrice: "$399",
-    rentPrice: "$25/day",
+    price: "PKR 44,850",
+    originalPrice: "PKR 59,850",
+    rentPrice: "PKR 3,750/day",
     category: "Furniture",
     images: [
       "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=600&q=80",
@@ -53,6 +55,7 @@ const sampleProducts = {
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated, loading } = useAuth();
   const [product] = useState(sampleProducts[id] || sampleProducts[1]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -92,6 +95,27 @@ const ProductDetail = () => {
     }
   ]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "", images: [] });
+
+  // Check authentication on mount
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [loading, isAuthenticated, navigate]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-black"></div>
+      </div>
+    );
+  }
+
+  // If not authenticated, don't render the component (user will be redirected)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleAddToCart = () => {
     console.log(`Added ${quantity} x ${product.name} to cart`);
@@ -143,9 +167,9 @@ const ProductDetail = () => {
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-          <button onClick={() => navigate('/')} className="hover:text-gray-900">Home</button>
+          <button onClick={() => navigate('/user/home')} className="hover:text-gray-900">Home</button>
           <span>/</span>
-          <button onClick={() => navigate('/products')} className="hover:text-gray-900">Products</button>
+          <button onClick={() => navigate('/user/products')} className="hover:text-gray-900">Products</button>
           <span>/</span>
           <span className="text-gray-900">{product.name}</span>
         </div>
