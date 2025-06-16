@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Package,
@@ -27,6 +28,9 @@ import AddProductPage from "../components/admin/AddProductPage";
 import EditProductPage from "../components/admin/EditProductPage";
 import AddCustomerPage from "../components/admin/AddCustomerPage";
 import AddSellerPage from "../components/admin/AddSellerPage";
+import EditCustomerPage from "../components/admin/EditCustomerPage";
+import EditSellerPage from "../components/admin/EditSellerPage";
+import EditOrderPage from "../components/admin/EditOrderPage";
 import ProductActionsPage from "../components/admin/ProductActionsPage";
 
 // Demo Product Data
@@ -127,16 +131,14 @@ const Admin = () => {
   const [editProductMode, setEditProductMode] = useState(null);
   const [addCustomerMode, setAddCustomerMode] = useState(false);
   const [addSellerMode, setAddSellerMode] = useState(false);
+  const [editCustomerMode, setEditCustomerMode] = useState(null);
+  const [editSellerMode, setEditSellerMode] = useState(null);
+  const [editOrderMode, setEditOrderMode] = useState(null);
   const [productActionsMode, setProductActionsMode] = useState(null);
 
   // Handler for dashboard "View All" orders
   const handleViewAllOrders = () => {
     setSection("orders");
-  };
-
-  // Handlers
-  const handleEditProduct = (product) => {
-    window.alert("Edit product: " + product.name);
   };
 
   // Report
@@ -204,6 +206,21 @@ const Admin = () => {
     setSection("edit-product");
   };
 
+  const handleEditCustomer = (customer) => {
+    setEditCustomerMode(customer);
+    setSection("edit-customer");
+  };
+
+  const handleEditSeller = (seller) => {
+    setEditSellerMode(seller);
+    setSection("edit-seller");
+  };
+
+  const handleEditOrder = (order) => {
+    setEditOrderMode(order);
+    setSection("edit-order");
+  };
+
   const handleProductActions = (product) => {
     setProductActionsMode(product);
     setSection("product-actions");
@@ -228,6 +245,21 @@ const Admin = () => {
   const handleBackFromEditProduct = () => {
     setEditProductMode(null);
     setSection("products");
+  };
+
+  const handleBackFromEditCustomer = () => {
+    setEditCustomerMode(null);
+    setSection("customers");
+  };
+
+  const handleBackFromEditSeller = () => {
+    setEditSellerMode(null);
+    setSection("sellers");
+  };
+
+  const handleBackFromEditOrder = () => {
+    setEditOrderMode(null);
+    setSection("orders");
   };
 
   const handleBackFromProductActions = () => {
@@ -291,8 +323,9 @@ const Admin = () => {
               className={`flex items-center gap-3 w-full px-6 py-2 lg:py-3 text-sm lg:text-[15px] rounded-lg font-medium mb-1 transition-colors
                 ${section === item.key || 
                   (item.key === "products" && ["add-product", "edit-product", "product-actions", "product-detail"].includes(section)) ||
-                  (item.key === "customers" && ["add-customer", "customer-detail"].includes(section)) ||
-                  (item.key === "sellers" && ["add-seller", "seller-detail"].includes(section))
+                  (item.key === "customers" && ["add-customer", "edit-customer", "customer-detail"].includes(section)) ||
+                  (item.key === "sellers" && ["add-seller", "edit-seller", "seller-detail"].includes(section)) ||
+                  (item.key === "orders" && ["edit-order", "order-detail"].includes(section))
                   ? "bg-black text-white"
                   : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -304,8 +337,9 @@ const Admin = () => {
               <item.icon size={18} className={
                 section === item.key || 
                 (item.key === "products" && ["add-product", "edit-product", "product-actions", "product-detail"].includes(section)) ||
-                (item.key === "customers" && ["add-customer", "customer-detail"].includes(section)) ||
-                (item.key === "sellers" && ["add-seller", "seller-detail"].includes(section))
+                (item.key === "customers" && ["add-customer", "edit-customer", "customer-detail"].includes(section)) ||
+                (item.key === "sellers" && ["add-seller", "edit-seller", "seller-detail"].includes(section)) ||
+                (item.key === "orders" && ["edit-order", "order-detail"].includes(section))
                 ? "text-white" : "text-gray-400"
               } />
               <span>{item.label}</span>
@@ -346,7 +380,10 @@ const Admin = () => {
              section === "edit-product" ? "Edit Product" :
              section === "product-actions" ? "Product Actions" :
              section === "add-customer" ? "Add Customer" :
+             section === "edit-customer" ? "Edit Customer" :
              section === "add-seller" ? "Add Seller" :
+             section === "edit-seller" ? "Edit Seller" :
+             section === "edit-order" ? "Edit Order" :
              section.charAt(0).toUpperCase() + section.slice(1)}
           </h2>
           
@@ -387,12 +424,34 @@ const Admin = () => {
             />
           )}
           
-          {/* Add Customer/Seller Pages */}
+          {/* Add/Edit Customer Pages */}
           {section === "add-customer" && (
             <AddCustomerPage onBack={handleBackFromAddCustomer} />
           )}
+          {section === "edit-customer" && editCustomerMode && (
+            <EditCustomerPage 
+              customer={editCustomerMode} 
+              onBack={handleBackFromEditCustomer}
+            />
+          )}
+
+          {/* Add/Edit Seller Pages */}
           {section === "add-seller" && (
             <AddSellerPage onBack={handleBackFromAddSeller} />
+          )}
+          {section === "edit-seller" && editSellerMode && (
+            <EditSellerPage 
+              seller={editSellerMode} 
+              onBack={handleBackFromEditSeller}
+            />
+          )}
+
+          {/* Edit Order Page */}
+          {section === "edit-order" && editOrderMode && (
+            <EditOrderPage 
+              order={editOrderMode} 
+              onBack={handleBackFromEditOrder}
+            />
           )}
 
           {/* Detail pages */}
@@ -433,18 +492,23 @@ const Admin = () => {
             </>
           )}
           {section === "orders" && (
-            <AdminOrdersTable onViewOrder={handleViewOrder} />
+            <AdminOrdersTable 
+              onViewOrder={handleViewOrder}
+              onEditOrder={handleEditOrder}
+            />
           )}
           {section === "customers" && (
             <AdminCustomersTable 
               onViewCustomer={handleViewCustomer}
               onAddCustomer={handleAddCustomer}
+              onEditCustomer={handleEditCustomer}
             />
           )}
           {section === "sellers" && (
             <AdminSellersTable 
               onViewSeller={handleViewSeller}
               onAddSeller={handleAddSeller}
+              onEditSeller={handleEditSeller}
             />
           )}
           {section === "reports" && (

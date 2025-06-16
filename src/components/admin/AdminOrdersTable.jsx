@@ -1,100 +1,113 @@
 
-import React, { useState } from 'react';
-import { Eye, MoreHorizontal, Download } from "lucide-react";
+import React, { useState } from "react";
+import { Search, Filter, Eye, Edit, MoreHorizontal, Package, TrendingUp, Clock, CheckCircle } from "lucide-react";
 
 // Demo orders data
 const DEMO_ORDERS = [
   {
-    id: "#ORD-001",
+    id: "ORD-001",
     customer: "John Smith",
-    date: "2024-01-15",
-    amount: 125.00,
     items: 3,
+    total: 299.97,
     status: "Delivered",
+    date: "2024-01-15",
+    paymentMethod: "Credit Card"
   },
   {
-    id: "#ORD-002",
+    id: "ORD-002", 
     customer: "Sarah Wilson",
-    date: "2024-01-14",
-    amount: 89.50,
-    items: 2,
-    status: "Processing",
-  },
-  {
-    id: "#ORD-003",
-    customer: "Mike Johnson",
-    date: "2024-01-13",
-    amount: 247.25,
-    items: 5,
-    status: "Shipped",
-  },
-  {
-    id: "#ORD-004",
-    customer: "Emily Brown",
-    date: "2024-01-12",
-    amount: 156.75,
     items: 1,
+    total: 89.99,
+    status: "Processing",
+    date: "2024-01-14",
+    paymentMethod: "PayPal"
+  },
+  {
+    id: "ORD-003",
+    customer: "Mike Johnson", 
+    items: 2,
+    total: 459.98,
+    status: "Shipped",
+    date: "2024-01-13",
+    paymentMethod: "Credit Card"
+  },
+  {
+    id: "ORD-004",
+    customer: "Emily Brown",
+    items: 1,
+    total: 49.99,
     status: "Pending",
+    date: "2024-01-12",
+    paymentMethod: "Debit Card"
+  },
+  {
+    id: "ORD-005",
+    customer: "David Chen",
+    items: 4,
+    total: 789.96,
+    status: "Cancelled",
+    date: "2024-01-11",
+    paymentMethod: "Credit Card"
+  }
+];
+
+// Demo KPIs
+const KPI = [
+  {
+    icon: <Package className="w-7 h-7 text-blue-700 bg-blue-100 rounded-md p-1" />,
+    label: "Total Orders",
+    value: "2,847",
+  },
+  {
+    icon: <TrendingUp className="w-7 h-7 text-green-700 bg-green-100 rounded-md p-1" />,
+    label: "Revenue",
+    value: "$45,289",
+  },
+  {
+    icon: <Clock className="w-7 h-7 text-orange-700 bg-orange-100 rounded-md p-1" />,
+    label: "Pending",
+    value: "127",
+  },
+  {
+    icon: <CheckCircle className="w-7 h-7 text-purple-700 bg-purple-100 rounded-md p-1" />,
+    label: "Completed",
+    value: "2,456",
   },
 ];
 
-const STATUS_STYLES = {
-  "Delivered": "bg-green-100 text-green-700",
-  "Processing": "bg-blue-100 text-blue-700",
-  "Shipped": "bg-purple-100 text-purple-700",
-  "Pending": "bg-yellow-100 text-yellow-700",
+const statusBadge = (status) => {
+  switch (status) {
+    case "Delivered":
+      return <span className="bg-green-100 text-green-700 rounded-full px-3 py-1 text-xs font-semibold">Delivered</span>;
+    case "Shipped":
+      return <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-semibold">Shipped</span>;
+    case "Processing":
+      return <span className="bg-yellow-100 text-yellow-700 rounded-full px-3 py-1 text-xs font-semibold">Processing</span>;
+    case "Pending":
+      return <span className="bg-orange-100 text-orange-700 rounded-full px-3 py-1 text-xs font-semibold">Pending</span>;
+    case "Cancelled":
+      return <span className="bg-red-100 text-red-500 rounded-full px-3 py-1 text-xs font-semibold">Cancelled</span>;
+    default:
+      return <span className="bg-gray-100 text-gray-500 rounded-full px-3 py-1 text-xs font-semibold">{status}</span>;
+  }
 };
 
-const AdminOrdersTable = ({ onViewOrder }) => {
+const AdminOrdersTable = ({ onViewOrder, onEditOrder }) => {
   const [search, setSearch] = useState("");
-  const [orderData] = useState(DEMO_ORDERS);
 
-  // Filter by search
-  const filteredOrders = orderData.filter(order =>
-    order.id.toLowerCase().includes(search.toLowerCase())
-    || order.customer.toLowerCase().includes(search.toLowerCase())
+  const filteredOrders = DEMO_ORDERS.filter(
+    o =>
+      o.id.toLowerCase().includes(search.toLowerCase()) ||
+      o.customer.toLowerCase().includes(search.toLowerCase())
   );
-
-  const handleFilter = () => {
-    window.alert('Filter functionality will be implemented soon!');
-  };
-
-  const handleExportCSV = () => {
-    // Create CSV content
-    const headers = ['Order ID', 'Customer', 'Date', 'Amount', 'Items', 'Status'];
-    const csvContent = [
-      headers.join(','),
-      ...filteredOrders.map(order => [
-        order.id,
-        order.customer,
-        order.date,
-        order.amount,
-        order.items,
-        order.status
-      ].join(','))
-    ].join('\n');
-
-    // Download CSV
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'orders_export.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-
-  const handleViewOrder = (order) => {
-    window.alert(`View Order Details:\n\nOrder ID: ${order.id}\nCustomer: ${order.customer}\nAmount: $${order.amount}\nStatus: ${order.status}\n\nFull order details functionality will be implemented soon!`);
-  };
 
   const handleMoreActions = (order) => {
     const actions = [
-      'Edit Order',
-      'Cancel Order', 
-      'Duplicate Order',
-      'Send Invoice',
-      'Print Order'
+      'View Invoice',
+      'Send Email Update',
+      'Print Shipping Label',
+      'Refund Order',
+      'Cancel Order'
     ];
     
     const action = window.prompt(`More actions for ${order.id}:\n\n${actions.map((a, i) => `${i+1}. ${a}`).join('\n')}\n\nEnter number (1-${actions.length}):`);
@@ -106,79 +119,102 @@ const AdminOrdersTable = ({ onViewOrder }) => {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-col md:flex-row md:items-center gap-3 justify-between">
+      <div className="mb-3 flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-0">Orders</h2>
-          <div className="text-gray-500 font-normal text-base">Manage customer orders and fulfillment</div>
+          <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-0">Orders</h2>
+          <div className="text-gray-500 font-normal text-sm lg:text-base">Track and manage all customer orders</div>
         </div>
-        <div className="flex gap-2 mt-2 md:mt-0">
-          <input
-            type="text"
-            className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm placeholder:text-gray-400 min-w-[180px] w-full md:w-auto focus:ring-2 focus:ring-black focus:outline-none transition"
-            placeholder="Search orders..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+        <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+          <div className="flex-1 lg:flex-none flex items-center bg-white border border-gray-200 rounded-lg">
+            <Search className="text-gray-400 w-5 h-5 ml-3" />
+            <input
+              type="text"
+              placeholder="Search orders..."
+              className="w-full px-3 py-2 text-sm bg-transparent rounded-lg outline-none min-w-0 lg:min-w-[180px]"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
           <button
-            onClick={handleFilter}
+            onClick={() => window.alert('Filter functionality will be implemented soon!')}
             className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium bg-white hover:bg-gray-100 transition"
           >
-            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-6.414 6.414A2 2 0 0012 15.586V19a1 1 0 01-1.447.894l-4-2A1 1 0 016 17V15.586a2 2 0 00-.293-1.465L3.293 6.707A1 1 0 013 6V4z"/>
-            </svg>
+            <Filter size={18} className="text-gray-500" />
             Filter
-          </button>
-          <button
-            onClick={handleExportCSV}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-black text-white font-semibold shadow hover:bg-gray-900 transition text-sm"
-          >
-            <Download size={16} />
-            Export CSV
           </button>
         </div>
       </div>
-      <div className="rounded-2xl shadow border border-gray-100 bg-white overflow-auto">
-        <table className="min-w-full text-sm">
-          <thead>
-            <tr className="text-xs text-gray-400 font-semibold border-b">
-              <th className="px-6 py-3 text-left">ORDER ID</th>
-              <th className="py-3 text-left">CUSTOMER</th>
-              <th className="py-3 text-left">DATE</th>
-              <th className="py-3 text-left">AMOUNT</th>
-              <th className="py-3 text-left">ITEMS</th>
-              <th className="py-3 text-left">STATUS</th>
-              <th className="py-3 text-left">ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-900">
-            {
-              filteredOrders.length === 0 ? (
+      
+      {/* KPIs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-7">
+        {KPI.map((k, i) => (
+          <div key={i} className="bg-white rounded-xl px-4 lg:px-6 py-4 lg:py-5 flex gap-3 lg:gap-4 items-center border border-gray-100 min-w-0">
+            <div className="flex-shrink-0">{k.icon}</div>
+            <div className="min-w-0">
+              <div className="text-gray-500 text-sm lg:text-[.98rem] font-medium truncate">{k.label}</div>
+              <div className="text-xl lg:text-2xl font-extrabold text-gray-900">{k.value}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Table */}
+      <div className="rounded-2xl shadow border border-gray-100 bg-white overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead>
+              <tr className="text-xs text-gray-400 font-semibold border-b">
+                <th className="pl-4 lg:pl-6 py-3 text-left min-w-[120px]">ORDER ID</th>
+                <th className="py-3 text-left min-w-[150px]">CUSTOMER</th>
+                <th className="py-3 text-left">ITEMS</th>
+                <th className="py-3 text-left">TOTAL</th>
+                <th className="py-3 text-left">STATUS</th>
+                <th className="py-3 text-left">DATE</th>
+                <th className="py-3 text-left">PAYMENT</th>
+                <th className="py-3 text-left">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-900">
+              {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-5 text-center text-gray-400">
+                  <td colSpan={8} className="py-5 text-center text-gray-400">
                     No orders found.
                   </td>
                 </tr>
               ) : (
-                filteredOrders.map((order, idx) => (
+                filteredOrders.map(order => (
                   <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition">
-                    <td className="px-6 py-3 font-semibold text-primary">{order.id}</td>
-                    <td className="py-3">{order.customer}</td>
-                    <td className="py-3">{order.date}</td>
-                    <td className="py-3">${order.amount.toFixed(2)}</td>
-                    <td className="py-3">{order.items}</td>
-                    <td className="py-3">
-                      <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${STATUS_STYLES[order.status] || "bg-gray-200 text-gray-700"}`}>
-                        {order.status}
-                      </span>
+                    <td className="pl-4 lg:pl-6 py-3 font-semibold min-w-[120px]">
+                      {order.id}
                     </td>
-                    <td className="py-3">
+                    <td className="py-3 min-w-[150px]">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gray-800 text-white flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                          {order.customer.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                        </div>
+                        <div className="truncate">{order.customer}</div>
+                      </div>
+                    </td>
+                    <td className="py-3 whitespace-nowrap">{order.items}</td>
+                    <td className="py-3 whitespace-nowrap font-semibold">${order.total.toFixed(2)}</td>
+                    <td className="py-3 whitespace-nowrap">{statusBadge(order.status)}</td>
+                    <td className="py-3 whitespace-nowrap">{order.date}</td>
+                    <td className="py-3 whitespace-nowrap">{order.paymentMethod}</td>
+                    <td className="py-3 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <button
                           className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
-                          title="View order"
-                          onClick={() => handleViewOrder(order)}
+                          title="View Order"
+                          onClick={() => onViewOrder(order.id)}
                         >
                           <Eye size={18} />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                          title="Edit Order"
+                          onClick={() => onEditOrder(order)}
+                        >
+                          <Edit size={18} />
                         </button>
                         <button
                           className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
@@ -191,10 +227,10 @@ const AdminOrdersTable = ({ onViewOrder }) => {
                     </td>
                   </tr>
                 ))
-              )
-            }
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

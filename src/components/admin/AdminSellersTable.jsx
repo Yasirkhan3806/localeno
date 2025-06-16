@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Filter, Plus, Eye, Edit, MoreHorizontal, Star } from "lucide-react";
 
@@ -115,7 +116,7 @@ const statusBadge = (status) => {
   }
 };
 
-const AdminSellersTable = ({ onViewSeller, onAddSeller }) => {
+const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
   const [search, setSearch] = useState("");
 
   const filteredSellers = DEMO_SELLERS.filter(
@@ -124,10 +125,6 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller }) => {
       s.owner.toLowerCase().includes(search.toLowerCase()) ||
       s.email.toLowerCase().includes(search.toLowerCase())
   );
-
-  const handleEditSeller = (seller) => {
-    window.alert(`Edit Seller: ${seller.name}\n\nThis will open an edit form with current seller information:\n- Store details\n- Contact information\n- Business settings\n- Commission rates\n- Status management\n\nEdit functionality will be implemented soon!`);
-  };
 
   const handleMoreActions = (seller) => {
     const actions = [
@@ -254,7 +251,7 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller }) => {
                         <button
                           className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
                           title="Edit Seller"
-                          onClick={() => handleEditSeller(seller)}
+                          onClick={() => onEditSeller(seller)}
                         >
                           <Edit size={18} />
                         </button>

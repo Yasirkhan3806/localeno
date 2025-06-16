@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { Search, Filter, Plus, Eye, MoreHorizontal } from "lucide-react";
+import { Search, Filter, Plus, Eye, Edit, MoreHorizontal } from "lucide-react";
 
 // Demo Customers Data
 const DEMO_CUSTOMERS = [
@@ -90,7 +91,7 @@ const statusBadge = (status) =>
     <span className="bg-green-100 text-green-700 rounded-full px-3 py-1 text-xs font-semibold">Active</span> :
     <span className="bg-red-100 text-red-500 rounded-full px-3 py-1 text-xs font-semibold">Inactive</span>;
 
-const AdminCustomersTable = ({ onViewCustomer, onAddCustomer }) => {
+const AdminCustomersTable = ({ onViewCustomer, onAddCustomer, onEditCustomer }) => {
   const [search, setSearch] = useState("");
 
   const filteredCustomers = DEMO_CUSTOMERS.filter(
@@ -112,7 +113,11 @@ const AdminCustomersTable = ({ onViewCustomer, onAddCustomer }) => {
     const action = window.prompt(`More actions for ${customer.name}:\n\n${actions.map((a, i) => `${i+1}. ${a}`).join('\n')}\n\nEnter number (1-${actions.length}):`);
     
     if (action && parseInt(action) >= 1 && parseInt(action) <= actions.length) {
-      window.alert(`${actions[parseInt(action)-1]} for ${customer.name} - This functionality will be implemented soon!`);
+      if (parseInt(action) === 1) {
+        onEditCustomer(customer);
+      } else {
+        window.alert(`${actions[parseInt(action)-1]} for ${customer.name} - This functionality will be implemented soon!`);
+      }
     }
   };
 
@@ -214,6 +219,13 @@ const AdminCustomersTable = ({ onViewCustomer, onAddCustomer }) => {
                           onClick={() => onViewCustomer(customer.id)}
                         >
                           <Eye size={18} />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
+                          title="Edit Customer"
+                          onClick={() => onEditCustomer(customer)}
+                        >
+                          <Edit size={18} />
                         </button>
                         <button
                           className="p-1.5 rounded-full hover:bg-gray-100 transition text-gray-500"
