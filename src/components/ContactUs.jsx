@@ -1,22 +1,40 @@
-
 import React from "react";
 import { Mail, Facebook, Instagram, Twitter, Phone, MapPin, Clock, Send } from "lucide-react";
-
-const contactInfo = [
-  { icon: <MapPin className="w-6 h-6" />, title: "Address", info: "123 Main Blvd, Lahore, Pakistan", color: "from-blue-500 to-cyan-500" },
-  { icon: <Phone className="w-6 h-6" />, title: "Phone", info: "+92 42 9999 0001", color: "from-green-500 to-emerald-500" },
-  { icon: <Mail className="w-6 h-6" />, title: "Email", info: "support@shoply.pk", color: "from-purple-500 to-violet-500" },
-  { icon: <Clock className="w-6 h-6" />, title: "Hours", info: "Mon-Fri: 9AM-6PM", color: "from-orange-500 to-red-500" }
-];
-
-const socialLinks = [
-  { icon: <Facebook className="w-6 h-6" />, name: "Facebook", color: "hover:bg-blue-600" },
-  { icon: <Instagram className="w-6 h-6" />, name: "Instagram", color: "hover:bg-pink-600" },
-  { icon: <Twitter className="w-6 h-6" />, name: "Twitter", color: "hover:bg-blue-400" }
-];
-
-const ContactUs = () => (
-  <section className="py-20 bg-gradient-to-br from-gray-50 to-white" id="contact">
+const contactInfo = [{
+  icon: <MapPin className="w-6 h-6" />,
+  title: "Address",
+  info: "123 Main Blvd, Lahore, Pakistan",
+  color: "from-blue-500 to-cyan-500"
+}, {
+  icon: <Phone className="w-6 h-6" />,
+  title: "Phone",
+  info: "+92 42 9999 0001",
+  color: "from-green-500 to-emerald-500"
+}, {
+  icon: <Mail className="w-6 h-6" />,
+  title: "Email",
+  info: "support@shoply.pk",
+  color: "from-purple-500 to-violet-500"
+}, {
+  icon: <Clock className="w-6 h-6" />,
+  title: "Hours",
+  info: "Mon-Fri: 9AM-6PM",
+  color: "from-orange-500 to-red-500"
+}];
+const socialLinks = [{
+  icon: <Facebook className="w-6 h-6" />,
+  name: "Facebook",
+  color: "hover:bg-blue-600"
+}, {
+  icon: <Instagram className="w-6 h-6" />,
+  name: "Instagram",
+  color: "hover:bg-pink-600"
+}, {
+  icon: <Twitter className="w-6 h-6" />,
+  name: "Twitter",
+  color: "hover:bg-blue-400"
+}];
+const ContactUs = () => <section className="py-20 bg-gradient-to-br from-gray-50 to-white" id="contact">
     <div className="container mx-auto px-4 max-w-7xl">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
@@ -30,116 +48,40 @@ const ContactUs = () => (
 
       <div className="grid lg:grid-cols-2 gap-12 mb-12">
         {/* Contact Info */}
-        <div className="space-y-6">
+        <div className="space-y-6 px-[20px] mx-0 my-[8px]">
           <h3 className="text-2xl font-bold text-gray-900 mb-8">Contact Information</h3>
           
           <div className="grid sm:grid-cols-2 gap-6">
-            {contactInfo.map((item, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+            {contactInfo.map((item, index) => <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
                 <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-white mb-4`}>
                   {item.icon}
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-2">{item.title}</h4>
                 <p className="text-gray-600">{item.info}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           {/* Social Links */}
           <div className="mt-8">
             <h4 className="font-semibold text-gray-900 mb-4">Follow Us</h4>
             <div className="flex gap-4">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className={`w-12 h-12 bg-gray-900 text-white rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${social.color}`}
-                  title={social.name}
-                >
+              {socialLinks.map((social, index) => <a key={index} href="#" className={`w-12 h-12 bg-gray-900 text-white rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 ${social.color}`} title={social.name}>
                   {social.icon}
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
           {/* Map */}
           <div className="mt-8">
             <div className="w-full h-64 rounded-2xl overflow-hidden shadow-lg">
-              <iframe
-                title="map"
-                src="https://maps.google.com/maps?q=lahore%20pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-full border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+              <iframe title="map" src="https://maps.google.com/maps?q=lahore%20pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed" className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </div>
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8">Send us a Message</h3>
-          
-          <form className="space-y-6">
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                <input 
-                  className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" 
-                  type="text" 
-                  required 
-                  placeholder="John" 
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                <input 
-                  className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" 
-                  type="text" 
-                  required 
-                  placeholder="Doe" 
-                />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-              <input 
-                className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" 
-                type="email" 
-                required 
-                placeholder="john@example.com" 
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
-              <input 
-                className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" 
-                type="text" 
-                required 
-                placeholder="How can we help?" 
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Message</label>
-              <textarea 
-                className="w-full border-2 border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors min-h-[120px] resize-none" 
-                required 
-                placeholder="Tell us more about your inquiry..."
-              />
-            </div>
-            
-            <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
-              <Send className="w-5 h-5" />
-              Send Message
-            </button>
-          </form>
-        </div>
+        
       </div>
     </div>
-  </section>
-);
-
+  </section>;
 export default ContactUs;
