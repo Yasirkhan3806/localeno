@@ -66,11 +66,10 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           </div>
         </div>
 
-        {/* Action Buttons - Show on hover or when showActions is true */}
         <div className={`flex items-center gap-1 transition-all duration-300 ${showActions ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`}>
           <button
             onClick={handleFavoriteClick}
-            className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-200 hover:scale-105 transition-all duration-200"
             title="Add to Wishlist"
           >
             <Heart 
@@ -80,19 +79,17 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           </button>
           
           {product.inStock && (
-            <>
-              <button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart}
-                className="p-2 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
-                title="Add to Cart"
-              >
-                <ShoppingCart 
-                  size={16} 
-                  className={`transition-colors ${isAddingToCart ? 'text-green-500' : 'text-gray-400 hover:text-gray-600'}`} 
-                />
-              </button>
-            </>
+            <button
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+              className="p-2 rounded-lg hover:bg-gray-200 hover:scale-105 transition-all duration-200 disabled:opacity-50"
+              title="Add to Cart"
+            >
+              <ShoppingCart 
+                size={16} 
+                className={`transition-colors ${isAddingToCart ? 'text-green-500' : 'text-gray-400 hover:text-gray-600'}`} 
+              />
+            </button>
           )}
         </div>
       </div>
@@ -113,7 +110,6 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           loading="lazy"
         />
         
-        {/* Favorite Button */}
         <button
           onClick={handleFavoriteClick}
           className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-all duration-300"
@@ -125,7 +121,6 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           />
         </button>
 
-        {/* Stock Status */}
         {!product.inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="bg-white text-black px-3 py-1 rounded-full text-sm font-semibold">
@@ -147,13 +142,12 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="space-y-2">
           <div className="flex gap-2">
             <button
               onClick={handleBuyNow}
               disabled={!product.inStock}
-              className="flex-1 bg-black text-white py-2 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="flex-1 bg-black text-white py-2 px-4 rounded-xl font-semibold hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               Buy Now
             </button>
@@ -161,7 +155,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
             <button
               onClick={handleAddToCart}
               disabled={!product.inStock || isAddingToCart}
-              className="p-2 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               title="Add to Cart"
             >
               <ShoppingCart 
@@ -175,7 +169,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
             <button
               onClick={handleRentClick}
               disabled={!product.inStock}
-              className="w-full py-2 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Rent for {product.rentPrice}
             </button>

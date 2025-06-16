@@ -48,6 +48,10 @@ const CategoriesGrid = () => {
     navigate(`/products?category=${categoryId}`);
   };
 
+  const handleBrowseAllCategories = () => {
+    navigate('/products');
+  };
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -56,9 +60,17 @@ const CategoriesGrid = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Browse Categories
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
             Discover unique products across different categories from local creators
           </p>
+          
+          {/* Browse All Categories Button */}
+          <button
+            onClick={handleBrowseAllCategories}
+            className="bg-black text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
+          >
+            Browse All Categories
+          </button>
         </div>
 
         {/* Categories Grid */}
@@ -67,7 +79,7 @@ const CategoriesGrid = () => {
             <div
               key={category.id}
               onClick={() => handleCategoryClick(category.id)}
-              className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group"
+              className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer group"
             >
               <div className="aspect-square overflow-hidden">
                 <img

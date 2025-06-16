@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Star, Heart, MessageCircle } from "lucide-react";
+import { Star, Heart, ShoppingCart, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const featuredProducts = [
@@ -57,16 +57,22 @@ const FeaturedCollection = () => {
     navigate(`/product/${product.id}`);
   };
 
-  const handleRentNow = (product, e) => {
+  const handleAddToCart = (product, e) => {
     e.stopPropagation();
-    navigate(`/product/${product.id}?action=rent`);
+    navigate('/user/cart');
+    console.log('Added to cart:', product.name);
   };
 
-  const handleWhatsAppContact = (product, e) => {
+  const handleRentNow = (product, e) => {
     e.stopPropagation();
-    const message = `Hi, I'm interested in renting your ${product.name}`;
-    const whatsappUrl = `https://wa.me/923001234567?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    navigate('/user/rentals');
+    console.log('Rent now:', product.name);
+  };
+
+  const handleAddToWishlist = (product, e) => {
+    e.stopPropagation();
+    navigate('/user/wishlist');
+    console.log('Added to wishlist:', product.name);
   };
 
   return (
@@ -105,11 +111,8 @@ const FeaturedCollection = () => {
                   </div>
                 )}
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Add to wishlist functionality
-                  }}
-                  className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors"
+                  onClick={(e) => handleAddToWishlist(product, e)}
+                  className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 hover:scale-105 transition-all duration-200"
                 >
                   <Heart size={16} className="text-gray-600" />
                 </button>
@@ -135,17 +138,17 @@ const FeaturedCollection = () => {
                 <div className="space-y-2">
                   <button
                     onClick={(e) => handleRentNow(product, e)}
-                    className="w-full bg-yellow-500 text-black font-semibold py-2 rounded-lg hover:bg-yellow-400 transition-colors"
+                    className="w-full bg-black text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
                   >
                     Rent Now
                   </button>
                   
                   <button
-                    onClick={(e) => handleWhatsAppContact(product, e)}
-                    className="w-full border border-gray-300 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                    onClick={(e) => handleAddToCart(product, e)}
+                    className="w-full bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
                   >
-                    <MessageCircle size={16} />
-                    WhatsApp Contact
+                    <ShoppingCart size={16} />
+                    Add to Cart
                   </button>
                 </div>
               </div>
