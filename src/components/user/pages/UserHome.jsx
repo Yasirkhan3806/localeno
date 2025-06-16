@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, TrendingUp, Star, Clock } from 'lucide-react';
@@ -16,10 +17,34 @@ const UserHome = () => {
   }, []);
 
   const quickStats = [
-    { label: 'Total Orders', value: '12', icon: ShoppingBag, color: 'bg-blue-500' },
-    { label: 'Active Rentals', value: '3', icon: Clock, color: 'bg-green-500' },
-    { label: 'Wishlist Items', value: '8', icon: Star, color: 'bg-purple-500' },
-    { label: 'Reviews Given', value: '5', icon: TrendingUp, color: 'bg-orange-500' },
+    { 
+      label: 'Total Orders', 
+      value: '12', 
+      icon: ShoppingBag, 
+      color: 'bg-blue-500',
+      onClick: () => navigate('/user/orders')
+    },
+    { 
+      label: 'Active Rentals', 
+      value: '3', 
+      icon: Clock, 
+      color: 'bg-green-500',
+      onClick: () => navigate('/user/rentals')
+    },
+    { 
+      label: 'Wishlist Items', 
+      value: '8', 
+      icon: Star, 
+      color: 'bg-purple-500',
+      onClick: () => navigate('/user/wishlist')
+    },
+    { 
+      label: 'Reviews Given', 
+      value: '5', 
+      icon: TrendingUp, 
+      color: 'bg-orange-500',
+      onClick: () => navigate('/user/reviews')
+    },
   ];
 
   const recentOrders = [
@@ -29,10 +54,42 @@ const UserHome = () => {
   ];
 
   const featuredCategories = [
-    { name: 'Electronics', image: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=300&q=80', count: '150+ items' },
-    { name: 'Fashion', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=300&q=80', count: '200+ items' },
-    { name: 'Home & Garden', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=300&q=80', count: '120+ items' },
-    { name: 'Sports', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=300&q=80', count: '80+ items' },
+    { 
+      name: 'Home Decor', 
+      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=300&q=80', 
+      count: '150+ items',
+      id: 'home-decor'
+    },
+    { 
+      name: 'Furniture', 
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80', 
+      count: '200+ items',
+      id: 'furniture'
+    },
+    { 
+      name: 'Clothing', 
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80', 
+      count: '300+ items',
+      id: 'clothing'
+    },
+    { 
+      name: 'Accessories', 
+      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80', 
+      count: '180+ items',
+      id: 'accessories'
+    },
+    { 
+      name: 'Handicrafts', 
+      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=300&q=80', 
+      count: '120+ items',
+      id: 'handicrafts'
+    },
+    { 
+      name: 'Health & Beauty', 
+      image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80', 
+      count: '90+ items',
+      id: 'health-beauty'
+    },
   ];
 
   return (
@@ -47,7 +104,11 @@ const UserHome = () => {
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {quickStats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
+          <div 
+            key={index} 
+            className="bg-white rounded-2xl p-6 shadow-md border border-gray-200 cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200"
+            onClick={stat.onClick}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">{stat.label}</p>
@@ -66,31 +127,36 @@ const UserHome = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Shop by Categories</h2>
           <button
-            onClick={() => navigate('/user/products')}
-            className="text-black font-semibold hover:underline"
+            onClick={() => navigate('/products')}
+            className="bg-black text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
           >
             View All
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
           {featuredCategories.map((category, index) => (
-            <button
+            <div
               key={index}
-              onClick={() => navigate(`/user/products/category/${category.name.toLowerCase()}`)}
-              className="group text-left"
+              onClick={() => navigate(`/products?category=${category.id}`)}
+              className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer group"
             >
-              <div className="relative overflow-hidden rounded-xl mb-4">
+              <div className="aspect-square overflow-hidden">
                 <img
                   src={category.image}
                   alt={category.name}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300"></div>
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1">{category.name}</h3>
-              <p className="text-sm text-gray-600">{category.count}</p>
-            </button>
+              <div className="p-4 text-center">
+                <h3 className="font-semibold text-gray-900 mb-1 text-sm lg:text-base">
+                  {category.name}
+                </h3>
+                <p className="text-xs lg:text-sm text-gray-600">
+                  {category.count}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

@@ -9,13 +9,24 @@ import SellerReviews from "./pages/Reviews";
 import SellerChat from "./pages/Chat";
 import SellerSettings from "./pages/Settings";
 import SellerDashboardOverview from "./pages/DashboardOverview";
-import { Menu, User } from "lucide-react";
+import { Menu, User, Settings, LogOut } from "lucide-react";
 
 export default function SellerDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const DUMMY_SELLER_NAME = "Samantha Liu"; // Replace with real seller name
+  const DUMMY_SELLER_NAME = "Samantha Liu";
+
+  const handleLogout = () => {
+    console.log("Logging out seller...");
+    navigate('/');
+  };
+
+  const handleProfileSettings = () => {
+    navigate('/seller/settings');
+    setProfileDropdownOpen(false);
+  };
 
   return (
     <div className="bg-[#f7f7f7] min-h-screen w-full font-inter">
@@ -32,7 +43,13 @@ export default function SellerDashboard() {
           {getPageTitle(location.pathname)}
         </h1>
         <div className="ml-auto flex items-center gap-1 sm:gap-2">
-          <ProfileDropdown name={DUMMY_SELLER_NAME} />
+          <ProfileDropdown 
+            name={DUMMY_SELLER_NAME} 
+            open={profileDropdownOpen}
+            setOpen={setProfileDropdownOpen}
+            onLogout={handleLogout}
+            onProfileSettings={handleProfileSettings}
+          />
         </div>
       </header>
       
@@ -67,9 +84,9 @@ function getPageTitle(path) {
   return "";
 }
 
-// Profile Dropdown: basic fade/scale menu
-function ProfileDropdown({ name }) {
-  const [open, setOpen] = React.useState(false);
+// Profile Dropdown with logout and settings
+function ProfileDropdown({ name, open, setOpen, onLogout, onProfileSettings }) {
+  const navigate = useNavigate();
 
   return (
     <div className="relative select-none">
@@ -95,9 +112,30 @@ function ProfileDropdown({ name }) {
           }}
           tabIndex={-1}
         >
-          <button className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm" tabIndex={0}>Profile</button>
-          <button className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm" tabIndex={0}>Logout</button>
-          <button className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm" tabIndex={0}>Help Center</button>
+          <button 
+            onClick={() => navigate('/seller/dashboard')}
+            className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm flex items-center gap-2" 
+            tabIndex={0}
+          >
+            <User size={16} />
+            Dashboard
+          </button>
+          <button 
+            onClick={onProfileSettings}
+            className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm flex items-center gap-2" 
+            tabIndex={0}
+          >
+            <Settings size={16} />
+            Profile Settings
+          </button>
+          <button 
+            onClick={onLogout}
+            className="w-full px-4 sm:px-5 py-2 text-left hover:bg-gray-100 transition text-sm text-red-600 flex items-center gap-2" 
+            tabIndex={0}
+          >
+            <LogOut size={16} />
+            Logout
+          </button>
         </div>
       )}
       {/* Overlay to close dropdown */}

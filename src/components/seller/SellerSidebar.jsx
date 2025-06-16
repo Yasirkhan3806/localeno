@@ -50,7 +50,7 @@ function SellerSidebar({ open, setOpen }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b min-h-[3.5rem] sm:min-h-[4rem]">
-          <span className="font-extrabold text-base sm:text-lg tracking-tight text-gray-900 truncate">SellerHub</span>
+          <span className="font-extrabold text-base sm:text-lg tracking-tight text-gray-900 truncate">Localena</span>
           <button
             className="p-1.5 sm:p-2 rounded hover:bg-gray-100 transition lg:hidden"
             onClick={() => setOpen(false)}
@@ -74,7 +74,7 @@ function SellerSidebar({ open, setOpen }) {
               style={{ transition: "transform 0.14s cubic-bezier(.4,0,.2,1)" }}
               aria-label={item.label}
             >
-              <span className="w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gray-100 transition group-hover:bg-gray-200 group-hover:scale-110 flex-shrink-0">
+              <span className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-base sm:text-lg text-black ring-2 ring-gray-300 select-none shadow transition group-hover:bg-gray-200 group-hover:scale-110 flex-shrink-0">
                 <item.icon className="shrink-0" size={16} aria-hidden="true" />
               </span>
               <span className="truncate">{item.label}</span>

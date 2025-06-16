@@ -1,76 +1,79 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, ShoppingCart, MessageCircle, Share2, Star, Camera, Send, ArrowLeft, Plus, Minus } from "lucide-react";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
+import IdentityVerificationModal from "../components/IdentityVerificationModal.jsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 
-// Sample product data - in real app, this would come from API
-const sampleProduct = {
-  id: 1,
-  name: "Bluetooth Speaker Premium",
-  brand: "TechAudio",
-  price: "$149",
-  originalPrice: "$199",
-  rentPrice: "$12/day",
-  images: [
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=600&q=80"
-  ],
-  description: "Experience premium sound quality with our latest Bluetooth speaker featuring deep bass, crystal clear highs, and 20-hour battery life. Perfect for indoor and outdoor use.",
-  specifications: {
-    "Audio Output": "40W RMS",
-    "Battery Life": "20 hours",
-    "Connectivity": "Bluetooth 5.2, AUX, USB-C",
-    "Water Resistance": "IPX7",
-    "Weight": "1.2 kg",
-    "Dimensions": "210 x 70 x 70 mm",
-    "Charging Time": "3 hours",
-    "Frequency Response": "50Hz - 20kHz"
-  },
-  features: [
-    "360° Surround Sound",
-    "Voice Assistant Compatible",
-    "Quick Charge Technology",
-    "Portable Design",
-    "Multi-device Pairing"
-  ],
-  seller: {
-    name: "TechStore Pro",
-    rating: 4.8,
-    verified: true,
-    responseTime: "Within 2 hours"
-  },
-  inStock: true,
-  stock: 15,
-  rating: 4.6,
-  totalReviews: 234
+// Sample product data with new categories
+const sampleProducts = {
+  1: {
+    id: 1,
+    name: "Handcrafted Wooden Dining Table",
+    brand: "FurniCraft",
+    price: "$299",
+    originalPrice: "$399",
+    rentPrice: "$25/day",
+    category: "Furniture",
+    images: [
+      "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=600&q=80"
+    ],
+    description: "Beautiful handcrafted wooden dining table made from premium oak wood. Perfect for family gatherings and elegant dining experiences.",
+    specifications: {
+      "Material": "Premium Oak Wood",
+      "Dimensions": "180 x 90 x 75 cm",
+      "Weight": "45 kg",
+      "Seating Capacity": "6 people",
+      "Finish": "Natural Wood Stain",
+      "Assembly": "Minimal assembly required"
+    },
+    features: [
+      "Handcrafted Design",
+      "Premium Oak Wood",
+      "Seats 6 People",
+      "Durable Construction",
+      "Natural Wood Finish"
+    ],
+    seller: {
+      name: "FurniCraft Studio",
+      rating: 4.8,
+      verified: true,
+      responseTime: "Within 2 hours"
+    },
+    inStock: true,
+    stock: 5,
+    rating: 4.6,
+    totalReviews: 124
+  }
 };
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product] = useState(sampleProduct);
+  const [product] = useState(sampleProducts[id] || sampleProducts[1]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isFavorited, setIsFavorited] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [reviews, setReviews] = useState([
     {
       id: 1,
       user: "Ahmed Khan",
       rating: 5,
       date: "2024-01-15",
-      comment: "Excellent sound quality! Worth every penny.",
-      images: ["https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=200&q=80"],
+      comment: "Excellent quality furniture! Worth every penny.",
+      images: ["https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80"],
       verified: true,
       helpful: 12,
       replies: [
         {
           id: 1,
-          user: "TechStore Pro",
+          user: "FurniCraft Studio",
           date: "2024-01-16",
           comment: "Thank you for your feedback! We're glad you love the product.",
           seller: true
@@ -82,32 +85,37 @@ const ProductDetail = () => {
       user: "Sarah Ali",
       rating: 4,
       date: "2024-01-10",
-      comment: "Good speaker but could be louder for outdoor use.",
+      comment: "Beautiful table but delivery took longer than expected.",
       verified: true,
       helpful: 8,
       replies: []
     }
   ]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "", images: [] });
-  const [showChat, setShowChat] = useState(false);
 
   const handleAddToCart = () => {
     console.log(`Added ${quantity} x ${product.name} to cart`);
-    // Add to cart logic here
+    navigate('/user/cart');
   };
 
   const handleBuyNow = () => {
     console.log(`Buying ${quantity} x ${product.name}`);
-    // Navigate to checkout
+    navigate('/user/checkout');
   };
 
   const handleRentNow = () => {
     console.log(`Renting ${product.name}`);
-    // Navigate to rent page
+    navigate('/user/rentals');
   };
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
+    
+    if (!isVerified) {
+      setShowVerificationModal(true);
+      return;
+    }
+
     const review = {
       id: reviews.length + 1,
       user: "Current User",
@@ -121,6 +129,11 @@ const ProductDetail = () => {
     };
     setReviews([review, ...reviews]);
     setNewReview({ rating: 5, comment: "", images: [] });
+  };
+
+  const handleVerificationComplete = () => {
+    setIsVerified(true);
+    console.log("Identity verification completed successfully");
   };
 
   return (
@@ -232,27 +245,29 @@ const ProductDetail = () => {
 
               {/* Action Buttons */}
               <div className="space-y-3">
-                <div className="flex space-x-3">
-                  <button
-                    onClick={handleBuyNow}
-                    className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-xl font-semibold hover:bg-black transition-all duration-300 transform hover:scale-105"
-                  >
-                    Buy Now
-                  </button>
+                <button
+                  onClick={handleBuyNow}
+                  className="w-full bg-black text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
+                >
+                  Buy Now
+                </button>
+                
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 border border-gray-900 text-gray-900 py-3 px-6 rounded-xl font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300"
+                    className="bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
                   >
-                    <ShoppingCart size={18} className="inline mr-2" />
+                    <ShoppingCart size={18} />
                     Add to Cart
                   </button>
+                  
+                  <button
+                    onClick={handleRentNow}
+                    className="border border-gray-900 text-gray-900 py-3 px-4 rounded-xl font-semibold hover:bg-gray-900 hover:text-white transition-all duration-200"
+                  >
+                    Rent Now
+                  </button>
                 </div>
-                <button
-                  onClick={handleRentNow}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
-                >
-                  Rent Now
-                </button>
               </div>
             </div>
 
@@ -372,30 +387,11 @@ const ProductDetail = () => {
                         placeholder="Share your experience with this product..."
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Add Photos (Optional)</label>
-                      <div className="flex items-center space-x-3">
-                        <input
-                          type="file"
-                          multiple
-                          accept="image/*"
-                          className="hidden"
-                          id="review-images"
-                        />
-                        <label
-                          htmlFor="review-images"
-                          className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
-                        >
-                          <Camera size={16} />
-                          <span>Add Photos</span>
-                        </label>
-                      </div>
-                    </div>
                     <button
                       type="submit"
-                      className="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-black transition-colors"
+                      className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200"
                     >
-                      Submit Review
+                      {isVerified ? 'Submit Review' : 'Verify Identity & Submit Review'}
                     </button>
                   </form>
                 </div>
@@ -527,42 +523,13 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Chat Modal */}
-      {showChat && (
-        <div className="fixed inset-0 z-50 flex items-end justify-end p-4">
-          <div className="bg-white rounded-lg shadow-2xl w-80 h-96 flex flex-col">
-            <div className="bg-gray-900 text-white p-4 rounded-t-lg flex items-center justify-between">
-              <span className="font-semibold">Chat with {product.seller.name}</span>
-              <button
-                onClick={() => setShowChat(false)}
-                className="text-white hover:text-gray-300"
-              >
-                ×
-              </button>
-            </div>
-            <div className="flex-1 p-4 overflow-y-auto">
-              <div className="space-y-3">
-                <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                  <p className="text-sm">Hello! How can I help you with this product?</p>
-                  <span className="text-xs text-gray-500">Just now</span>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 border-t">
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  placeholder="Type your message..."
-                  className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                />
-                <button className="bg-gray-900 text-white p-2 rounded-lg hover:bg-black transition-colors">
-                  <Send size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Identity Verification Modal */}
+      <IdentityVerificationModal
+        isOpen={showVerificationModal}
+        onClose={() => setShowVerificationModal(false)}
+        onVerificationComplete={handleVerificationComplete}
+        productName={product.name}
+      />
 
       <Footer />
     </div>

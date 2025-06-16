@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Search, Filter, Grid, List, Heart, ShoppingCart, Calendar } from 'lucide-react';
+import { Search, Filter, Grid, List, Heart, ShoppingCart, Calendar, Star } from 'lucide-react';
 import { useCart } from '../../../hooks/useCart';
 import { useWishlist } from '../../../hooks/useWishlist';
 import BackToHomeButton from '../BackToHomeButton';
@@ -16,76 +17,78 @@ const UserProducts = () => {
 
   const categories = [
     'All Products',
-    'Electronics',
+    'Home Decor',
+    'Furniture',
     'Clothing',
-    'Accessories',
-    'Home & Living',
+    'Accessories', 
+    'Handicrafts',
+    'Health & Beauty',
   ];
 
   const products = [
     {
       id: 1,
-      name: 'Wireless Bluetooth Headphones',
-      price: 99,
-      rentPrice: 15,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80',
-      category: 'Electronics',
+      name: 'Handcrafted Wooden Table',
+      price: 299,
+      rentPrice: 25,
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80',
+      category: 'Furniture',
       rating: 4.5,
       reviews: 124,
       inStock: true
     },
     {
       id: 2,
-      name: 'Smart Fitness Watch',
-      price: 299,
-      rentPrice: 25,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80',
-      category: 'Electronics',
+      name: 'Vintage Ceramic Vase',
+      price: 89,
+      rentPrice: 8,
+      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=300&q=80',
+      category: 'Handicrafts',
       rating: 4.8,
       reviews: 89,
       inStock: true
     },
     {
       id: 3,
-      name: 'Premium Coffee Maker',
+      name: 'Traditional Embroidered Dress',
       price: 199,
       rentPrice: 20,
-      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=300&q=80',
-      category: 'Home & Living',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80',
+      category: 'Clothing',
       rating: 4.3,
       reviews: 67,
       inStock: false
     },
     {
       id: 4,
-      name: 'Denim Jacket',
-      price: 49,
-      rentPrice: 7,
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80',
-      category: 'Clothing',
+      name: 'Handmade Leather Bag',
+      price: 149,
+      rentPrice: 12,
+      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80',
+      category: 'Accessories',
       rating: 4.4,
       reviews: 40,
       inStock: true
     },
     {
       id: 5,
-      name: 'Leather Bag',
-      price: 80,
-      rentPrice: 10,
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80',
-      category: 'Accessories',
+      name: 'Modern Wall Art',
+      price: 79,
+      rentPrice: 6,
+      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=300&q=80',
+      category: 'Home Decor',
       rating: 4.3,
       reviews: 22,
       inStock: true
     },
     {
       id: 6,
-      name: 'Table Lamp',
-      price: 29,
-      rentPrice: 5,
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80',
-      category: 'Home & Living',
-      rating: 4.3,
+      name: 'Organic Face Cream',
+      price: 45,
+      rentPrice: 4,
+      image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80',
+      category: 'Health & Beauty',
+      rating: 4.6,
       reviews: 51,
       inStock: true
     },
@@ -97,7 +100,12 @@ const UserProducts = () => {
 
   const handleRentNow = (product) => {
     setRentedItems(prev => [...prev, product.id]);
-    // Optionally add toast/popup here
+    navigate('/user/rentals');
+    console.log('Rented product:', product.name);
+  };
+
+  const handleBuyNow = (product) => {
+    navigate(`/product/${product.id}`);
   };
 
   const filteredProducts = products.filter(product => {
@@ -115,8 +123,9 @@ const UserProducts = () => {
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <button
-          className={`absolute top-3 right-3 p-2 rounded-full shadow-md transition
-            ${isWishlisted(product.id) ? 'bg-red-100 text-red-600' : 'bg-white text-gray-600'}`}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-md transition ${
+            isWishlisted(product.id) ? 'bg-red-100 text-red-600' : 'bg-white text-gray-600'
+          }`}
           onClick={() => toggleWishlist(product)}
           aria-label={isWishlisted(product.id) ? "Remove from wishlist" : "Add to wishlist"}
         >
@@ -142,9 +151,7 @@ const UserProducts = () => {
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
-              <span key={i} className={`text-sm ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
-                ★
-              </span>
+              <Star key={i} size={14} className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
             ))}
           </div>
           <span className="text-sm text-gray-600 ml-2">({product.reviews})</span>
@@ -155,27 +162,32 @@ const UserProducts = () => {
             <span className="text-sm text-gray-600">${product.rentPrice}/day rent</span>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="space-y-2">
           <button
-            onClick={() => navigate(`/product/${product.id}`)}
-            className="px-3 py-2 bg-black text-white rounded-lg text-sm font-semibold hover:bg-gray-900 transition-colors"
+            onClick={() => handleBuyNow(product)}
+            className="w-full bg-black text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
           >
             Buy Now
           </button>
-          <button
-            onClick={() => addToCart(product)}
-            className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-black hover:text-white transition-colors flex items-center justify-center group"
-          >
-            <ShoppingCart size={16} className="group-hover:text-white" />
-          </button>
-          <button
-            onClick={() => handleRentNow(product)}
-            className={`px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:bg-purple-600 hover:text-white transition-colors flex items-center justify-center ${
-              rentedItems.includes(product.id) ? "bg-purple-100 text-purple-700" : ""
-            }`}
-          >
-            <Calendar size={16} />
-          </button>
+          
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => addToCart(product)}
+              className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
+            >
+              <ShoppingCart size={16} />
+              Cart
+            </button>
+            
+            <button
+              onClick={() => handleRentNow(product)}
+              className={`border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-purple-600 hover:text-white transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center ${
+                rentedItems.includes(product.id) ? "bg-purple-100 text-purple-700" : ""
+              }`}
+            >
+              <Calendar size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
