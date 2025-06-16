@@ -35,16 +35,16 @@ const DashboardOverview = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-3 sm:gap-4">
       {/* Welcome Section */}
       <WelcomeSection sellerName={DUMMY_SELLER_NAME} />
       {/* KPI Cards */}
       <div
         className="
-          grid grid-cols-1 gap-4
+          grid grid-cols-1 gap-3 sm:gap-4
           sm:grid-cols-2
           lg:grid-cols-3
-          mt-2
+          mt-1 sm:mt-2
         "
         aria-label="Overview KPIs"
       >

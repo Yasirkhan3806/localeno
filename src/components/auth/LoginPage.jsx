@@ -83,24 +83,24 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8">
         {/* Mode Toggle Buttons */}
         <LoginModeToggle mode={mode} setMode={setMode} />
         
         <div className="text-center">
           <button
             onClick={() => navigate('/')}
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 text-sm sm:text-base"
           >
-            <ArrowLeft size={20} className="mr-2" />
+            <ArrowLeft size={18} className="mr-1 sm:mr-2" />
             Back to Home
           </button>
-          <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
-          <p className="mt-2 text-gray-600">Sign in to your account</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome back</h2>
+          <p className="mt-2 text-sm sm:text-base text-gray-600">Sign in to your account</p>
         </div>
         
-        <div className="bg-white rounded-2xl shadow-md p-8">
+        <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
           {mode !== 'admin' && (
             <SocialLoginButtons onSocialLogin={handleSocialLogin} />
           )}
@@ -123,7 +123,7 @@ const LoginPage = () => {
           )}
           
           {mode !== 'admin' && (
-            <p className="mt-6 text-center text-sm text-gray-600">
+            <p className="mt-6 text-center text-xs sm:text-sm text-gray-600">
               Don't have an account?{' '}
               <Link to="/signup" className="text-black font-semibold hover:underline">
                 Sign up here

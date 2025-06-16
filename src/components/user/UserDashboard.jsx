@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import UserSidebar from './UserSidebar';
@@ -28,12 +29,12 @@ const UserDashboard = () => {
       </div>
 
       {/* Layout below header with padding */}
-      <div className="flex pt-16 min-h-screen w-full overflow-x-hidden">
+      <div className="flex pt-14 sm:pt-16 min-h-screen w-full overflow-x-hidden">
         <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Dashboard main content */}
-        <div className="flex-1 lg:ml-64">
-          <main className="w-full h-full p-4 lg:p-8">
+        <div className="flex-1 lg:ml-64 w-full min-w-0">
+          <main className="w-full h-full p-3 sm:p-4 lg:p-6 xl:p-8">
             <Routes>
               <Route path="/home" element={<UserHome />} />
               <Route path="/cart" element={<UserCart />} />

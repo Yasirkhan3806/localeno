@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -46,23 +47,25 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-xl sm:max-w-2xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
           <button
             onClick={() => navigate("/")}
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 text-sm sm:text-base"
           >
-            <ArrowLeft size={20} className="mr-2" />
+            <ArrowLeft size={18} className="mr-1 sm:mr-2" />
             Back to Home
           </button>
 
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Create your account
           </h2>
-          <p className="mt-2 text-gray-600">Join our marketplace today</p>
+          <p className="mt-2 text-sm sm:text-base text-gray-600">Join our marketplace today</p>
         </div>
-        <SignupForm onSubmit={handleSubmit} loading={loading} />
+        <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 lg:p-8">
+          <SignupForm onSubmit={handleSubmit} loading={loading} />
+        </div>
       </div>
     </div>
   );

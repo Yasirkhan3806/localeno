@@ -26,7 +26,7 @@ const navItems = [
 
 function SellerSidebar({ open, setOpen }) {
   const navigate = useNavigate();
-  // Sidebar slides in/out on mobile, always visible on lg+
+  
   return (
     <>
       {/* Overlay */}
@@ -38,7 +38,7 @@ function SellerSidebar({ open, setOpen }) {
       )}
       <aside
         className={`
-          fixed top-0 left-0 z-40 h-full w-64 bg-white border-r shadow-xl
+          fixed top-0 left-0 z-40 h-full w-60 sm:w-64 bg-white border-r shadow-xl
           transform ${open ? "translate-x-0" : "-translate-x-full"}
           transition-transform duration-300 ease-in-out
           flex flex-col
@@ -49,34 +49,35 @@ function SellerSidebar({ open, setOpen }) {
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b">
-          <span className="font-extrabold text-lg tracking-tight text-gray-900">SellerHub</span>
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b min-h-[3.5rem] sm:min-h-[4rem]">
+          <span className="font-extrabold text-base sm:text-lg tracking-tight text-gray-900 truncate">SellerHub</span>
           <button
-            className="p-2 rounded hover:bg-gray-100 transition lg:hidden"
+            className="p-1.5 sm:p-2 rounded hover:bg-gray-100 transition lg:hidden"
             onClick={() => setOpen(false)}
             aria-label="Close sidebar"
           >
-            <X size={24} />
+            <X size={20} className="sm:w-[24px] sm:h-[24px]" />
           </button>
         </div>
+        
         {/* Nav Links */}
-        <nav className="flex-1 px-3 pt-6 space-y-1">
+        <nav className="flex-1 px-2 sm:px-3 pt-4 sm:pt-6 space-y-1 overflow-y-auto">
           {navItems.map(item => (
             <NavLink
               key={item.to}
               to={item.to}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors transition-transform font-medium group
-                ${isActive ? "bg-black text-white shadow scale-[1.04]" : "text-gray-700 hover:bg-gray-100 hover:scale-105"}`
+                `flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-colors transition-transform font-medium group text-sm sm:text-base
+                ${isActive ? "bg-black text-white shadow scale-[1.02] sm:scale-[1.04]" : "text-gray-700 hover:bg-gray-100 hover:scale-105"}`
               }
               style={{ transition: "transform 0.14s cubic-bezier(.4,0,.2,1)" }}
               aria-label={item.label}
             >
-              <span className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 transition group-hover:bg-gray-200 group-hover:scale-110">
-                <item.icon className="shrink-0" size={20} aria-hidden="true" />
+              <span className="w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gray-100 transition group-hover:bg-gray-200 group-hover:scale-110 flex-shrink-0">
+                <item.icon className="shrink-0" size={16} aria-hidden="true" />
               </span>
-              <span>{item.label}</span>
+              <span className="truncate">{item.label}</span>
             </NavLink>
           ))}
         </nav>
