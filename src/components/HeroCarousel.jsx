@@ -4,36 +4,43 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight, Shield, Users, Star, ArrowRight } from "lucide-react";
 
-// Updated images for marketplace with local Pakistan context
+// Updated images for marketplace with local Pakistan context - 5 categories
 const images = [
   {
-    src: "/lovable-uploads/f2984f9c-5ad8-468a-b058-94acbeb378f3.png",
-    title: "Rent or Buy Local Products with Confidence",
-    subtitle: "Discover verified sellers, secure transactions, and authentic products in Pakistan's most trusted marketplace",
-    cta: "Get Started",
+    src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+    title: "Beautiful Home Decor Collection",
+    subtitle: "Transform your living space with our curated selection of home decor items from verified local sellers in Pakistan",
+    cta: "Explore Home Decor",
     secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    src: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=1200&q=80",
-    title: "Elevate Your Self-Care Routine",
-    subtitle: "Premium health and beauty products to help you look and feel your absolute best every day.",
-    cta: "Get Started",
+    src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80",
+    title: "Premium Furniture Collection",
+    subtitle: "Discover handcrafted and modern furniture pieces made by skilled artisans across Pakistan",
+    cta: "Browse Furniture",
     secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    src: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=1200&q=80",
-    title: "Handcrafted Furniture Excellence",
-    subtitle: "Beautiful, sustainable furniture and handicrafts made by skilled artisans for your home.",
-    cta: "Get Started",
+    src: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1200&q=80",
+    title: "Trendy Clothing & Accessories",
+    subtitle: "Express your unique style with our fashion-forward clothing and accessories from local designers",
+    cta: "Shop Fashion",
     secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
-    title: "Express Your Unique Style",
-    subtitle: "Trending fashion and accessories that help you make a statement and express your personality.",
-    cta: "Get Started",
+    src: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1200&q=80",
+    title: "Health & Beauty Essentials",
+    subtitle: "Premium health and beauty products to help you look and feel your absolute best every day",
+    cta: "Discover Beauty",
     secondaryCta: "Verify Identity to Build Trust"
   },
+  {
+    src: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=1200&q=80",
+    title: "Authentic Handicrafts",
+    subtitle: "Celebrate Pakistani culture with beautiful handmade crafts and traditional artwork from local artisans",
+    cta: "Explore Handicrafts",
+    secondaryCta: "Verify Identity to Build Trust"
+  }
 ];
 
 function HeroCarousel() {
@@ -110,10 +117,15 @@ function HeroCarousel() {
                     onClick={handleVerifyIdentity}
                     variant="outline"
                     size="lg"
-                    className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 flex items-center gap-2"
+                    className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 flex items-center gap-2 group relative overflow-hidden"
                   >
                     <Shield size={20} />
-                    {img.secondaryCta}
+                    <span className="transition-opacity duration-300 group-hover:opacity-0">
+                      {img.secondaryCta}
+                    </span>
+                    <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Start Your Journey Today
+                    </span>
                   </Button>
                 </div>
 
