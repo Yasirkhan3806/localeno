@@ -46,21 +46,21 @@ const CategoriesSection = ({ featuredCategories }) => {
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div className="flex items-center gap-3">
           <Grid3x3 size={24} className="text-gray-900" />
-          <h2 className="text-2xl font-bold text-gray-900">Browse Categories</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Browse Categories</h2>
         </div>
         <button
           onClick={() => navigate('/user/products')}
-          className="bg-black text-white font-semibold py-3 px-6 rounded-2xl hover:bg-gray-800 hover:scale-105 transition-all duration-300"
+          className="bg-black text-white font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-2xl hover:bg-gray-800 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
         >
           View All Products
         </button>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
         {updatedCategories.map((category, index) => (
           <div
             key={index}
@@ -74,11 +74,11 @@ const CategoriesSection = ({ featuredCategories }) => {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
             </div>
-            <div className="p-4 text-center">
-              <h3 className="font-bold text-gray-900 mb-1 text-sm lg:text-base">
+            <div className="p-3 sm:p-4 text-center">
+              <h3 className="font-bold text-gray-900 mb-1 text-xs sm:text-sm lg:text-base">
                 {category.name}
               </h3>
-              <p className="text-xs lg:text-sm text-gray-600">
+              <p className="text-xs text-gray-600">
                 {category.count}
               </p>
             </div>

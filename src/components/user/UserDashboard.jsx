@@ -28,8 +28,8 @@ const UserDashboard = () => {
         <UserHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       </div>
 
-      {/* Layout below header with padding */}
-      <div className="flex pt-14 sm:pt-16 min-h-screen w-full overflow-x-hidden">
+      {/* Layout below header with updated padding for new header height */}
+      <div className="flex pt-24 sm:pt-28 min-h-screen w-full overflow-x-hidden">
         <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Dashboard main content */}
@@ -37,6 +37,7 @@ const UserDashboard = () => {
           <main className="w-full h-full p-3 sm:p-4 lg:p-6 xl:p-8">
             <Routes>
               <Route path="/home" element={<UserHome />} />
+              <Route path="/products" element={<UserProducts />} />
               <Route path="/cart" element={<UserCart />} />
               <Route path="/checkout" element={<UserCheckout />} />
               <Route path="/wishlist" element={<UserWishlist />} />

@@ -29,6 +29,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const menuItems = [
     { icon: BarChart3, label: 'Dashboard', path: '/user/home' },
+    { icon: ShoppingBag, label: 'Products', path: '/user/products' },
     { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
@@ -44,7 +45,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-x-0 top-14 sm:top-16 bottom-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-x-0 top-24 sm:top-28 bottom-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -53,8 +54,8 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
       <div className={`
         fixed 
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        top-14 sm:top-16 lg:top-0 left-0 z-50 w-60 sm:w-64
-        h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] lg:h-full 
+        top-24 sm:top-28 lg:top-0 left-0 z-50 w-60 sm:w-64
+        h-[calc(100vh-6rem)] sm:h-[calc(100vh-7rem)] lg:h-full 
         bg-white shadow-xl transform transition-transform duration-300
         lg:translate-x-0 lg:static lg:z-10
         flex flex-col
