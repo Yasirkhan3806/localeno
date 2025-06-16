@@ -1,4 +1,3 @@
-
 import React from "react";
 import { X, Package, ShoppingCart, User, UserCheck, MapPin, Phone, Mail, Calendar, DollarSign, Tag, TrendingUp } from "lucide-react";
 
@@ -178,6 +177,7 @@ const ViewDetailModal = ({ item, type, isOpen, onClose }) => {
         <div>
           <h3 className="text-xl font-bold text-gray-900">{item.name}</h3>
           <p className="text-gray-600">Seller ID: {item.id}</p>
+          {item.owner && <p className="text-gray-500 text-sm">Owner: {item.owner}</p>}
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -192,7 +192,9 @@ const ViewDetailModal = ({ item, type, isOpen, onClose }) => {
         <div>
           <label className="text-sm font-medium text-gray-500">Status</label>
           <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-            item.status === "Active" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+            item.status === "Active" ? "bg-green-100 text-green-600" : 
+            item.status === "Pending" ? "bg-yellow-100 text-yellow-700" :
+            "bg-red-100 text-red-600"
           }`}>
             {item.status}
           </span>
@@ -202,12 +204,15 @@ const ViewDetailModal = ({ item, type, isOpen, onClose }) => {
           <p className="text-lg font-semibold">{item.products || 0}</p>
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-500">Revenue</label>
-          <p className="text-lg font-semibold text-green-600">${item.revenue?.toLocaleString(undefined, {minimumFractionDigits:2}) || "0.00"}</p>
+          <label className="text-sm font-medium text-gray-500">Total Sales</label>
+          <p className="text-lg font-semibold text-green-600">${item.sales?.toLocaleString(undefined, {minimumFractionDigits:2}) || "0.00"}</p>
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-500">Joined</label>
-          <p className="text-gray-900">{item.registered || item.joined || "Unknown"}</p>
+          <label className="text-sm font-medium text-gray-500">Rating</label>
+          <p className="text-gray-900 flex items-center gap-1">
+            <span className="text-yellow-500">★</span>
+            {item.rating || "N/A"}
+          </p>
         </div>
       </div>
       {item.businessAddress && (
