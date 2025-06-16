@@ -1,10 +1,12 @@
-
 import React, { useState, useEffect } from "react";
-import { Search, Filter, Grid, List, ChevronDown, Star, Heart, ShoppingCart, Shield } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
-import ProductCard from "../components/ProductCard.jsx";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import ProductsHero from "../components/products/ProductsHero.jsx";
+import ProductsCategories from "../components/products/ProductsCategories.jsx";
+import ProductsFilters from "../components/products/ProductsFilters.jsx";
+import ProductsGrid from "../components/products/ProductsGrid.jsx";
+import { Search, Filter, Grid, List, ChevronDown, Star, Heart, ShoppingCart, Shield } from "lucide-react";
 
 // Updated products data with 5 categories and realistic products
 const allProducts = [
@@ -152,233 +154,38 @@ const Products = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
       
-      {/* Hero Section with Categories */}
-      <section className="relative py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" 
-            alt="Products Background" 
-            className="w-full h-full object-cover opacity-20"
-          />
-        </div>
-        <div className="relative container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Discover Amazing Products
-          </h1>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Browse through our curated collection of quality products from trusted local sellers
-          </p>
-          
-          {/* Trust Badge */}
-          <div className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full text-white hover:bg-white/20 transition-all duration-300 cursor-pointer">
-            <Shield size={20} className="text-green-400" />
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Verified Identity Required - Build Trust
-            </span>
-            <span className="group-hover:opacity-0 transition-opacity duration-300">
-              Verify Identity to Build Trust
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Grid */}
-      <section className="py-16 -mt-10 relative z-10">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                onClick={() => handleCategoryChange(category.id)}
-                className={`bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 cursor-pointer group ${
-                  selectedCategory === category.id ? 'ring-2 ring-blue-500 shadow-blue-200' : ''
-                }`}
-              >
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="font-semibold text-gray-900 mb-1 text-sm lg:text-base">
-                    {category.name}
-                  </h3>
-                  <p className="text-xs lg:text-sm text-gray-600">
-                    {category.count} products
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductsHero />
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Search and Filter Bar */}
-        <div className="bg-white rounded-3xl shadow-lg p-6 mb-8 border border-gray-100">
-          <form onSubmit={handleSearch} className="mb-6">
-            <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4">
-              <div className="flex-1 relative w-full">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search for products..."
-                  className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-600 focus:border-transparent text-lg"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-2xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 font-semibold"
-              >
-                Search Products
-              </button>
-            </div>
-          </form>
+      <ProductsCategories 
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+      />
+      
+      <div className="flex gap-8">
+        <ProductsFilters
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          handleSearch={handleSearch}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          filteredProducts={filteredProducts}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+        />
 
-          {/* Filters and Sort */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 bg-gray-100 border border-gray-300 px-4 py-3 rounded-xl hover:bg-gray-200 transition-colors"
-              >
-                <Filter size={18} />
-                <span>Filters</span>
-              </button>
-              
-              <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none bg-gray-100 border border-gray-300 px-4 py-3 pr-10 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                >
-                  {sortOptions.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600 font-medium">
-                {filteredProducts.length} products found
-              </span>
-              <div className="flex bg-gray-100 border border-gray-300 rounded-xl overflow-hidden">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-3 ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-200'} transition-colors`}
-                >
-                  <Grid size={18} />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-3 ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-200'} transition-colors`}
-                >
-                  <List size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-8">
-          {/* Sidebar Filters */}
-          <div className={`${showFilters ? 'block' : 'hidden'} lg:block w-80 space-y-6`}>
-            {/* Price Range */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-6 text-lg">Price Range</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="number"
-                    value={priceRange[0]}
-                    onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
-                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                    placeholder="Min PKR"
-                  />
-                  <span className="text-gray-500 font-medium">to</span>
-                  <input
-                    type="number"
-                    value={priceRange[1]}
-                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                    placeholder="Max PKR"
-                  />
-                </div>
-                <div className="text-sm text-gray-600 text-center">
-                  PKR {priceRange[0].toLocaleString()} - PKR {priceRange[1].toLocaleString()}
-                </div>
-              </div>
-            </div>
-
-            {/* Rating Filter */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-6 text-lg">Customer Rating</h3>
-              <div className="space-y-3">
-                {[4, 3, 2, 1].map(rating => (
-                  <button
-                    key={rating}
-                    className="w-full text-left px-4 py-3 rounded-xl hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={16}
-                            className={`${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-gray-600">& up</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Products Grid */}
-          <div className="flex-1">
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Search size={64} className="text-gray-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">No products found</h3>
-                <p className="text-gray-600 text-lg mb-8">Try adjusting your search or filter criteria</p>
-                <button
-                  onClick={() => {setSearchQuery(''); setSelectedCategory('all'); setPriceRange([0, 150000]);}}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            ) : (
-              <div className={`grid gap-8 ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-                  : 'grid-cols-1'
-              }`}>
-                {filteredProducts.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onClick={() => handleProductClick(product)}
-                    minimal={viewMode === 'list'}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+        <ProductsGrid
+          filteredProducts={filteredProducts}
+          viewMode={viewMode}
+          handleProductClick={handleProductClick}
+          setSearchQuery={setSearchQuery}
+          setSelectedCategory={setSelectedCategory}
+          setPriceRange={setPriceRange}
+        />
       </div>
 
       <Footer />
