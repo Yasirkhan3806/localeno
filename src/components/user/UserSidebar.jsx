@@ -15,7 +15,8 @@ import {
   LogOut,
   X,
   Menu,
-  Calendar
+  Calendar,
+  BarChart3
 } from 'lucide-react';
 
 const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -27,8 +28,9 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     navigate('/');
   };
 
-  // Profile BEFORE Cart
+  // Dashboard at the top, then Profile
   const menuItems = [
+    { icon: BarChart3, label: 'Dashboard', path: '/user/home' },
     { icon: User, label: 'Profile', path: '/user/profile' },
     { icon: ShoppingCart, label: 'My Cart', path: '/user/cart' },
     { icon: Heart, label: 'Wishlist', path: '/user/wishlist' },
@@ -41,7 +43,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <>
-      {/* Mobile Overlay: always starts *below* header, never covers header */}
+      {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-x-0 top-14 sm:top-16 bottom-0 bg-black bg-opacity-50 z-40 lg:hidden"
@@ -62,7 +64,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <div className="w-9 h-9 sm:w-11 sm:h-11 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-lg border-2 border-gray-200 shadow-lg transition hover:scale-105 cursor-pointer flex-shrink-0"
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-black via-gray-800 to-gray-900 text-white rounded-2xl flex items-center justify-center font-bold text-sm sm:text-lg shadow-lg transition hover:scale-105 cursor-pointer flex-shrink-0"
               aria-label="User Profile"
               onClick={() => { navigate('/user/profile'); setSidebarOpen(false); }}
             >
@@ -70,12 +72,12 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </div>
             <div className="min-w-0 flex-1">
               <div className="font-bold text-gray-900 text-sm sm:text-base truncate">{user?.firstName} {user?.lastName}</div>
-              <div className="text-xs text-gray-500 capitalize">{user?.accountType}</div>
+              <div className="text-xs text-gray-500 capitalize bg-gray-100 px-2 py-1 rounded-lg inline-block">{user?.accountType}</div>
             </div>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 sm:p-2 rounded hover:bg-gray-100 transition flex-shrink-0"
+            className="lg:hidden p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition flex-shrink-0"
           >
             <X size={18} className="sm:w-[20px] sm:h-[20px]" />
           </button>
@@ -89,31 +91,31 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
               to={item.path}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl transition-colors duration-200 font-medium group text-sm sm:text-base ${
+                `flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl transition-all duration-300 font-medium group text-sm sm:text-base ${
                   isActive
-                    ? 'bg-black text-white shadow shadow-black/10'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gradient-to-r from-black to-gray-800 text-white shadow-lg transform scale-105'
+                    : 'text-gray-700 hover:bg-gray-100 hover:scale-105'
                 }`
               }
             >
-              <item.icon size={18} className="sm:w-[22px] sm:h-[22px] transition group-hover:text-black flex-shrink-0" />
+              <item.icon size={18} className="sm:w-[22px] sm:h-[22px] transition group-hover:scale-110 flex-shrink-0" />
               <span className="truncate">{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
-        {/* Bottom section with Back to Home and Logout */}
+        {/* Bottom section */}
         <div className="mt-auto">
           {/* Back to Home Button */}
           <div className="px-3 sm:px-4 pb-3 sm:pb-4">
             <button
-              className="w-full flex items-center gap-2 bg-gray-900 text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg text-sm sm:text-base"
+              className="w-full flex items-center gap-2 bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white px-3 sm:px-4 py-3 sm:py-4 rounded-2xl font-bold hover:from-gray-800 hover:to-black transition-all duration-300 transform hover:scale-105 shadow-lg text-sm sm:text-base"
               style={{ justifyContent: 'center' }}
               onClick={() => navigate('/user/home')}
-              aria-label="Back to Home"
+              aria-label="Dashboard Home"
             >
               <Home size={18} className="sm:w-[20px] sm:h-[20px] flex-shrink-0" />
-              <span>Back to Home</span>
+              <span>Dashboard Home</span>
             </button>
           </div>
 
@@ -122,23 +124,18 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <button
               onClick={handleLogout}
               className="
-                flex items-center gap-2 sm:gap-3 w-full px-3 sm:px-4 py-2.5 sm:py-3 
-                bg-gradient-to-r from-black via-gray-800 to-gray-900
-                text-white hover:from-gray-800 hover:to-black
-                rounded-xl font-semibold transition
-                shadow-lg shadow-black/5
-                border-2 border-transparent
-                hover:border-red-500
+                flex items-center gap-2 sm:gap-3 w-full px-3 sm:px-4 py-3 sm:py-4 
+                bg-gradient-to-r from-red-600 via-red-700 to-red-800
+                text-white hover:from-red-700 hover:to-red-900
+                rounded-2xl font-bold transition-all duration-300
+                shadow-lg hover:shadow-xl
+                transform hover:scale-105
                 group
-                relative
-                overflow-hidden
-                focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
                 text-sm sm:text-base
               "
             >
-              <LogOut size={18} className="sm:w-[22px] sm:h-[22px] text-red-100 group-hover:text-red-500 transition flex-shrink-0" />
+              <LogOut size={18} className="sm:w-[22px] sm:h-[22px] group-hover:scale-110 transition flex-shrink-0" />
               <span className="font-bold">Logout</span>
-              <span className="absolute right-3 sm:right-4 top-2.5 sm:top-3 text-xs text-gray-400 group-hover:text-red-400 transition hidden sm:block">Sign out</span>
             </button>
           </div>
         </div>

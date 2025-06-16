@@ -45,40 +45,18 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-30 bg-background/95 backdrop-blur font-inter shadow-none border-b border-neutral-200">
         <nav className="container mx-auto flex items-center justify-between h-20 relative">
-          {/* Localena Style Logo with Cart Icon */}
+          {/* Professional Localena Logo */}
           <div className="flex items-center gap-2 text-2xl font-bold">
             <button
               onClick={() => navigate('/')}
-              className="flex flex-col items-start bg-transparent border-none p-0 m-0 focus:outline-none"
+              className="flex flex-col items-center bg-gradient-to-r from-black via-gray-800 to-black text-white px-4 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               aria-label="Go to home"
             >
-              <span
-                className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md px-2 py-1 transition-transform hover:scale-105 font-inter min-w-0 min-h-0 w-auto"
-                style={{
-                  maxWidth: '130px',
-                  minWidth: '82px',
-                  padding: '2px 6px',
-                  lineHeight: 1.1
-                }}
-                draggable="false"
-              >
-                <span className="flex items-center text-[18px] font-extrabold text-gray-900 tracking-tight"
-                  style={{
-                    letterSpacing: '0.08em'
-                  }}>
-                  <span style={{
-                    letterSpacing: '0.13em',
-                    marginRight: '3px'
-                  }}>LOC</span>
-                  <span className="inline-flex items-center justify-center mx-0.5">
-                    <ShoppingCart size={20} className="text-green-700" strokeWidth={2.2} />
-                  </span>
-                  <span style={{
-                    letterSpacing: '0.13em',
-                    marginLeft: '3px'
-                  }}>LENA</span>
-                </span>
-              </span>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-bold text-xl tracking-wider">LOCALENA</span>
+                <ShoppingCart size={20} className="text-green-400" />
+              </div>
+              <span className="text-xs text-gray-300 font-medium tracking-wide">Local • Global • Digital</span>
             </button>
           </div>
           
@@ -110,18 +88,18 @@ const Header = () => {
             style={{ userSelect: "none", cursor: "pointer" }}
           >
             <div className="flex gap-2 items-center">
-              {/* Search Bar */}
+              {/* Enhanced Search Bar */}
               <form onSubmit={handleSearch} className="flex items-center">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search..."
-                  className="w-48 px-3 py-2 border border-neutral-200 rounded-l-lg bg-neutral-50 text-sm outline-none focus:ring-2 focus:ring-neutral-300"
+                  placeholder="Search products..."
+                  className="w-56 px-4 py-2 border border-neutral-200 rounded-l-xl bg-neutral-50 text-sm outline-none focus:ring-2 focus:ring-neutral-300 focus:bg-white transition-all"
                 />
                 <button
                   type="submit"
-                  className="px-3 py-2 bg-black text-white rounded-r-lg hover:bg-neutral-800 transition-colors"
+                  className="px-4 py-2 bg-black text-white rounded-r-xl hover:bg-neutral-800 transition-colors"
                 >
                   <Search size={16} />
                 </button>
@@ -203,7 +181,6 @@ const Header = () => {
                 )
               )}
             </div>
-            {/* Removed old admin panel button from here */}
           </div>
           
           {/* Hamburger (Mobile) */}
