@@ -2,41 +2,37 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Shield, Users, Star, ArrowRight } from "lucide-react";
 
-// Updated images and copy for main categories with better styling
+// Updated images for marketplace with local Pakistan context
 const images = [
   {
-    // Home Decor
-    src: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=1200&q=80",
-    title: "Transform Your Living Space",
-    subtitle: "Discover unique home decor pieces that reflect your personal style and create the perfect ambiance.",
-    cta: "Shop Home Decor",
-    secondaryCta: "Explore Collection"
+    src: "/lovable-uploads/f2984f9c-5ad8-468a-b058-94acbeb378f3.png",
+    title: "Rent or Buy Local Products with Confidence",
+    subtitle: "Discover verified sellers, secure transactions, and authentic products in Pakistan's most trusted marketplace",
+    cta: "Get Started",
+    secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    // Health and Beauty
     src: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=1200&q=80",
     title: "Elevate Your Self-Care Routine",
     subtitle: "Premium health and beauty products to help you look and feel your absolute best every day.",
-    cta: "Shop Beauty",
-    secondaryCta: "View Products"
+    cta: "Get Started",
+    secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    // Furniture and Handicrafts
     src: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=1200&q=80",
     title: "Handcrafted Furniture Excellence",
     subtitle: "Beautiful, sustainable furniture and handicrafts made by skilled artisans for your home.",
-    cta: "Shop Furniture",
-    secondaryCta: "Browse Handicrafts"
+    cta: "Get Started",
+    secondaryCta: "Verify Identity to Build Trust"
   },
   {
-    // Clothing and Accessories
     src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
     title: "Express Your Unique Style",
     subtitle: "Trending fashion and accessories that help you make a statement and express your personality.",
-    cta: "Shop Fashion",
-    secondaryCta: "View Accessories"
+    cta: "Get Started",
+    secondaryCta: "Verify Identity to Build Trust"
   },
 ];
 
@@ -54,13 +50,14 @@ function HeroCarousel() {
     return () => clearInterval(interval);
   }, [curr]);
 
-  const handleShopNow = () => {
-    // Navigate to products page
+  const handleGetStarted = () => {
+    // Navigate to products page to start browsing
     navigate("/products");
   };
 
-  const handleLearnMore = () => {
-    navigate("/about");
+  const handleVerifyIdentity = () => {
+    // Navigate to signup/login page for identity verification
+    navigate("/signup");
   };
 
   return (
@@ -86,57 +83,70 @@ function HeroCarousel() {
           </div>
 
           {/* Content Container */}
-          <div className="relative z-10 h-full flex items-center">
+          <div className="relative z-10 h-full flex flex-col justify-center">
             <div className="container mx-auto px-6 sm:px-8 lg:px-12">
-              <div className="max-w-2xl">
-                {/* Badge */}
-                <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6 border border-white/20">
-                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                  New Collection Available
-                </div>
-
+              <div className="max-w-4xl mx-auto text-center">
                 {/* Main Heading */}
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
                   {img.title}
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 mb-8 leading-relaxed max-w-lg">
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 mb-8 leading-relaxed max-w-4xl mx-auto">
                   {img.subtitle}
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
                   <Button
-                    onClick={handleShopNow}
+                    onClick={handleGetStarted}
                     size="lg"
-                    className="bg-white text-black hover:bg-gray-100 font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                    className="bg-yellow-500 text-black hover:bg-yellow-400 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center gap-2"
                   >
                     {img.cta}
+                    <ArrowRight size={20} />
                   </Button>
                   <Button
-                    onClick={handleLearnMore}
+                    onClick={handleVerifyIdentity}
                     variant="outline"
                     size="lg"
-                    className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300"
+                    className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 flex items-center gap-2"
                   >
+                    <Shield size={20} />
                     {img.secondaryCta}
                   </Button>
                 </div>
 
-                {/* Features */}
-                <div className="flex items-center gap-8 mt-8 text-white/80">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 bg-white rounded-full"></div>
-                    <span className="text-sm">Free Shipping</span>
+                {/* Statistics Section */}
+                <div className="flex flex-col sm:flex-row gap-8 justify-center items-center text-white">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <Shield size={24} className="text-black" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-2xl sm:text-3xl font-bold text-yellow-500">100%</div>
+                      <div className="text-sm sm:text-base text-gray-300">Verified Sellers</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 bg-white rounded-full"></div>
-                    <span className="text-sm">24/7 Support</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <Users size={24} className="text-black" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-2xl sm:text-3xl font-bold text-yellow-500">50K+</div>
+                      <div className="text-sm sm:text-base text-gray-300">Happy Customers</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 bg-white rounded-full"></div>
-                    <span className="text-sm">Easy Returns</span>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <Star size={24} className="text-black" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-2xl sm:text-3xl font-bold text-yellow-500">4.9</div>
+                      <div className="text-sm sm:text-base text-gray-300">Average Rating</div>
+                    </div>
                   </div>
                 </div>
               </div>
