@@ -1,79 +1,68 @@
-
 import React from "react";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import { Shield, Truck, Heart, Users, Award, Globe } from "lucide-react";
-
 const AboutUs = () => {
-  const features = [
-    {
-      icon: Shield,
-      title: "Secure Shopping",
-      description: "Your security is our priority with encrypted transactions and verified sellers."
-    },
-    {
-      icon: Truck,
-      title: "Fast Delivery",
-      description: "Quick and reliable delivery service to get your products when you need them."
-    },
-    {
-      icon: Heart,
-      title: "Customer First",
-      description: "We put our customers at the heart of everything we do with 24/7 support."
-    },
-    {
-      icon: Users,
-      title: "Community Driven",
-      description: "Building a community of trusted buyers and sellers across the region."
-    },
-    {
-      icon: Award,
-      title: "Quality Assured",
-      description: "Every product is verified for quality and authenticity before listing."
-    },
-    {
-      icon: Globe,
-      title: "Wide Reach",
-      description: "Serving customers across multiple cities with expanding coverage."
-    }
-  ];
-
-  const team = [
-    {
-      name: "Ahmad Hassan",
-      role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
-      description: "Visionary leader with 10+ years in e-commerce."
-    },
-    {
-      name: "Fatima Khan",
-      role: "Head of Operations",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b9e1a9bb?auto=format&fit=crop&w=300&q=80",
-      description: "Operations expert ensuring smooth platform experience."
-    },
-    {
-      name: "Ali Ahmed",
-      role: "Technology Lead",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
-      description: "Tech innovator building cutting-edge solutions."
-    },
-    {
-      name: "Zara Malik",
-      role: "Customer Success",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
-      description: "Dedicated to ensuring exceptional customer experience."
-    }
-  ];
-
-  const stats = [
-    { number: "50K+", label: "Happy Customers" },
-    { number: "100K+", label: "Products Sold" },
-    { number: "500+", label: "Verified Sellers" },
-    { number: "99.5%", label: "Customer Satisfaction" }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
+  const features = [{
+    icon: Shield,
+    title: "Secure Shopping",
+    description: "Your security is our priority with encrypted transactions and verified sellers."
+  }, {
+    icon: Truck,
+    title: "Fast Delivery",
+    description: "Quick and reliable delivery service to get your products when you need them."
+  }, {
+    icon: Heart,
+    title: "Customer First",
+    description: "We put our customers at the heart of everything we do with 24/7 support."
+  }, {
+    icon: Users,
+    title: "Community Driven",
+    description: "Building a community of trusted buyers and sellers across the region."
+  }, {
+    icon: Award,
+    title: "Quality Assured",
+    description: "Every product is verified for quality and authenticity before listing."
+  }, {
+    icon: Globe,
+    title: "Wide Reach",
+    description: "Serving customers across multiple cities with expanding coverage."
+  }];
+  const team = [{
+    name: "Ahmad Hassan",
+    role: "CEO & Founder",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    description: "Visionary leader with 10+ years in e-commerce."
+  }, {
+    name: "Fatima Khan",
+    role: "Head of Operations",
+    image: "https://images.unsplash.com/photo-1494790108755-2616b9e1a9bb?auto=format&fit=crop&w=300&q=80",
+    description: "Operations expert ensuring smooth platform experience."
+  }, {
+    name: "Ali Ahmed",
+    role: "Technology Lead",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
+    description: "Tech innovator building cutting-edge solutions."
+  }, {
+    name: "Zara Malik",
+    role: "Customer Success",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
+    description: "Dedicated to ensuring exceptional customer experience."
+  }];
+  const stats = [{
+    number: "50K+",
+    label: "Happy Customers"
+  }, {
+    number: "100K+",
+    label: "Products Sold"
+  }, {
+    number: "500+",
+    label: "Verified Sellers"
+  }, {
+    number: "99.5%",
+    label: "Customer Satisfaction"
+  }];
+  return <div className="min-h-screen bg-gray-50">
       <Header />
       
       <div className="container mx-auto px-4 py-12 max-w-7xl">
@@ -83,9 +72,7 @@ const AboutUs = () => {
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-900 rounded-full mb-6">
               <span className="text-3xl text-white">🛍️</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              About Shoply
-            </h1>
+            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">About Localena</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               We're revolutionizing the way people buy, sell, and rent products online. 
               Our platform connects millions of users in a secure, trusted marketplace 
@@ -117,11 +104,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80"
-              alt="Our team working together"
-              className="w-full h-full object-cover rounded-2xl shadow-lg"
-            />
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Our team working together" className="w-full h-full object-cover rounded-2xl shadow-lg" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
           </div>
         </div>
@@ -129,14 +112,12 @@ const AboutUs = () => {
         {/* Stats Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-20">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
+            {stats.map((stat, index) => <div key={index} className="text-center">
                 <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
@@ -153,18 +134,13 @@ const AboutUs = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
+            {features.map((feature, index) => <div key={index} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mb-4">
                   <feature.icon className="text-white" size={24} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
@@ -181,25 +157,16 @@ const AboutUs = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
+            {team.map((member, index) => <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 <div className="aspect-square overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
                   <p className="text-gray-600 font-medium mb-3">{member.role}</p>
                   <p className="text-gray-600 text-sm">{member.description}</p>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
@@ -232,8 +199,6 @@ const AboutUs = () => {
       </div>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default AboutUs;
