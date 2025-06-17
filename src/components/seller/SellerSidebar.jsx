@@ -49,7 +49,7 @@ function SellerSidebar({
     }}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b min-h-[3.5rem] sm:min-h-[4rem]">
-          <span className="font-extrabold text-base sm:text-lg tracking-tight text-gray-900 truncate bg-accent-foreground ">Localena</span>
+          <span className="font-extrabold text-base sm:text-lg tracking-tight truncate bg-accent-foreground text-slate-50 px-[18px] py-[2px]  ">Localena</span>
           <button className="p-1.5 sm:p-2 rounded hover:bg-gray-100 transition lg:hidden" onClick={() => setOpen(false)} aria-label="Close sidebar">
             <X size={20} className="sm:w-[24px] sm:h-[24px]" />
           </button>
