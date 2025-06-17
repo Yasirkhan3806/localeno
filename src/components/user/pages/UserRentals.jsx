@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Calendar, Clock, AlertTriangle, CheckCircle, Eye, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BackToHomeButton from '../BackToHomeButton';
+import ExtendRentalModal from './ExtendRentalModal';
 
 const UserRentals = () => {
   const navigate = useNavigate();
+  const [showExtendModal, setShowExtendModal] = useState(false);
+  const [selectedRental, setSelectedRental] = useState(null);
   
   // Mock rentals data
-  const [rentals] = useState([
+  const [rentals, setRentals] = useState([
     {
       id: "RNT-2024-001",
       productName: "Canon DSLR Camera",
@@ -112,13 +115,47 @@ const UserRentals = () => {
   };
 
   const extendRental = (rentalId) => {
-    console.log('Extending rental:', rentalId);
-    // Add extend rental logic here
+    const rental = rentals.find(r => r.id === rentalId);
+    setSelectedRental(rental);
+    setShowExtendModal(true);
+  };
+
+  const handleExtendRental = (rentalId, days) => {
+    setRentals(rentals.map(rental => {
+      if (rental.id === rentalId) {
+        const newEndDate = new Date(rental.endDate);
+        newEndDate.setDate(newEndDate.getDate() + days);
+        return {
+          ...rental,
+          endDate: newEndDate.toISOString().split('T')[0],
+          totalDays: rental.totalDays + days,
+          totalAmount: rental.totalAmount + (rental.dailyRate * days)
+        };
+      }
+      return rental;
+    }));
   };
 
   const returnRental = (rentalId) => {
-    console.log('Returning rental:', rentalId);
-    // Add return rental logic here
+    const confirmReturn = window.confirm('Are you sure you want to return this item?');
+    if (confirmReturn) {
+      setRentals(rentals.map(rental => {
+        if (rental.id === rentalId) {
+          return {
+            ...rental,
+            status: 'returned',
+            returnDate: new Date().toISOString().split('T')[0],
+            isOverdue: false
+          };
+        }
+        return rental;
+      }));
+      alert('Item returned successfully!');
+    }
+  };
+
+  const viewRentalDetails = (rentalId) => {
+    navigate(`/user/rentals/${rentalId}`);
   };
 
   const filteredRentals = filterStatus === 'all' 
@@ -258,7 +295,7 @@ const UserRentals = () => {
                   {/* Action Buttons */}
                   <div className="flex flex-wrap gap-3">
                     <button
-                      onClick={() => navigate(`/user/rentals/${rental.id}`)}
+                      onClick={() => viewRentalDetails(rental.id)}
                       className="flex items-center space-x-2 bg-gray-100 text-gray-900 px-4 py-2 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                     >
                       <Eye size={16} />
@@ -290,6 +327,17 @@ const UserRentals = () => {
           ))}
         </div>
       )}
+
+      {/* Extend Rental Modal */}
+      <ExtendRentalModal
+        isOpen={showExtendModal}
+        onClose={() => {
+          setShowExtendModal(false);
+          setSelectedRental(null);
+        }}
+        rental={selectedRental}
+        onExtend={handleExtendRental}
+      />
     </div>
   );
 };

@@ -88,6 +88,10 @@ const UserOrders = () => {
     }
   };
 
+  const viewOrderDetails = (orderId) => {
+    navigate(`/user/orders/${orderId}`);
+  };
+
   const filteredOrders = filterStatus === 'all' 
     ? orders 
     : orders.filter(order => order.status === filterStatus);
@@ -192,7 +196,7 @@ const UserOrders = () => {
 
               <div className="flex justify-end space-x-3 mt-4">
                 <button
-                  onClick={() => navigate(`/user/orders/${order.id}`)}
+                  onClick={() => viewOrderDetails(order.id)}
                   className="flex items-center space-x-2 bg-gray-100 text-gray-900 px-4 py-2 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                 >
                   <Eye size={16} />

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, CreditCard, Truck, Shield, CheckCircle } from 'lucide-react';
 import { useCart } from '../../../hooks/useCart';
+import AddAddressModal from './AddAddressModal';
 
 const UserCheckout = () => {
   const navigate = useNavigate();
@@ -10,11 +11,12 @@ const UserCheckout = () => {
   const [selectedAddress, setSelectedAddress] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState('cod');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showAddAddressModal, setShowAddAddressModal] = useState(false);
 
-  const mockAddresses = [
+  const [mockAddresses, setMockAddresses] = useState([
     { id: 1, label: "Home", address: "123 Main St, Springfield, USA", phone: "+1 234-567-8900" },
     { id: 2, label: "Work", address: "456 5th Ave, Metropolis, USA", phone: "+1 234-567-8901" }
-  ];
+  ]);
 
   const paymentMethods = [
     { id: 'cod', label: 'Cash on Delivery', icon: '💵', description: 'Pay when you receive' },
@@ -36,6 +38,11 @@ const UserCheckout = () => {
       alert('Order placed successfully! 🎉');
       navigate('/user/orders');
     }, 2000);
+  };
+
+  const handleAddAddress = (newAddress) => {
+    setMockAddresses([...mockAddresses, newAddress]);
+    setSelectedAddress(newAddress.id);
   };
 
   return (
@@ -98,7 +105,10 @@ const UserCheckout = () => {
                   </label>
                 ))}
                 
-                <button className="w-full p-4 border-2 border-dashed border-gray-300 rounded-2xl text-gray-600 hover:border-gray-400 hover:text-gray-800 transition-all duration-300">
+                <button 
+                  onClick={() => setShowAddAddressModal(true)}
+                  className="w-full p-4 border-2 border-dashed border-gray-300 rounded-2xl text-gray-600 hover:border-gray-400 hover:text-gray-800 transition-all duration-300"
+                >
                   + Add New Address
                 </button>
               </div>
@@ -239,6 +249,13 @@ const UserCheckout = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Address Modal */}
+      <AddAddressModal
+        isOpen={showAddAddressModal}
+        onClose={() => setShowAddAddressModal(false)}
+        onAddAddress={handleAddAddress}
+      />
     </div>
   );
 };
