@@ -86,11 +86,7 @@ const AboutUs = () => {
           <div className="space-y-6">
             <h2 className="text-3xl font-bold text-gray-900">Our Story</h2>
             <div className="space-y-4 text-gray-700 leading-relaxed">
-              <p>
-                Founded in 2020, Shoply began as a simple idea: to create a marketplace 
-                that truly serves both buyers and sellers. We noticed that existing platforms 
-                either favored one side or were too complex to navigate.
-              </p>
+              <p>Founded in 2025, Localena began as a simple idea: to create a marketplace that truly serves both buyers and sellers. We noticed that existing platforms either favored one side or were too complex to navigate.</p>
               <p>
                 Our founders, coming from diverse backgrounds in technology, retail, and 
                 customer service, combined their expertise to build something different. 
@@ -124,9 +120,7 @@ const AboutUs = () => {
         {/* Features Section */}
         <div className="mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Shoply?
-            </h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Why Choose Localena?</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               We're committed to providing the best marketplace experience 
               with features that matter most to our community.
@@ -150,10 +144,7 @@ const AboutUs = () => {
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Meet Our Team
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The passionate people behind Shoply who work tirelessly 
-              to make your marketplace experience exceptional.
-            </p>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">The passionate people behind Localena who work tirelessly to make your marketplace experience exceptional.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
