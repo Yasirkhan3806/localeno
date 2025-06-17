@@ -8,41 +8,35 @@ const CategoriesSection = ({ featuredCategories }) => {
 
   const updatedCategories = [
     { 
+      name: 'Furniture', 
+      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80', 
+      count: '10 items',
+      id: 'furniture'
+    },
+    { 
       name: 'Handicrafts', 
       image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=300&q=80', 
-      count: '10 items',
-      id: 'Handicrafts'
+      count: '8 items',
+      id: 'handicrafts'
+    },
+    { 
+      name: 'Clothing Accessories', 
+      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80', 
+      count: '7 items',
+      id: 'clothing accessories'
     },
     { 
       name: 'Home Decor', 
       image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=300&q=80', 
-      count: '8 items',
-      id: 'Home Decor'
-    },
-    { 
-      name: 'Furniture', 
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=300&q=80', 
-      count: '7 items',
-      id: 'Furniture'
+      count: '6 items',
+      id: 'home decor'
     },
     { 
       name: 'Health & Beauty', 
       image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80', 
-      count: '6 items',
-      id: 'Health & Beauty'
-    },
-    { 
-      name: 'Clothing', 
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=300&q=80', 
       count: '8 items',
-      id: 'Clothing'
-    },
-    { 
-      name: 'Accessories', 
-      image: 'https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=300&q=80', 
-      count: '5 items',
-      id: 'Accessories'
-    },
+      id: 'health and beauty'
+    }
   ];
 
   return (
@@ -53,18 +47,18 @@ const CategoriesSection = ({ featuredCategories }) => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Browse Categories</h2>
         </div>
         <button
-          onClick={() => navigate('/user/products')}
+          onClick={() => navigate('/products')}
           className="bg-black text-white font-semibold py-2.5 sm:py-3 px-5 sm:px-6 rounded-2xl hover:bg-gray-800 hover:scale-105 transition-all duration-300 text-sm sm:text-base"
         >
           View All Products
         </button>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
         {updatedCategories.map((category, index) => (
           <div
             key={index}
-            onClick={() => navigate(`/user/products?category=${encodeURIComponent(category.id)}`)}
+            onClick={() => navigate(`/products?category=${encodeURIComponent(category.id)}`)}
             className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group border border-gray-100"
           >
             <div className="aspect-square overflow-hidden">

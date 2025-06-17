@@ -14,7 +14,7 @@ const WelcomeSection = () => {
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() => navigate('/user/products')}
+            onClick={() => navigate('/products')}
             className="bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
           >
             Start Shopping

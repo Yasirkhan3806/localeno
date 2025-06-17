@@ -49,7 +49,7 @@ const Hero = () => {
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="bg-yellow-500 text-black hover:bg-yellow-400 font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center gap-2 border-0"
+                className="bg-yellow-500 text-black hover:bg-yellow-400 font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center gap-2"
               >
                 Get Started
                 <ArrowRight size={20} />

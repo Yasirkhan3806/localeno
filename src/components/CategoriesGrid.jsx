@@ -4,39 +4,33 @@ import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
-    id: "home-decor",
-    title: "Home Decor",
-    productCount: "150 products",
-    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80"
-  },
-  {
     id: "furniture",
     title: "Furniture", 
-    productCount: "200 products",
+    productCount: "3 products",
     image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "clothing",
-    title: "Clothing",
-    productCount: "300 products", 
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "accessories",
-    title: "Accessories",
-    productCount: "180 products",
-    image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80"
   },
   {
     id: "handicrafts",
     title: "Handicrafts", 
-    productCount: "120 products",
+    productCount: "3 products",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80"
   },
   {
-    id: "health-beauty",
+    id: "clothing accessories",
+    title: "Clothing Accessories",
+    productCount: "3 products",
+    image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    id: "home decor",
+    title: "Home Decor",
+    productCount: "3 products",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    id: "health and beauty",
     title: "Health & Beauty",
-    productCount: "90 products",
+    productCount: "3 products",
     image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=400&q=80"
   }
 ];
@@ -45,7 +39,7 @@ const CategoriesGrid = () => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (categoryId) => {
-    navigate(`/products?category=${categoryId}`);
+    navigate(`/products?category=${encodeURIComponent(categoryId)}`);
   };
 
   const handleBrowseAllCategories = () => {
@@ -74,7 +68,7 @@ const CategoriesGrid = () => {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
           {categories.map((category) => (
             <div
               key={category.id}
