@@ -16,7 +16,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative w-full mx-auto max-w-7xl h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <section className="relative w-full mx-auto max-w-7xl h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -49,7 +49,7 @@ const Hero = () => {
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="bg-yellow-500 text-black hover:bg-yellow-400 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center gap-2"
+                className="bg-yellow-500 text-black hover:bg-yellow-400 font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center gap-2 border-0"
               >
                 Get Started
                 <ArrowRight size={20} />
@@ -58,7 +58,7 @@ const Hero = () => {
                 onClick={handleVerifyIdentity}
                 variant="outline"
                 size="lg"
-                className="border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 flex items-center gap-2"
+                className="border-0 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 flex items-center gap-2"
               >
                 <Shield size={20} />
                 Verify Identity to Build Trust
