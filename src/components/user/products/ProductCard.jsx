@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
     const cartProduct = {
       id: product.id,
       name: product.name,
-      price: typeof product.price === 'string' ? parseFloat(product.price.replace('$', '')) : product.price,
+      price: typeof product.price === 'string' ? parseFloat(product.price.replace(/[₹$,]/g, '')) : product.price,
       image: product.image,
       category: product.category,
       inStock: product.inStock
@@ -34,13 +34,13 @@ const ProductCard = ({ product }) => {
     console.log('Added to cart:', cartProduct.name);
   };
 
-  // Convert dollar prices to PKR (assuming 1 USD = 150 PKR)
+  // Convert dollar prices to PKR (assuming 1 USD = 280 PKR)
   const convertToPKR = (dollarPrice) => {
     if (!dollarPrice) return 'PKR 0';
     
     let numericPrice;
     if (typeof dollarPrice === 'string') {
-      numericPrice = parseFloat(dollarPrice.replace('$', ''));
+      numericPrice = parseFloat(dollarPrice.replace(/[₹$,]/g, ''));
     } else if (typeof dollarPrice === 'number') {
       numericPrice = dollarPrice;
     } else {
@@ -53,7 +53,12 @@ const ProductCard = ({ product }) => {
       return 'PKR 0';
     }
     
-    return `PKR ${Math.round(numericPrice * 150).toLocaleString()}`;
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof dollarPrice === 'string' && dollarPrice.includes('PKR')) {
+      return dollarPrice;
+    }
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}`;
   };
 
   const convertRentToPKR = (rentPrice) => {
@@ -61,7 +66,7 @@ const ProductCard = ({ product }) => {
     
     let numericPrice;
     if (typeof rentPrice === 'string') {
-      numericPrice = parseFloat(rentPrice.replace('$', '').replace('/day', ''));
+      numericPrice = parseFloat(rentPrice.replace(/[₹$,]/g, '').replace('/day', ''));
     } else if (typeof rentPrice === 'number') {
       numericPrice = rentPrice;
     } else {
@@ -74,7 +79,12 @@ const ProductCard = ({ product }) => {
       return null;
     }
     
-    return `PKR ${Math.round(numericPrice * 150).toLocaleString()}/day`;
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof rentPrice === 'string' && rentPrice.includes('PKR')) {
+      return rentPrice;
+    }
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}/day`;
   };
 
   return (
@@ -122,10 +132,10 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} size={14} className={`${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+              <Star key={i} size={14} className={`${i < Math.floor(product.rating || 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
             ))}
           </div>
-          <span className="text-sm text-gray-600 ml-2">({product.reviews})</span>
+          <span className="text-sm text-gray-600 ml-2">({product.reviews || 0})</span>
         </div>
         
         <div className="mb-4">

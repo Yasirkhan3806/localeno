@@ -2,16 +2,17 @@
 import React, { useState } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useCart } from "../hooks/useCart";
+import { useWishlist } from "../hooks/useWishlist";
 
 const ProductCard = ({ product, onClick, minimal = false, showActions = false }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
-    setIsFavorited(!isFavorited);
-    console.log(`${isFavorited ? 'Removed from' : 'Added to'} wishlist:`, product.name);
+    toggleWishlist(product);
+    console.log(`${isWishlisted(product.id) ? 'Removed from' : 'Added to'} wishlist:`, product.name);
   };
 
   const handleAddToCart = (e) => {
@@ -22,7 +23,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
     const cartProduct = {
       id: product.id,
       name: product.name,
-      price: typeof product.price === 'string' ? parseFloat(product.price.replace('$', '')) : product.price,
+      price: typeof product.price === 'string' ? parseFloat(product.price.replace(/[₹$,]/g, '')) : product.price,
       image: product.image,
       category: product.category,
       inStock: product.inStock
@@ -46,6 +47,27 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
   const handleProductClick = () => {
     console.log(`Navigate to /product/${product.id}`);
     onClick();
+  };
+
+  // Convert price to PKR
+  const convertToPKR = (price) => {
+    if (!price) return 'PKR 0';
+    
+    let numericPrice;
+    if (typeof price === 'string') {
+      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    } else {
+      numericPrice = price;
+    }
+    
+    if (isNaN(numericPrice)) return 'PKR 0';
+    
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof price === 'string' && price.includes('PKR')) {
+      return price;
+    }
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}`;
   };
 
   if (minimal) {
@@ -73,9 +95,9 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
             {product.name}
           </h4>
           <div className="flex items-center gap-2 mt-1">
-            <span className="font-bold text-gray-900">{product.price}</span>
+            <span className="font-bold text-gray-900">{convertToPKR(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-xs text-gray-500 line-through">{product.originalPrice}</span>
+              <span className="text-xs text-gray-500 line-through">{convertToPKR(product.originalPrice)}</span>
             )}
           </div>
         </div>
@@ -88,7 +110,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
           >
             <Heart 
               size={16} 
-              className={`transition-colors ${isFavorited ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
+              className={`transition-colors ${isWishlisted(product.id) ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
             />
           </button>
           
@@ -131,7 +153,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
         >
           <Heart 
             size={18} 
-            className={`transition-colors ${isFavorited ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
+            className={`transition-colors ${isWishlisted(product.id) ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
           />
         </button>
 
@@ -150,9 +172,9 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
         </h4>
         
         <div className="flex items-center gap-2 mb-4">
-          <span className="font-bold text-xl text-gray-900">{product.price}</span>
+          <span className="font-bold text-xl text-gray-900">{convertToPKR(product.price)}</span>
           {product.originalPrice && (
-            <span className="text-sm text-gray-500 line-through">{product.originalPrice}</span>
+            <span className="text-sm text-gray-500 line-through">{convertToPKR(product.originalPrice)}</span>
           )}
         </div>
 
@@ -185,7 +207,7 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
               disabled={!product.inStock}
               className="w-full py-2 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Rent for {product.rentPrice}
+              Rent for {convertToPKR(product.rentPrice)}/day
             </button>
           )}
         </div>

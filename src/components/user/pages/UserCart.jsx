@@ -8,6 +8,31 @@ const UserCart = () => {
   const navigate = useNavigate();
   const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
 
+  // Convert price to PKR
+  const convertToPKR = (price) => {
+    if (!price) return 'PKR 0';
+    
+    let numericPrice;
+    if (typeof price === 'string') {
+      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    } else {
+      numericPrice = price;
+    }
+    
+    if (isNaN(numericPrice)) return 'PKR 0';
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}`;
+  };
+
+  // Calculate total in PKR
+  const getCartTotalPKR = () => {
+    const total = cart.reduce((sum, item) => {
+      const price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[₹$,]/g, '')) : item.price;
+      return sum + (price * item.quantity * 280);
+    }, 0);
+    return Math.round(total).toLocaleString();
+  };
+
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -89,7 +114,7 @@ const UserCart = () => {
                 {/* Product Details */}
                 <div className="flex-1 text-center lg:text-left">
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">{item.name}</h3>
-                  <p className="text-gray-600 text-sm sm:text-base">Price: ${item.price}</p>
+                  <p className="text-gray-600 text-sm sm:text-base">Price: {convertToPKR(item.price)}</p>
                 </div>
 
                 {/* Quantity Controls */}
@@ -124,7 +149,7 @@ const UserCart = () => {
             <div className="mt-8 flex flex-col items-center lg:items-end gap-4">
               <div className="text-center lg:text-right">
                 <h4 className="text-lg sm:text-xl font-bold text-gray-900">
-                  Total: ${getCartTotal()}
+                  Total: PKR {getCartTotalPKR()}
                 </h4>
                 <p className="text-gray-600 text-sm sm:text-base">Including taxes and discounts</p>
               </div>

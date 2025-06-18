@@ -1,55 +1,53 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { Heart, ShoppingCart, Eye, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useWishlist } from '../../../hooks/useWishlist';
+import { useCart } from '../../../hooks/useCart';
 import BackToHomeButton from '../BackToHomeButton';
 
 const UserWishlist = () => {
   const navigate = useNavigate();
-  
-  // Mock wishlist data
-  const [wishlistItems, setWishlistItems] = useState([
-    {
-      id: 1,
-      name: "Wireless Bluetooth Headphones",
-      price: 89.99,
-      originalPrice: 129.99,
-      image: "/placeholder.svg",
-      rating: 4.5,
-      reviews: 324,
-      inStock: true,
-      category: "Electronics"
-    },
-    {
-      id: 2,
-      name: "Smart Fitness Watch",
-      price: 199.99,
-      originalPrice: 249.99,
-      image: "/placeholder.svg",
-      rating: 4.8,
-      reviews: 156,
-      inStock: false,
-      category: "Wearables"
-    },
-    {
-      id: 3,
-      name: "Laptop Stand Adjustable",
-      price: 45.99,
-      originalPrice: 59.99,
-      image: "/placeholder.svg",
-      rating: 4.3,
-      reviews: 89,
-      inStock: true,
-      category: "Accessories"
-    }
-  ]);
+  const { wishlist, toggleWishlist } = useWishlist();
+  const { addToCart } = useCart();
 
-  const removeFromWishlist = (itemId) => {
-    setWishlistItems(prev => prev.filter(item => item.id !== itemId));
+  const removeFromWishlist = (item) => {
+    toggleWishlist(item);
   };
 
-  const addToCart = (item) => {
-    console.log('Added to cart:', item);
-    // Add toast notification here
+  const handleAddToCart = (item) => {
+    const cartProduct = {
+      id: item.id,
+      name: item.name,
+      price: typeof item.price === 'string' ? parseFloat(item.price.replace(/[₹$,]/g, '')) : item.price,
+      image: item.image,
+      category: item.category,
+      inStock: item.inStock
+    };
+    
+    addToCart(cartProduct);
+    console.log('Added to cart from wishlist:', cartProduct.name);
+  };
+
+  // Convert price to PKR
+  const convertToPKR = (price) => {
+    if (!price) return 'PKR 0';
+    
+    let numericPrice;
+    if (typeof price === 'string') {
+      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    } else {
+      numericPrice = price;
+    }
+    
+    if (isNaN(numericPrice)) return 'PKR 0';
+    
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof price === 'string' && price.includes('PKR')) {
+      return price;
+    }
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}`;
   };
 
   return (
@@ -58,17 +56,17 @@ const UserWishlist = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">My Wishlist</h1>
         <div className="text-sm text-gray-500">
-          {wishlistItems.length} items
+          {wishlist.length} items
         </div>
       </div>
 
-      {wishlistItems.length === 0 ? (
+      {wishlist.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 shadow-md border border-gray-200 text-center">
           <Heart size={64} className="mx-auto text-gray-300 mb-4" />
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Your wishlist is empty</h3>
           <p className="text-gray-600 mb-6">Start adding products you love to see them here</p>
           <button
-            onClick={() => navigate('/user/home')}
+            onClick={() => navigate('/user/products')}
             className="bg-black text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 transition-colors"
           >
             Continue Shopping
@@ -76,7 +74,7 @@ const UserWishlist = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlistItems.map((item) => (
+          {wishlist.map((item) => (
             <div key={item.id} className="bg-white rounded-2xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
               <div className="relative mb-4">
                 <img
@@ -85,7 +83,7 @@ const UserWishlist = () => {
                   className="w-full h-48 object-cover rounded-xl"
                 />
                 <button
-                  onClick={() => removeFromWishlist(item.id)}
+                  onClick={() => removeFromWishlist(item)}
                   className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors"
                 >
                   <Heart size={20} className="text-red-500 fill-current" />
@@ -105,19 +103,19 @@ const UserWishlist = () => {
                     {[...Array(5)].map((_, i) => (
                       <span
                         key={i}
-                        className={`text-sm ${i < Math.floor(item.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`text-sm ${i < Math.floor(item.rating || 4) ? 'text-yellow-400' : 'text-gray-300'}`}
                       >
                         ★
                       </span>
                     ))}
                   </div>
-                  <span className="text-sm text-gray-500">({item.reviews})</span>
+                  <span className="text-sm text-gray-500">({item.reviews || 0})</span>
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold text-gray-900">${item.price}</span>
-                  {item.originalPrice > item.price && (
-                    <span className="text-sm text-gray-500 line-through">${item.originalPrice}</span>
+                  <span className="text-xl font-bold text-gray-900">{convertToPKR(item.price)}</span>
+                  {item.originalPrice && item.originalPrice > item.price && (
+                    <span className="text-sm text-gray-500 line-through">{convertToPKR(item.originalPrice)}</span>
                   )}
                 </div>
 
@@ -132,7 +130,7 @@ const UserWishlist = () => {
                   
                   {item.inStock && (
                     <button
-                      onClick={() => addToCart(item)}
+                      onClick={() => handleAddToCart(item)}
                       className="flex-1 flex items-center justify-center space-x-2 bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition-colors"
                     >
                       <ShoppingCart size={18} />
@@ -142,7 +140,7 @@ const UserWishlist = () => {
                 </div>
 
                 <button
-                  onClick={() => removeFromWishlist(item.id)}
+                  onClick={() => removeFromWishlist(item)}
                   className="w-full flex items-center justify-center space-x-2 text-red-600 py-2 rounded-xl font-medium hover:bg-red-50 transition-colors"
                 >
                   <Trash2 size={18} />
