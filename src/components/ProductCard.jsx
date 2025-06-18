@@ -1,10 +1,12 @@
 
 import React, { useState } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
+import { useCart } from "../hooks/useCart";
 
 const ProductCard = ({ product, onClick, minimal = false, showActions = false }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { addToCart } = useCart();
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
@@ -15,7 +17,19 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
   const handleAddToCart = (e) => {
     e.stopPropagation();
     setIsAddingToCart(true);
-    console.log('Added to cart:', product.name);
+    
+    // Ensure the product has all required fields for the cart
+    const cartProduct = {
+      id: product.id,
+      name: product.name,
+      price: typeof product.price === 'string' ? parseFloat(product.price.replace('$', '')) : product.price,
+      image: product.image,
+      category: product.category,
+      inStock: product.inStock
+    };
+    
+    addToCart(cartProduct);
+    console.log('Added to cart:', cartProduct.name);
     setTimeout(() => setIsAddingToCart(false), 1000);
   };
 

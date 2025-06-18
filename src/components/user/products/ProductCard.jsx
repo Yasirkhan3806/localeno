@@ -19,6 +19,21 @@ const ProductCard = ({ product }) => {
     navigate(`/product/${product.id}`);
   };
 
+  const handleAddToCart = (product) => {
+    // Ensure the product has all required fields for the cart
+    const cartProduct = {
+      id: product.id,
+      name: product.name,
+      price: typeof product.price === 'string' ? parseFloat(product.price.replace('$', '')) : product.price,
+      image: product.image,
+      category: product.category,
+      inStock: product.inStock
+    };
+    
+    addToCart(cartProduct);
+    console.log('Added to cart:', cartProduct.name);
+  };
+
   // Convert dollar prices to PKR (assuming 1 USD = 150 PKR)
   const convertToPKR = (dollarPrice) => {
     if (!dollarPrice) return 'PKR 0';
@@ -134,7 +149,7 @@ const ProductCard = ({ product }) => {
           
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={() => addToCart(product)}
+              onClick={() => handleAddToCart(product)}
               disabled={!product.inStock}
               className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
             >
