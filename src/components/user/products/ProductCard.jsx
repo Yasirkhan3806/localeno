@@ -21,13 +21,44 @@ const ProductCard = ({ product }) => {
 
   // Convert dollar prices to PKR (assuming 1 USD = 150 PKR)
   const convertToPKR = (dollarPrice) => {
-    const numericPrice = parseFloat(dollarPrice.replace('$', ''));
+    if (!dollarPrice) return 'PKR 0';
+    
+    let numericPrice;
+    if (typeof dollarPrice === 'string') {
+      numericPrice = parseFloat(dollarPrice.replace('$', ''));
+    } else if (typeof dollarPrice === 'number') {
+      numericPrice = dollarPrice;
+    } else {
+      console.log('Unexpected price format:', dollarPrice);
+      return 'PKR 0';
+    }
+    
+    if (isNaN(numericPrice)) {
+      console.log('Could not parse price:', dollarPrice);
+      return 'PKR 0';
+    }
+    
     return `PKR ${Math.round(numericPrice * 150).toLocaleString()}`;
   };
 
   const convertRentToPKR = (rentPrice) => {
     if (!rentPrice) return null;
-    const numericPrice = parseFloat(rentPrice.replace('$', '').replace('/day', ''));
+    
+    let numericPrice;
+    if (typeof rentPrice === 'string') {
+      numericPrice = parseFloat(rentPrice.replace('$', '').replace('/day', ''));
+    } else if (typeof rentPrice === 'number') {
+      numericPrice = rentPrice;
+    } else {
+      console.log('Unexpected rent price format:', rentPrice);
+      return null;
+    }
+    
+    if (isNaN(numericPrice)) {
+      console.log('Could not parse rent price:', rentPrice);
+      return null;
+    }
+    
     return `PKR ${Math.round(numericPrice * 150).toLocaleString()}/day`;
   };
 
