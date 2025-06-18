@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 export function useCart() {
-  const [cart, setCart] = React.useState<any[]>(() => {
+  const [cart, setCart] = React.useState(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem('user_cart');
       return stored ? JSON.parse(stored) : [];
@@ -16,22 +16,22 @@ export function useCart() {
     }
   }, [cart]);
 
-  const addToCart = (product: any) => {
-    setCart((prev: any[]) => {
+  const addToCart = (product) => {
+    setCart((prev) => {
       if (prev.some(item => item.id === product.id)) return prev;
       return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (productId: any) => {
-    setCart((prev: any[]) => prev.filter(item => item.id !== productId));
+  const removeFromCart = (productId) => {
+    setCart((prev) => prev.filter(item => item.id !== productId));
   };
 
   const clearCart = () => setCart([]);
 
   // Increase/decrease quantity
-  const updateQuantity = (productId: any, change: number) => {
-    setCart((prev: any[]) =>
+  const updateQuantity = (productId, change) => {
+    setCart((prev) =>
       prev.map(item =>
         item.id === productId ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
       )
