@@ -1,38 +1,13 @@
-
 import React, { useState } from 'react';
-import { Package, Clock, CheckCircle, XCircle, Eye, Truck } from 'lucide-react';
+import { Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BackToHomeButton from '../BackToHomeButton';
+import OrderCard from '../orders/OrderCard';
+import OrderStatusFilter from '../orders/OrderStatusFilter';
 
 const UserOrders = () => {
   const navigate = useNavigate();
   
-  // Convert price to PKR
-  const convertToPKR = (price) => {
-    if (!price) return 0;
-    
-    let numericPrice;
-    if (typeof price === 'string') {
-      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
-    } else {
-      numericPrice = price;
-    }
-    
-    if (isNaN(numericPrice)) return 0;
-    
-    // If it's already in PKR, return as is, otherwise convert from USD
-    if (typeof price === 'string' && price.includes('PKR')) {
-      return numericPrice;
-    }
-    
-    return Math.round(numericPrice * 280);
-  };
-
-  const formatPKR = (amount) => {
-    return `PKR ${amount.toLocaleString()}`;
-  };
-  
-  // Mock orders data
   const [orders] = useState([
     {
       id: "ORD-2024-001",
@@ -114,10 +89,6 @@ const UserOrders = () => {
     }
   };
 
-  const viewOrderDetails = (orderId) => {
-    navigate(`/user/orders/${orderId}`);
-  };
-
   const filteredOrders = filterStatus === 'all' 
     ? orders 
     : orders.filter(order => order.status === filterStatus);
@@ -132,26 +103,11 @@ const UserOrders = () => {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
-        <div className="flex flex-wrap gap-2">
-          {['all', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
-            <button
-              key={status}
-              onClick={() => setFilterStatus(status)}
-              className={`px-4 py-2 rounded-xl font-medium transition-colors capitalize ${
-                filterStatus === status
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              {status === 'all' ? 'All Orders' : status}
-            </button>
-          ))}
-        </div>
-      </div>
+      <OrderStatusFilter 
+        filterStatus={filterStatus} 
+        setFilterStatus={setFilterStatus} 
+      />
 
-      {/* Orders List */}
       {filteredOrders.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 shadow-md border border-gray-200 text-center">
           <Package size={64} className="mx-auto text-gray-300 mb-4" />
@@ -171,74 +127,12 @@ const UserOrders = () => {
       ) : (
         <div className="space-y-4">
           {filteredOrders.map((order) => (
-            <div key={order.id} className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
-                <div className="flex items-center space-x-4 mb-4 lg:mb-0">
-                  {getStatusIcon(order.status)}
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{order.id}</h3>
-                    <p className="text-sm text-gray-500">Placed on {new Date(order.date).toLocaleDateString()}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(order.status)}`}>
-                    {order.status}
-                  </span>
-                  <span className="font-bold text-lg">{formatPKR(convertToPKR(order.total))}</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <p className="text-sm text-gray-500">Items</p>
-                  <p className="font-medium">{order.items} item(s)</p>
-                </div>
-                {order.estimatedDelivery && (
-                  <div>
-                    <p className="text-sm text-gray-500">Estimated Delivery</p>
-                    <p className="font-medium">{new Date(order.estimatedDelivery).toLocaleDateString()}</p>
-                  </div>
-                )}
-                {order.trackingNumber && (
-                  <div>
-                    <p className="text-sm text-gray-500">Tracking Number</p>
-                    <p className="font-medium">{order.trackingNumber}</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="border-t pt-4">
-                <h4 className="font-medium text-gray-900 mb-2">Order Items:</h4>
-                <div className="space-y-2">
-                  {order.products.map((product, index) => (
-                    <div key={index} className="flex justify-between items-center text-sm">
-                      <span>{product.name} x{product.quantity}</span>
-                      <span className="font-medium">{formatPKR(convertToPKR(product.price))}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex justify-end space-x-3 mt-4">
-                <button
-                  onClick={() => viewOrderDetails(order.id)}
-                  className="flex items-center space-x-2 bg-gray-100 text-gray-900 px-4 py-2 rounded-xl font-medium hover:bg-gray-200 transition-colors"
-                >
-                  <Eye size={16} />
-                  <span>View Details</span>
-                </button>
-                
-                {order.status === 'delivered' && (
-                  <button
-                    onClick={() => navigate('/user/reviews')}
-                    className="bg-black text-white px-4 py-2 rounded-xl font-medium hover:bg-gray-900 transition-colors"
-                  >
-                    Write Review
-                  </button>
-                )}
-              </div>
-            </div>
+            <OrderCard
+              key={order.id}
+              order={order}
+              getStatusIcon={getStatusIcon}
+              getStatusColor={getStatusColor}
+            />
           ))}
         </div>
       )}

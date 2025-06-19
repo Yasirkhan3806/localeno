@@ -1,7 +1,9 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Package, Clock, CheckCircle, XCircle, Truck, MapPin, CreditCard } from 'lucide-react';
+import { ArrowLeft, Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react';
+import OrderTimeline from '../orderDetail/OrderTimeline';
+import OrderItems from '../orderDetail/OrderItems';
+import OrderSidebar from '../orderDetail/OrderSidebar';
 
 const UserOrderDetail = () => {
   const { orderId } = useParams();
@@ -108,100 +110,13 @@ const UserOrderDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Order Timeline */}
-            <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Timeline</h2>
-              <div className="space-y-4">
-                {order.orderTimeline.map((step, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className={`w-4 h-4 rounded-full ${step.completed ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center">
-                        <span className={`font-medium ${step.completed ? 'text-gray-900' : 'text-gray-500'}`}>
-                          {step.status}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {step.date} at {step.time}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Order Items */}
-            <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Items</h2>
-              <div className="space-y-4">
-                {order.products.map((product, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover rounded-xl"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                      <p className="text-gray-600">Quantity: {product.quantity}</p>
-                    </div>
-                    <p className="font-bold text-gray-900">${product.price}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <OrderTimeline orderTimeline={order.orderTimeline} />
+            <OrderItems products={order.products} />
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Order Summary */}
-            <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Order Date:</span>
-                  <span className="font-medium">{new Date(order.date).toLocaleDateString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Items:</span>
-                  <span className="font-medium">{order.items}</span>
-                </div>
-                {order.trackingNumber && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Tracking:</span>
-                    <span className="font-medium">{order.trackingNumber}</span>
-                  </div>
-                )}
-                <div className="border-t pt-3">
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Total:</span>
-                    <span>${order.total}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Shipping Address */}
-            <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center gap-2 mb-4">
-                <MapPin size={20} className="text-gray-600" />
-                <h2 className="text-xl font-bold text-gray-900">Shipping Address</h2>
-              </div>
-              <div className="text-gray-700">
-                <p className="font-medium">{order.shippingAddress.name}</p>
-                <p>{order.shippingAddress.address}</p>
-                <p>{order.shippingAddress.phone}</p>
-              </div>
-            </div>
-
-            {/* Payment Method */}
-            <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center gap-2 mb-4">
-                <CreditCard size={20} className="text-gray-600" />
-                <h2 className="text-xl font-bold text-gray-900">Payment Method</h2>
-              </div>
-              <p className="text-gray-700">{order.paymentMethod}</p>
-            </div>
+          <div className="lg:col-span-1">
+            <OrderSidebar order={order} />
           </div>
         </div>
       </div>
