@@ -17,11 +17,11 @@ const Hero = () => {
 
   return (
     <section className="relative w-full mx-auto max-w-7xl h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      {/* Background Image - Related to our categories */}
+      {/* Background Image - Beautiful aesthetic home showcase */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80"
-          alt="Beautiful furniture and home decor showcase"
+          src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
+          alt="Beautiful aesthetic home decor and furniture showcase"
           className="object-cover w-full h-full"
           draggable="false"
         />
