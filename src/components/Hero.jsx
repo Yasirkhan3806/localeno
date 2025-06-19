@@ -22,12 +22,12 @@ const Hero = () => {
         <img
           src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
           alt="Beautiful aesthetic home decor and furniture showcase"
-          className="object-cover w-full h-full opacity-30"
+          className="object-cover w-full h-full"
           draggable="false"
         />
-        {/* Enhanced Gradient Overlay for better text visibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
       </div>
 
       {/* Content Container */}
@@ -35,12 +35,12 @@ const Hero = () => {
         <div className="container mx-auto px-6 sm:px-8 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
               Rent or Buy Local Products with Confidence
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-100 mb-8 leading-relaxed max-w-4xl mx-auto drop-shadow-md">
+            <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 mb-8 leading-relaxed max-w-4xl mx-auto">
               Discover verified sellers, secure transactions, and authentic products in Pakistan's most trusted marketplace
             </p>
 
@@ -58,7 +58,7 @@ const Hero = () => {
                 onClick={handleVerifyIdentity}
                 variant="outline"
                 size="lg"
-                className="border-0 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 flex items-center gap-2 shadow-lg"
+                className="border-0 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 flex items-center gap-2"
               >
                 <Shield size={20} />
                 Verify Identity to Build Trust
