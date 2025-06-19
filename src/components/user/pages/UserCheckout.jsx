@@ -25,9 +25,34 @@ const UserCheckout = () => {
     { id: 'card', label: 'Credit/Debit Card', icon: '💳', description: 'Visa, Mastercard accepted' }
   ];
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.1;
-  const shipping = subtotal > 100 ? 0 : 15;
+  // Convert price to PKR
+  const convertToPKR = (price) => {
+    if (!price) return 0;
+    
+    let numericPrice;
+    if (typeof price === 'string') {
+      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    } else {
+      numericPrice = price;
+    }
+    
+    if (isNaN(numericPrice)) return 0;
+    
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof price === 'string' && price.includes('PKR')) {
+      return numericPrice;
+    }
+    
+    return Math.round(numericPrice * 280);
+  };
+
+  const formatPKR = (amount) => {
+    return `PKR ${amount.toLocaleString()}`;
+  };
+
+  const subtotal = cart.reduce((sum, item) => sum + (convertToPKR(item.price) * item.quantity), 0);
+  const tax = Math.round(subtotal * 0.1);
+  const shipping = subtotal > 28000 ? 0 : 4200; // Free shipping over PKR 28,000 (equivalent to $100)
   const total = subtotal + tax + shipping;
 
   const handlePlaceOrder = () => {
@@ -168,7 +193,7 @@ const UserCheckout = () => {
                       <h4 className="font-semibold text-gray-900">{item.name}</h4>
                       <p className="text-gray-600">Qty: {item.quantity}</p>
                     </div>
-                    <p className="font-bold text-gray-900">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-bold text-gray-900">{formatPKR(convertToPKR(item.price) * item.quantity)}</p>
                   </div>
                 ))}
               </div>
@@ -183,11 +208,11 @@ const UserCheckout = () => {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                  <span className="font-semibold">{formatPKR(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Tax (10%)</span>
-                  <span className="font-semibold">${tax.toFixed(2)}</span>
+                  <span className="font-semibold">{formatPKR(tax)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <div className="flex items-center gap-1">
@@ -195,7 +220,7 @@ const UserCheckout = () => {
                     <span>Shipping</span>
                   </div>
                   <span className="font-semibold">
-                    {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'FREE' : formatPKR(shipping)}
                   </span>
                 </div>
                 {shipping === 0 && (
@@ -206,7 +231,7 @@ const UserCheckout = () => {
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between text-xl font-bold text-gray-900">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatPKR(total)}</span>
                   </div>
                 </div>
               </div>
