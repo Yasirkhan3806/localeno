@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Package, Clock, CheckCircle, XCircle, Eye, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +6,31 @@ import BackToHomeButton from '../BackToHomeButton';
 
 const UserOrders = () => {
   const navigate = useNavigate();
+  
+  // Convert price to PKR
+  const convertToPKR = (price) => {
+    if (!price) return 0;
+    
+    let numericPrice;
+    if (typeof price === 'string') {
+      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    } else {
+      numericPrice = price;
+    }
+    
+    if (isNaN(numericPrice)) return 0;
+    
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof price === 'string' && price.includes('PKR')) {
+      return numericPrice;
+    }
+    
+    return Math.round(numericPrice * 280);
+  };
+
+  const formatPKR = (amount) => {
+    return `PKR ${amount.toLocaleString()}`;
+  };
   
   // Mock orders data
   const [orders] = useState([
@@ -159,7 +185,7 @@ const UserOrders = () => {
                   <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(order.status)}`}>
                     {order.status}
                   </span>
-                  <span className="font-bold text-lg">${order.total}</span>
+                  <span className="font-bold text-lg">{formatPKR(convertToPKR(order.total))}</span>
                 </div>
               </div>
 
@@ -188,7 +214,7 @@ const UserOrders = () => {
                   {order.products.map((product, index) => (
                     <div key={index} className="flex justify-between items-center text-sm">
                       <span>{product.name} x{product.quantity}</span>
-                      <span className="font-medium">${product.price}</span>
+                      <span className="font-medium">{formatPKR(convertToPKR(product.price))}</span>
                     </div>
                   ))}
                 </div>

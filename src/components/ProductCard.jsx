@@ -1,24 +1,25 @@
 
-import React, { useState } from "react";
-import { Heart, ShoppingCart } from "lucide-react";
-import { useCart } from "../hooks/useCart";
-import { useWishlist } from "../hooks/useWishlist";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Heart, ShoppingCart, Calendar, Star } from 'lucide-react';
+import { useCart } from '../hooks/useCart';
+import { useWishlist } from '../hooks/useWishlist';
 
-const ProductCard = ({ product, onClick, minimal = false, showActions = false }) => {
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
 
-  const handleFavoriteClick = (e) => {
-    e.stopPropagation();
-    toggleWishlist(product);
-    console.log(`${isWishlisted(product.id) ? 'Removed from' : 'Added to'} wishlist:`, product.name);
+  const handleRentNow = (product) => {
+    navigate('/user/rentals');
+    console.log('Rented product:', product.name);
   };
 
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    setIsAddingToCart(true);
-    
+  const handleBuyNow = (product) => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = (product) => {
     // Ensure the product has all required fields for the cart
     const cartProduct = {
       id: product.id,
@@ -31,185 +32,151 @@ const ProductCard = ({ product, onClick, minimal = false, showActions = false })
     
     addToCart(cartProduct);
     console.log('Added to cart:', cartProduct.name);
-    setTimeout(() => setIsAddingToCart(false), 1000);
   };
 
-  const handleRentClick = (e) => {
-    e.stopPropagation();
-    console.log(`Navigate to rent page for:`, product.name);
-  };
-
-  const handleBuyNow = (e) => {
-    e.stopPropagation();
-    console.log(`Navigate to checkout for:`, product.name);
-  };
-
-  const handleProductClick = () => {
-    console.log(`Navigate to /product/${product.id}`);
-    onClick();
-  };
-
-  // Convert price to PKR
-  const convertToPKR = (price) => {
-    if (!price) return 'PKR 0';
+  // Convert dollar prices to PKR (assuming 1 USD = 280 PKR)
+  const convertToPKR = (dollarPrice) => {
+    if (!dollarPrice) return 'PKR 0';
     
     let numericPrice;
-    if (typeof price === 'string') {
-      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+    if (typeof dollarPrice === 'string') {
+      numericPrice = parseFloat(dollarPrice.replace(/[₹$,]/g, ''));
+    } else if (typeof dollarPrice === 'number') {
+      numericPrice = dollarPrice;
     } else {
-      numericPrice = price;
+      console.log('Unexpected price format:', dollarPrice);
+      return 'PKR 0';
     }
     
-    if (isNaN(numericPrice)) return 'PKR 0';
+    if (isNaN(numericPrice)) {
+      console.log('Could not parse price:', dollarPrice);
+      return 'PKR 0';
+    }
     
     // If it's already in PKR, return as is, otherwise convert from USD
-    if (typeof price === 'string' && price.includes('PKR')) {
-      return price;
+    if (typeof dollarPrice === 'string' && dollarPrice.includes('PKR')) {
+      return dollarPrice;
     }
     
     return `PKR ${Math.round(numericPrice * 280).toLocaleString()}`;
   };
 
-  if (minimal) {
-    return (
-      <div
-        className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 cursor-pointer group border border-transparent hover:border-gray-200"
-        onClick={handleProductClick}
-      >
-        <div className="relative">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-12 h-12 rounded-lg object-cover group-hover:scale-110 transition-transform duration-300"
-            loading="lazy"
-          />
-          {!product.inStock && (
-            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xs font-semibold">Out</span>
-            </div>
-          )}
-        </div>
-        
-        <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-sm text-gray-900 truncate group-hover:text-black transition-colors">
-            {product.name}
-          </h4>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="font-bold text-gray-900">{convertToPKR(product.price)}</span>
-            {product.originalPrice && (
-              <span className="text-xs text-gray-500 line-through">{convertToPKR(product.originalPrice)}</span>
-            )}
-          </div>
-        </div>
+  const convertRentToPKR = (rentPrice) => {
+    if (!rentPrice) return null;
+    
+    let numericPrice;
+    if (typeof rentPrice === 'string') {
+      numericPrice = parseFloat(rentPrice.replace(/[₹$,]/g, '').replace('/day', ''));
+    } else if (typeof rentPrice === 'number') {
+      numericPrice = rentPrice;
+    } else {
+      console.log('Unexpected rent price format:', rentPrice);
+      return null;
+    }
+    
+    if (isNaN(numericPrice)) {
+      console.log('Could not parse rent price:', rentPrice);
+      return null;
+    }
+    
+    // If it's already in PKR, return as is, otherwise convert from USD
+    if (typeof rentPrice === 'string' && rentPrice.includes('PKR')) {
+      return rentPrice;
+    }
+    
+    return `PKR ${Math.round(numericPrice * 280).toLocaleString()}/day`;
+  };
 
-        <div className={`flex items-center gap-1 transition-all duration-300 ${showActions ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`}>
-          <button
-            onClick={handleFavoriteClick}
-            className="p-2 rounded-lg hover:bg-gray-200 hover:scale-105 transition-all duration-200"
-            title="Add to Wishlist"
-          >
-            <Heart 
-              size={16} 
-              className={`transition-colors ${isWishlisted(product.id) ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
-            />
-          </button>
-          
-          {product.inStock && (
-            <button
-              onClick={handleAddToCart}
-              disabled={isAddingToCart}
-              className="p-2 rounded-lg hover:bg-gray-200 hover:scale-105 transition-all duration-200 disabled:opacity-50"
-              title="Add to Cart"
-            >
-              <ShoppingCart 
-                size={16} 
-                className={`transition-colors ${isAddingToCart ? 'text-green-500' : 'text-gray-400 hover:text-gray-600'}`} 
-              />
-            </button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Full card layout for non-minimal view
   return (
-    <div
-      className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group"
-      onClick={handleProductClick}
-    >
+    <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
       <div className="relative">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
         />
-        
         <button
-          onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-all duration-300"
-          title="Add to Wishlist"
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-lg transition-all duration-300 ${
+            isWishlisted(product.id) ? 'bg-red-100 text-red-600 scale-110' : 'bg-white text-gray-600 hover:bg-red-50 hover:text-red-500'
+          }`}
+          onClick={() => toggleWishlist(product)}
+          aria-label={isWishlisted(product.id) ? "Remove from wishlist" : "Add to wishlist"}
         >
-          <Heart 
-            size={18} 
-            className={`transition-colors ${isWishlisted(product.id) ? 'text-red-500 fill-current' : 'text-gray-400 hover:text-red-500'}`} 
+          <Heart
+            size={20}
+            className={isWishlisted(product.id) ? "fill-current" : ""}
           />
         </button>
-
-        {!product.inStock && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <span className="bg-white text-black px-3 py-1 rounded-full text-sm font-semibold">
+        
+        {/* Status Badges */}
+        <div className="absolute top-3 left-3 space-y-2">
+          {!product.inStock && (
+            <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
               Out of Stock
             </span>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4">
-        <h4 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-black transition-colors">
-          {product.name}
-        </h4>
-        
-        <div className="flex items-center gap-2 mb-4">
-          <span className="font-bold text-xl text-gray-900">{convertToPKR(product.price)}</span>
-          {product.originalPrice && (
-            <span className="text-sm text-gray-500 line-through">{convertToPKR(product.originalPrice)}</span>
+          )}
+          {product.isRentable && (
+            <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+              Rentable
+            </span>
           )}
         </div>
-
+      </div>
+      
+      <div className="p-6">
+        <div className="mb-3">
+          <span className="text-xs text-gray-500 uppercase tracking-wide">{product.category}</span>
+          <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+        </div>
+        
+        <div className="flex items-center mb-3">
+          <div className="flex items-center">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={14} className={`${i < Math.floor(product.rating || 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+            ))}
+          </div>
+          <span className="text-sm text-gray-600 ml-2">({product.reviews || 0})</span>
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-bold text-gray-900">{convertToPKR(product.price)}</span>
+            {product.rentPrice && (
+              <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">
+                {convertRentToPKR(product.rentPrice)}
+              </span>
+            )}
+          </div>
+        </div>
+        
         <div className="space-y-2">
-          <div className="flex gap-2">
+          <button
+            onClick={() => handleBuyNow(product)}
+            className="w-full bg-gradient-to-r from-black to-gray-800 text-white font-semibold py-3 px-4 rounded-2xl hover:from-gray-800 hover:to-black transition-all duration-300 transform hover:scale-105"
+          >
+            Buy Now
+          </button>
+          
+          <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={handleBuyNow}
+              onClick={() => handleAddToCart(product)}
               disabled={!product.inStock}
-              className="flex-1 bg-black text-white py-2 px-4 rounded-xl font-semibold hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              Buy Now
+              <ShoppingCart size={16} />
+              Cart
             </button>
             
-            <button
-              onClick={handleAddToCart}
-              disabled={!product.inStock || isAddingToCart}
-              className="p-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Add to Cart"
-            >
-              <ShoppingCart 
-                size={18} 
-                className={`transition-colors ${isAddingToCart ? 'text-green-500' : 'text-gray-600'}`} 
-              />
-            </button>
+            {product.isRentable && (
+              <button
+                onClick={() => handleRentNow(product)}
+                disabled={!product.inStock}
+                className="border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-purple-600 hover:text-white transition-all duration-200 flex items-center justify-center disabled:opacity-50"
+              >
+                <Calendar size={16} />
+              </button>
+            )}
           </div>
-          
-          {product.rentPrice && (
-            <button
-              onClick={handleRentClick}
-              disabled={!product.inStock}
-              className="w-full py-2 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Rent for {convertToPKR(product.rentPrice)}/day
-            </button>
-          )}
         </div>
       </div>
     </div>
