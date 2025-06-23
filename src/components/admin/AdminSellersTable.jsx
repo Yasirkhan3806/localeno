@@ -157,7 +157,7 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
   ];
 
   useEffect(() => {
-    const filteredSellers = userData.filter((s) => s?.sellerInfo);
+    const filteredSellers = userData.filter((s) => s?.userData?.sellerInfo);
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
@@ -171,6 +171,7 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
     setSellers(filteredSellers);
   }, [userData]);
 
+console.log(userData)
   console.log(sellers)
 
   const handleMoreActions = async(seller,sellerId) => {
@@ -300,13 +301,13 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
               <tbody id="table-body" className="text-gray-900">
                 {sellers.filter(
                   (s) =>
-                    s?.firstName
+                    s?.userData?.firstName
                       ?.toLowerCase()
                       .includes(search.toLowerCase()) ||
-                    s?.lastName
+                    s?.userData?.lastName
                       ?.toLowerCase()
                       .includes(search.toLowerCase()) ||
-                    s?.email
+                    s?.userData?.email
                       ?.toLowerCase()
                       .includes(search.toLowerCase())
                 ).length === 0 ? (
@@ -319,19 +320,19 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
                   sellers
                     .filter(
                       (s) =>
-                        s?.firstName
+                        s?.userData?.firstName
                           ?.toLowerCase()
                           .includes(search.toLowerCase()) ||
-                        s?.lastName
+                        s?.userData?.lastName
                           ?.toLowerCase()
                           .includes(search.toLowerCase()) ||
-                        s?.email
+                        s?.userData?.email
                           ?.toLowerCase()
                           .includes(search.toLowerCase())
                     )
                     .map((seller) => (
                       <tr
-                        data-category={`${seller?.firstName} ${seller?.lastName}`}
+                        data-category={`${seller?.userData?.firstName} ${seller?.userData?.lastName}`}
                         key={seller.id}
                         className="border-b last:border-0 hover:bg-gray-50 transition"
                       >
@@ -356,24 +357,24 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
                           </div>
                           <div className="min-w-0">
                             <div className="truncate">
-                              {seller?.firstName}{" "}
-                              {seller?.lastName}
+                              {seller?.userData?.firstName}{" "}
+                              {seller?.userData?.lastName}
                             </div>
                             {/* <div className="text-xs text-gray-500 font-normal truncate">{seller.owner}</div> */}
                           </div>
                         </td>
                         <td className="py-3 min-w-[180px]">
                           <div className="truncate">
-                            {seller?.email}
+                            {seller?.userData?.email}
                           </div>
                           {/* <div className="text-xs text-gray-500 truncate">{seller.phone}</div> */}
                         </td>
                         <td className="py-3 whitespace-nowrap">
-                          {seller?.sellerInfo?.totalProducts}
+                          {seller?.userData?.sellerInfo?.totalProducts}
                         </td>
                         <td className="py-3 whitespace-nowrap">
                           $
-                          {seller?.sellerInfo.totalSales.toLocaleString(
+                          {seller?.userData?.sellerInfo.totalSales.toLocaleString(
                             undefined,
                             { minimumFractionDigits: 2 }
                           )}
@@ -383,7 +384,7 @@ const AdminSellersTable = ({ onViewSeller, onAddSeller, onEditSeller }) => {
                         {seller.rating}
                       </td> */}
                         <td className="py-3 whitespace-nowrap">
-                          {statusBadge(seller?.status)}
+                          {statusBadge(seller?.userData?.status)}
                         </td>
                         <td className="py-3 whitespace-nowrap">
                           <div className="flex items-center gap-2">
