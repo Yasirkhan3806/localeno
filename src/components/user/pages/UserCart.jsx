@@ -3,10 +3,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../../hooks/useCart';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { useCartContext } from '../../../contexts/CartContext';
 
 const UserCart = () => {
   const navigate = useNavigate();
-  const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
+  // const { cart,  } = useCart();
+  const {contextCart,updateQuantity, removeFromCart, clearCart, getCartTotal} = useCartContext()
+
+  console.log(contextCart)
+
 
   // Convert price to PKR
   const convertToPKR = (price) => {
@@ -14,7 +19,7 @@ const UserCart = () => {
     
     let numericPrice;
     if (typeof price === 'string') {
-      numericPrice = parseFloat(price.replace(/[₹$,]/g, ''));
+      numericPrice = parseFloat(price);
     } else {
       numericPrice = price;
     }
@@ -26,14 +31,14 @@ const UserCart = () => {
 
   // Calculate total in PKR
   const getCartTotalPKR = () => {
-    const total = cart.reduce((sum, item) => {
-      const price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[₹$,]/g, '')) : item.price;
+    const total = contextCart.reduce((sum, item) => {
+      const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
       return sum + (price * item.quantity * 280);
     }, 0);
     return Math.round(total).toLocaleString();
   };
 
-  if (cart.length === 0) {
+  if (contextCart.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-4xl mx-auto p-4 lg:p-8">
@@ -104,7 +109,7 @@ const UserCart = () => {
 
           {/* Cart Items */}
           <div className="p-4 sm:p-6 lg:p-8">
-            {cart.map(item => (
+            {contextCart.map(item => (
               <div key={item.id} className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-6 border-b border-gray-200 pb-6">
                 {/* Product Image */}
                 <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden shadow-md flex-shrink-0">

@@ -1,81 +1,146 @@
-
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Package, Clock, CheckCircle, Star, User, MessageCircle, Truck } from 'lucide-react';
-import BackToHomeButton from '../BackToHomeButton';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  Calendar,
+  Package,
+  Clock,
+  CheckCircle,
+  Star,
+  User,
+  MessageCircle,
+  Truck,
+} from "lucide-react";
+import BackToHomeButton from "../BackToHomeButton";
+import { collection, doc, getDoc, getDocs, where,query } from "firebase/firestore";
+import { db } from "../../../config/firebaseConfig";
 
 const UserRentalDetail = () => {
   const { rentalId } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('details');
+  const [activeTab, setActiveTab] = useState("details");
+  const [rentProd, setRentProd] = useState(null);
+  const [seller,setSeller] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchRental = async () => {
+      try {
+        setLoading(true);
+        setError(null); // Reset error state
+
+        // Option 1: If rentalId is the document ID
+        const docRef = doc(db, "rentals", rentalId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const rentalData = { id: docSnap.id, ...docSnap.data() };
+          setRentProd(rentalData);
+        } else {
+          // Option 2: If you need to query by a field called 'id'
+          const q = query(
+            collection(db, "rentals"),
+            where("id", "==", rentalId)
+          );
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            const rentalDoc = querySnapshot.docs[0];
+            const rentalData = { id: rentalDoc.id, ...rentalDoc.data() };
+          
+            setRentProd(rentalData);
+          } else {
+            setError("Rental not found");
+          }
+        }
+      } catch (err) {
+        setError("Failed to load rental details: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (rentalId) {
+      fetchRental();
+    } else {
+      setError("No rental ID provided");
+      setLoading(false);
+    }
+  }, [rentalId]);
+
+  useEffect(() => {
+    async function getSeller() {
+       const sellerData = (await getDoc(rentProd?.sellerRef)).data()
+       console.log(sellerData)
+            setSeller(sellerData)
+    }
+     getSeller()
+  }, [rentProd]);
+
+  // Add loading and error handling in your render
+  if (loading) {
+    return <div>Loading rental details...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!rentProd) {
+    return <div>No rental data available</div>;
+  }
   // Mock rental data - in real app, fetch by rentalId
   const rental = {
     id: rentalId || "RNT-2024-001",
-    productName: "Professional Camera Kit",
-    productImage: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=400&q=80",
-    rentalPeriod: "7 days",
-    startDate: "2024-06-15",
-    endDate: "2024-06-22",
-    status: "active",
-    dailyRate: "PKR 2,800",
-    totalAmount: "PKR 19,600",
-    securityDeposit: "PKR 28,000",
+    productName:rentProd?.productName || "madolal",
+    productImage:rentProd?.image,
+    rentalPeriod:rentProd?.dailyRate|| "7 days",
+    startDate: rentProd?.startDate||"2024-06-15",
+    endDate: rentProd?.endDate||"2024-06-22",
+    status: rentProd?.status||"active",
+    dailyRate: rentProd?.dailyRate||"PKR 2,800",
+    totalAmount: rentProd?.totalAmount||"PKR 19,600",
+    securityDeposit: "0",
     seller: {
-      name: "TechRent Pro",
+      name: seller?.sellerInfo?.shopName||"TechRent Pro",
       rating: 4.8,
-      phone: "+92 300 1234567",
-      email: "support@techrentpro.com"
+      phone: "No Phone Provided",
+      email:  seller?.email||"support@techrentpro.com",
     },
-    pickupLocation: "123 Tech Street, Karachi, Pakistan",
-    returnLocation: "123 Tech Street, Karachi, Pakistan",
-    specifications: [
-      "Canon EOS R5 Camera Body",
-      "24-70mm f/2.8 L Lens",
-      "50mm f/1.8 Prime Lens",
-      "Camera Bag & Accessories",
-      "Extra Batteries & Charger"
-    ],
+    pickupLocation: "Testing Street",
+    returnLocation: "Testing Street",
     terms: [
       "Handle with care - equipment is fragile",
       "Return in original condition",
       "Report any damage immediately",
       "Late return charges: PKR 500/day",
-      "Security deposit refunded after inspection"
-    ],
-    timeline: [
-      { status: "Rental Confirmed", date: "2024-06-10", time: "2:30 PM", completed: true },
-      { status: "Equipment Prepared", date: "2024-06-14", time: "10:00 AM", completed: true },
-      { status: "Ready for Pickup", date: "2024-06-15", time: "9:00 AM", completed: true },
-      { status: "Equipment Picked Up", date: "2024-06-15", time: "11:30 AM", completed: true },
-      { status: "Rental Active", date: "2024-06-15", time: "11:30 AM", completed: true, current: true },
-      { status: "Return Due", date: "2024-06-22", time: "6:00 PM", completed: false },
-      { status: "Equipment Returned", date: "", time: "", completed: false }
+      "Security deposit refunded after inspection",
     ]
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'completed':
-        return 'bg-blue-100 text-blue-800';
-      case 'overdue':
-        return 'bg-red-100 text-red-800';
-      case 'pending':
-        return 'bg-orange-100 text-orange-800';
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "completed":
+        return "bg-blue-100 text-blue-800";
+      case "overdue":
+        return "bg-red-100 text-red-800";
+      case "pending":
+        return "bg-orange-100 text-orange-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'active':
+      case "active":
         return <CheckCircle className="text-green-500" size={24} />;
-      case 'completed':
+      case "completed":
         return <Package className="text-blue-500" size={24} />;
-      case 'overdue':
+      case "overdue":
         return <Clock className="text-red-500" size={24} />;
       default:
         return <Calendar className="text-gray-500" size={24} />;
@@ -88,21 +153,27 @@ const UserRentalDetail = () => {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => navigate('/user/rentals')}
+            onClick={() => navigate("/user/rentals")}
             className="mb-4 flex items-center gap-2 text-gray-600 hover:text-black transition"
           >
             <ArrowLeft size={20} />
             Back to Rentals
           </button>
-          
+
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">Rental Details</h1>
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                Rental Details
+              </h1>
               <p className="text-gray-600 mt-2">Rental ID: {rental.id}</p>
             </div>
             <div className="flex items-center gap-3">
               {getStatusIcon(rental.status)}
-              <span className={`px-4 py-2 rounded-full text-sm font-medium capitalize ${getStatusColor(rental.status)}`}>
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-medium capitalize ${getStatusColor(
+                  rental.status
+                )}`}
+              >
                 {rental.status}
               </span>
             </div>
@@ -120,7 +191,9 @@ const UserRentalDetail = () => {
               />
             </div>
             <div className="lg:w-2/3 space-y-4">
-              <h2 className="text-2xl font-bold text-gray-900">{rental.productName}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {rental.productName}
+              </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <span className="text-sm text-gray-600">Daily Rate</span>
@@ -132,11 +205,17 @@ const UserRentalDetail = () => {
                 </div>
                 <div>
                   <span className="text-sm text-gray-600">Total Amount</span>
-                  <p className="font-semibold text-lg text-green-600">{rental.totalAmount}</p>
+                  <p className="font-semibold text-lg text-green-600">
+                    {rental.totalAmount}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-600">Security Deposit</span>
-                  <p className="font-semibold text-lg">{rental.securityDeposit}</p>
+                  <span className="text-sm text-gray-600">
+                    Security Deposit
+                  </span>
+                  {/* <p className="font-semibold text-lg">
+                    {rental.securityDeposit}
+                  </p> */}
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -160,14 +239,14 @@ const UserRentalDetail = () => {
         <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="border-b border-gray-200">
             <nav className="flex">
-              {['details', 'timeline', 'terms'].map((tab) => (
+              {["details", "terms"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`px-6 py-4 font-medium text-sm capitalize transition-colors ${
                     activeTab === tab
-                      ? 'border-b-2 border-black text-black'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? "border-b-2 border-black text-black"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
                   {tab}
@@ -177,31 +256,43 @@ const UserRentalDetail = () => {
           </div>
 
           <div className="p-6">
-            {activeTab === 'details' && (
+            {activeTab === "details" && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Rental Information */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900">Rental Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Rental Information
+                  </h3>
                   <div className="space-y-4">
                     <div className="flex justify-between py-2 border-b border-gray-100">
                       <span className="text-gray-600">Start Date:</span>
-                      <span className="font-medium">{new Date(rental.startDate).toLocaleDateString()}</span>
+                      <span className="font-medium">
+                        {new Date(rental.startDate).toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-100">
                       <span className="text-gray-600">End Date:</span>
-                      <span className="font-medium">{new Date(rental.endDate).toLocaleDateString()}</span>
+                      <span className="font-medium">
+                        {new Date(rental.endDate).toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-100">
                       <span className="text-gray-600">Pickup Location:</span>
-                      <span className="font-medium text-right">{rental.pickupLocation}</span>
+                      <span className="font-medium text-right">
+                        {rental.pickupLocation}
+                      </span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-100">
                       <span className="text-gray-600">Return Location:</span>
-                      <span className="font-medium text-right">{rental.returnLocation}</span>
+                      <span className="font-medium text-right">
+                        {rental.returnLocation}
+                      </span>
                     </div>
                   </div>
 
-                  <h4 className="text-lg font-semibold text-gray-900 mt-6">Equipment Included</h4>
+                  {/* <h4 className="text-lg font-semibold text-gray-900 mt-6">
+                    Equipment Included
+                  </h4>
                   <ul className="space-y-2">
                     {rental.specifications.map((spec, index) => (
                       <li key={index} className="flex items-center gap-2">
@@ -209,22 +300,31 @@ const UserRentalDetail = () => {
                         <span className="text-gray-700">{spec}</span>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
 
                 {/* Seller Information */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900">Seller Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Seller Information
+                  </h3>
                   <div className="bg-gray-50 rounded-2xl p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
                         <User size={24} className="text-gray-600" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900">{rental.seller.name}</h4>
+                        <h4 className="font-semibold text-gray-900">
+                          {rental.seller.name}
+                        </h4>
                         <div className="flex items-center gap-1">
-                          <Star size={14} className="text-yellow-400 fill-current" />
-                          <span className="text-sm text-gray-600">{rental.seller.rating}</span>
+                          <Star
+                            size={14}
+                            className="text-yellow-400 fill-current"
+                          />
+                          <span className="text-sm text-gray-600">
+                            {rental.seller.rating}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -238,7 +338,9 @@ const UserRentalDetail = () => {
                     </div>
                     <div className="mt-4 flex gap-2">
                       <button
-                        onClick={() => navigate(`/user/chat/${rental.seller.name}`)}
+                        onClick={() =>
+                          navigate(`/user/chat/${rental.seller.name}`)
+                        }
                         className="flex-1 bg-black text-white py-2 px-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors"
                       >
                         Message
@@ -252,20 +354,34 @@ const UserRentalDetail = () => {
               </div>
             )}
 
-            {activeTab === 'timeline' && (
+            {/* {activeTab === "timeline" && (
               <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gray-900">Rental Timeline</h3>
+                <h3 className="text-xl font-bold text-gray-900">
+                  Rental Timeline
+                </h3>
                 <div className="space-y-4">
                   {rental.timeline.map((step, index) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className={`w-4 h-4 rounded-full ${
-                        step.completed ? 'bg-green-500' : step.current ? 'bg-blue-500' : 'bg-gray-300'
-                      }`}></div>
+                      <div
+                        className={`w-4 h-4 rounded-full ${
+                          step.completed
+                            ? "bg-green-500"
+                            : step.current
+                            ? "bg-blue-500"
+                            : "bg-gray-300"
+                        }`}
+                      ></div>
                       <div className="flex-1">
                         <div className="flex justify-between items-center">
-                          <span className={`font-medium ${
-                            step.completed ? 'text-gray-900' : step.current ? 'text-blue-600' : 'text-gray-500'
-                          }`}>
+                          <span
+                            className={`font-medium ${
+                              step.completed
+                                ? "text-gray-900"
+                                : step.current
+                                ? "text-blue-600"
+                                : "text-gray-500"
+                            }`}
+                          >
                             {step.status}
                           </span>
                           {step.date && (
@@ -279,11 +395,13 @@ const UserRentalDetail = () => {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
 
-            {activeTab === 'terms' && (
+            {activeTab === "terms" && (
               <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gray-900">Rental Terms & Conditions</h3>
+                <h3 className="text-xl font-bold text-gray-900">
+                  Rental Terms & Conditions
+                </h3>
                 <ul className="space-y-3">
                   {rental.terms.map((term, index) => (
                     <li key={index} className="flex items-start gap-3">
@@ -292,13 +410,17 @@ const UserRentalDetail = () => {
                     </li>
                   ))}
                 </ul>
-                
+
                 <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mt-6">
-                  <h4 className="font-semibold text-yellow-800 mb-2">Important Reminders</h4>
+                  <h4 className="font-semibold text-yellow-800 mb-2">
+                    Important Reminders
+                  </h4>
                   <ul className="text-sm text-yellow-700 space-y-1">
                     <li>• Return equipment on time to avoid late fees</li>
                     <li>• Report any issues immediately</li>
-                    <li>• Security deposit will be refunded after inspection</li>
+                    <li>
+                      • Security deposit will be refunded after inspection
+                    </li>
                   </ul>
                 </div>
               </div>

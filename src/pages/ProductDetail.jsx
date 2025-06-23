@@ -7,6 +7,15 @@ import Footer from "../components/Footer.jsx";
 import IdentityVerificationModal from "../components/IdentityVerificationModal.jsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../config/firebaseConfig.js";
+import { auth } from "../config/firebaseConfig.js";
+import { addReviewToFirestore } from "../Firebase Functions/ReviewFunctions.js";
+import { useProductReviewContext } from "../contexts/ReviewContext.jsx";
+import { useCart } from "../hooks/useCart";
+import { useCartContext } from "../contexts/CartContext.jsx";
+import { addRental } from "../Firebase Functions/RentalFunc.js";
+
 
 // Sample product data with new categories
 const sampleProducts = {
@@ -55,7 +64,9 @@ const sampleProducts = {
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { review, setProductId } = useProductReviewContext();
   const { isAuthenticated, loading } = useAuth();
+ const [thisProduct, setThisProduct] = useState(null); 
   const [product] = useState(sampleProducts[id] || sampleProducts[1]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -63,47 +74,44 @@ const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      user: "Ahmed Khan",
-      rating: 5,
-      date: "2024-01-15",
-      comment: "Excellent quality furniture! Worth every penny.",
-      images: ["https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80"],
-      verified: true,
-      helpful: 12,
-      replies: [
-        {
-          id: 1,
-          user: "FurniCraft Studio",
-          date: "2024-01-16",
-          comment: "Thank you for your feedback! We're glad you love the product.",
-          seller: true
-        }
-      ]
-    },
-    {
-      id: 2,
-      user: "Sarah Ali",
-      rating: 4,
-      date: "2024-01-10",
-      comment: "Beautiful table but delivery took longer than expected.",
-      verified: true,
-      helpful: 8,
-      replies: []
-    }
-  ]);
+  const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "", images: [] });
+  // const {addToCart,cartLoading} = useCart()
+  const {addToCart,cartLoading} = useCartContext();
 
-  // Check authentication on mount
+
+  // ALL useEffect hooks here, before any returns
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       navigate('/login');
     }
   }, [loading, isAuthenticated, navigate]);
 
-  // Show loading while checking authentication
+  useEffect(() => {
+
+      setProductId(id);  // triggers the fetch
+
+    const fetchProduct = async () => {
+      const docRef = doc(db, "Products", id);
+      const product = await getDoc(docRef);
+      const seller = (await getDoc((product?.data()).sellerRef)).data()
+      const productData = {
+        id: product.id,
+        ...product.data(),
+        seller,
+      };
+
+      
+      setThisProduct(productData);
+    };
+    fetchProduct();
+    // console.log(thisProduct)
+  }, [id]); // Add id as dependency
+
+  useEffect(()=>{
+      setReviews(review[0]?.reviews || [])
+  },[review])
+  // NOW you can do conditional returns
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -112,46 +120,113 @@ const ProductDetail = () => {
     );
   }
 
-  // If not authenticated, don't render the component (user will be redirected)
   if (!isAuthenticated) {
     return null;
   }
 
-  const handleAddToCart = () => {
-    console.log(`Added ${quantity} x ${product.name} to cart`);
-    navigate('/user/cart');
-  };
+  // Your handlers and JSX here...
+  
+  const handleAddToCart = (product) => {
+    // Ensure the product has all required fields for the cart
+    // console.log(product)
+    if(product){
+          const cartProduct = {
+      id: id,
+      name: product?.name,
+      price: typeof product?.price === 'string' ? parseFloat(product.price) : product.price,
+      image: product?.images[0],
+      category: product?.category,
+      inStock: product?.inStock
+    };
+    
+    addToCart(cartProduct);
+    navigate('/user/cart')
+    console.log('Added to cart:', cartProduct.name);
+    }else{
+      handleTimeOut()
+    }
 
-  const handleBuyNow = () => {
+  };
+  const handleTimeOut = () =>{
+    setTimeout(()=>{
+      handleAddToCart(thisProduct?.productsData)
+    },3000)
+  }
+
+
+  const handleBuyNow = (product) => {
     console.log(`Buying ${quantity} x ${product.name}`);
+    if(product){
+          const cartProduct = {
+      id: id,
+      name: product?.name,
+      price: typeof product?.price === 'string' ? parseFloat(product.price) : product.price,
+      image: product?.images[0],
+      category: product?.category,
+      inStock: product?.inStock
+    };
+    
+    addToCart(cartProduct);
+  }
     navigate('/user/checkout');
   };
 
-  const handleRentNow = () => {
+  const handleRentNow = async(product) => {
+    const rentalDetails ={
+         id:id,
+      productName: product?.name || "No Name Provided",
+      startDate: new Date().toISOString(),
+      endDate: (() => {
+        const date = new Date();
+        date.setDate(date.getDate() + 5);
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      })(),
+      returnDate: null,
+      status: "Pending",
+      dailyRate: product?.rentPrice || 0,
+      totalDays: 5,
+      totalAmount: product?.rentPrice * 5,
+      image: product.images[0],
+      deposit: 0,
+      isOverdue: false,
+      userId: auth?.currentUser?.uid,
+      sellerRef: thisProduct?.sellerRef,
+    }
+    await addRental(rentalDetails)
     console.log(`Renting ${product.name}`);
+
     navigate('/user/rentals');
   };
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     
-    if (!isVerified) {
-      setShowVerificationModal(true);
-      return;
-    }
+    // if (!isVerified) {
+    //   setShowVerificationModal(true);
+    //   return;
+    // }
+
+    const docRef = doc(db,"userData",auth?.currentUser?.uid)
+    const userData = (await getDoc(docRef)).data()
+    const userRef = (await getDoc(docRef)).ref
+    console.log()
 
     const review = {
-      id: reviews.length + 1,
-      user: "Current User",
+      user: userData?.userData?.firstName || userData?.userData?.userName,
+      userRef,
       rating: newReview.rating,
       date: new Date().toISOString().split('T')[0],
       comment: newReview.comment,
       images: newReview.images,
       verified: true,
       helpful: 0,
-      replies: []
+      replies: [],
+      sellerRef:thisProduct?.sellerRef,
     };
+
     setReviews([review, ...reviews]);
+  
+    await addReviewToFirestore(review,thisProduct?.id,)
     setNewReview({ rating: 5, comment: "", images: [] });
   };
 
@@ -171,7 +246,7 @@ const ProductDetail = () => {
           <span>/</span>
           <button onClick={() => navigate('/user/products')} className="hover:text-gray-900">Products</button>
           <span>/</span>
-          <span className="text-gray-900">{product.name}</span>
+          <span className="text-gray-900">{thisProduct?.productsData?.name}</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
@@ -179,13 +254,13 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="aspect-square bg-white rounded-2xl overflow-hidden shadow-md">
               <img
-                src={product.images[selectedImage]}
+                src={thisProduct?.productsData?.images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex space-x-3">
-              {product.images.map((image, index) => (
+              {thisProduct?.productsData?.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
@@ -203,7 +278,7 @@ const ProductDetail = () => {
           <div className="space-y-6">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600">{product.brand}</span>
+                <span className="text-sm text-gray-600">{thisProduct?.seller?.sellerInfo?.shopName}</span>
                 <button
                   onClick={() => setIsFavorited(!isFavorited)}
                   className="p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -214,7 +289,7 @@ const ProductDetail = () => {
                   />
                 </button>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">{thisProduct?.productsData?.name}</h1>
               <div className="flex items-center space-x-4 mb-4">
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
@@ -234,17 +309,18 @@ const ProductDetail = () => {
             {/* Pricing */}
             <div className="bg-white rounded-xl p-6 shadow-md">
               <div className="flex items-center space-x-4 mb-4">
-                <span className="text-3xl font-bold text-gray-900">{product.price}</span>
-                {product.originalPrice && (
+                <span className="text-3xl font-bold text-gray-900">Rs. {thisProduct?.productsData?.price}</span>
+                {/* {product.originalPrice && (
                   <span className="text-xl text-gray-500 line-through">{product.originalPrice}</span>
-                )}
-                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                )} */}
+                {/* <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                   25% OFF
-                </span>
+                </span> */}
               </div>
-              <div className="text-sm text-gray-600 mb-4">
-                Rent option: <span className="font-semibold text-gray-900">{product.rentPrice}</span>
-              </div>
+              {thisProduct?.productsData?.forRent ? ( <div className="text-sm text-gray-600 mb-4">
+                Rent option: <span className="font-semibold text-gray-900">Rs. {thisProduct?.productsData?.rentPrice}</span>
+              </div>):"Not For Rent"}
+             
               
               {/* Quantity */}
               <div className="flex items-center space-x-4 mb-6">
@@ -264,49 +340,62 @@ const ProductDetail = () => {
                     <Plus size={16} />
                   </button>
                 </div>
-                <span className="text-sm text-gray-600">({product.stock} available)</span>
+                <span className="text-sm text-gray-600">({thisProduct?.productsData?.stock} available)</span>
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-3">
-                <button
-                  onClick={handleBuyNow}
-                  className="w-full bg-black text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
-                >
-                  Buy Now
-                </button>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={handleAddToCart}
-                    className="bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
-                  >
-                    <ShoppingCart size={18} />
-                    Add to Cart
-                  </button>
-                  
-                  <button
-                    onClick={handleRentNow}
-                    className="border border-gray-900 text-gray-900 py-3 px-4 rounded-xl font-semibold hover:bg-gray-900 hover:text-white transition-all duration-200"
-                  >
-                    Rent Now
-                  </button>
-                </div>
-              </div>
-            </div>
+                      <div className="space-y-3">
+                      <button
+                        onClick={()=>handleAddToCart(thisProduct?.productsData)}
+                        className="w-full bg-black text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-800 hover:scale-105 transition-all duration-200 transform active:scale-95"
+                      >
+                        Buy Now
+                      </button>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                        onClick={()=>handleAddToCart(thisProduct?.productsData)}
+                        className="bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl hover:bg-gray-300 hover:scale-105 transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2"
+                        disabled={cartLoading}
+                        >
+                        {cartLoading ? (
+                          <span className="flex items-center gap-2">
+                          <svg className="animate-spin h-5 w-5 text-gray-500" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                          </svg>
+                          Loading...
+                          </span>
+                        ) : (
+                          <>
+                          <ShoppingCart size={18} />
+                          Add to Cart
+                          </>
+                        )}
+                        </button>
+                        
+                        <button
+                        onClick={()=>handleRentNow(thisProduct?.productsData)}
+                        className="border border-gray-900 text-gray-900 py-3 px-4 rounded-xl font-semibold hover:bg-gray-900 hover:text-white transition-all duration-200"
+                        >
+                        Rent Now
+                        </button>
+                      </div>
+                      </div>
+                    </div>
 
-            {/* Seller Info */}
+                    {/* Seller Info */}
             <div className="bg-white rounded-xl p-6 shadow-md">
               <h3 className="font-semibold text-gray-900 mb-3">Seller Information</h3>
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium">{product.seller.name}</span>
-                    {product.seller.verified && (
+                    <span className="font-medium">{thisProduct?.seller?.firstName} {thisProduct?.seller?.lastName}</span>
+            
                       <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                         Verified
                       </span>
-                    )}
+                  
                   </div>
                   <div className="flex items-center space-x-1 mt-1">
                     <Star size={14} className="text-yellow-400 fill-current" />
@@ -314,13 +403,13 @@ const ProductDetail = () => {
                     <span className="text-sm text-gray-500">• {product.seller.responseTime}</span>
                   </div>
                 </div>
-                <button
+                {/* <button
                   onClick={() => setShowChat(true)}
                   className="bg-gray-100 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2"
                 >
                   <MessageCircle size={16} />
                   <span>Chat</span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -331,7 +420,7 @@ const ProductDetail = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-4 bg-gray-50">
               <TabsTrigger value="overview" className="py-3">Overview</TabsTrigger>
-              <TabsTrigger value="specifications" className="py-3">Specifications</TabsTrigger>
+              {/* <TabsTrigger value="specifications" className="py-3">Specifications</TabsTrigger> */}
               <TabsTrigger value="reviews" className="py-3">Reviews</TabsTrigger>
               <TabsTrigger value="seller" className="py-3">Seller</TabsTrigger>
             </TabsList>
@@ -340,9 +429,9 @@ const ProductDetail = () => {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-semibold mb-4">Product Description</h3>
-                  <p className="text-gray-700 leading-relaxed">{product.description}</p>
+                  <p className="text-gray-700 leading-relaxed">{thisProduct?.productsData?.description}</p>
                 </div>
-                <div>
+                {/* <div>
                   <h3 className="text-xl font-semibold mb-4">Key Features</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {product.features.map((feature, index) => (
@@ -352,11 +441,11 @@ const ProductDetail = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </TabsContent>
 
-            <TabsContent value="specifications" className="p-6">
+            {/* <TabsContent value="specifications" className="p-6">
               <h3 className="text-xl font-semibold mb-6">Technical Specifications</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {Object.entries(product.specifications).map(([key, value]) => (
@@ -366,7 +455,7 @@ const ProductDetail = () => {
                   </div>
                 ))}
               </div>
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="reviews" className="p-6">
               <div className="space-y-6">
@@ -506,25 +595,25 @@ const ProductDetail = () => {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-semibold">{product.seller.name}</h3>
+                    <h3 className="text-xl font-semibold">{thisProduct?.seller?.firstName} {thisProduct?.seller?.lastName}</h3>
                     <div className="flex items-center space-x-2 mt-2">
                       <Star size={16} className="text-yellow-400 fill-current" />
                       <span className="font-medium">{product.seller.rating}</span>
                       <span className="text-gray-600">(1,234 reviews)</span>
-                      {product.seller.verified && (
+                      {/* {product.seller.verified && ( */}
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
                           Verified Seller
                         </span>
-                      )}
+                      {/* )} */}
                     </div>
                   </div>
-                  <button
+                  {/* <button
                     onClick={() => setShowChat(true)}
                     className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-black transition-colors flex items-center space-x-2"
                   >
                     <MessageCircle size={18} />
                     <span>Contact Seller</span>
-                  </button>
+                  </button> */}
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -536,10 +625,10 @@ const ProductDetail = () => {
                     <div className="text-2xl font-bold text-gray-900">2.1k</div>
                     <div className="text-sm text-gray-600">Items Sold</div>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-4 text-center">
+                  {/* <div className="bg-gray-50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-gray-900">2 hrs</div>
                     <div className="text-sm text-gray-600">Response Time</div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </TabsContent>

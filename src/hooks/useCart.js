@@ -1,24 +1,42 @@
-
 import * as React from 'react';
 
 export function useCart() {
   const [cart, setCart] = React.useState(() => {
+    
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem('user_cart');
       return stored ? JSON.parse(stored) : [];
     }
     return [];
-  });
 
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem('user_cart', JSON.stringify(cart));
-    }
-  }, [cart]);
+  });
+ 
+
+  const [cartLoading, setLoading] = React.useState(false);
+
+ const isFirstRender = React.useRef(true);
+
+React.useEffect(() => {
+  if (isFirstRender.current) {
+    isFirstRender.current = false;
+    return;
+  }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem('user_cart', JSON.stringify(cart));
+    setLoading(false);
+  }
+}, [cart]);
+
 
   const addToCart = (product) => {
+    console.log(product)
+    setLoading(true);
     setCart((prev) => {
-      if (prev.some(item => item.id === product.id)) return prev;
+      if (prev.some(item => item.id === product.id)) {
+        setLoading(false);
+        return prev;
+      }
       return [...prev, { ...product, quantity: 1 }];
     });
   };
@@ -43,5 +61,5 @@ export function useCart() {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
   };
 
-  return { cart, addToCart, removeFromCart, clearCart, updateQuantity, getCartTotal };
+  return { cart, addToCart, removeFromCart, clearCart, updateQuantity, getCartTotal, cartLoading };
 }

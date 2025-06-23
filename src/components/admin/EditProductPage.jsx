@@ -1,47 +1,83 @@
 
 import React, { useState } from "react";
 import { ArrowLeft, Upload, X } from "lucide-react";
+import { useCategories } from '../../contexts/ProductsContext';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../config/firebaseConfig';
 
 const EditProductPage = ({ product, onBack, onSave }) => {
+  // Initialize form data from the nested productsData
   const [formData, setFormData] = useState({
-    name: product?.name || "",
-    category: product?.category || "",
-    price: product?.price?.toString() || "",
-    stock: product?.stock?.toString() || "",
-    description: product?.description || "",
-    images: []
+    name: product?.productsData?.name || "",
+    category: product?.productsData?.category || "",
+    price: product?.productsData?.price?.toString() || "",
+    stock: product?.productsData?.stock?.toString() || "",
+    description: product?.productsData?.description || "",
+    images: product?.productsData?.images || []
   });
 
-  const categories = [
-    "Furniture",
-    "Handicrafts", 
-    "Home Decor",
-    "Health and Beauty",
-    "Clothing Accessories",
-    "Electronics",
-    "Books",
-    "Sports"
-  ];
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { categories } = useCategories();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedProduct = {
-      ...product,
-      ...formData,
-      price: parseFloat(formData.price),
-      stock: parseInt(formData.stock),
-      status: parseInt(formData.stock) > 10 ? "Active" : parseInt(formData.stock) > 0 ? "Low Stock" : "Out of Stock"
-    };
-    console.log("Updating product:", updatedProduct);
-    alert("Product updated successfully!");
-    if (onSave) onSave(updatedProduct);
-    onBack();
+    
+    if (!product?.id) {
+      alert("Product ID is missing. Cannot update.");
+      return;
+    }
+
+    setIsUpdating(true);
+
+    try {
+      // Create the updated product data structure
+      const updatedProductsData = {
+        ...product.productsData, // Keep existing data
+        ...formData, // Overwrite with form data
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock),
+        status: getStatusFromStock(parseInt(formData.stock)),
+        updatedAt: new Date().toISOString()
+      };
+
+      // Create the complete updated product object
+      const updatedProduct = {
+        ...product,
+        productsData: updatedProductsData
+      };
+
+      // Update in Firestore
+      const productRef = doc(db, "Products", product.id);
+      await updateDoc(productRef, {
+        productsData: updatedProductsData
+      });
+
+      console.log("Product updated successfully:", updatedProduct);
+      alert("Product updated successfully!");
+      
+      if (onSave) onSave(updatedProduct);
+      onBack();
+
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Failed to update product: " + error.message);
+    } finally {
+      setIsUpdating(false);
+    }
   };
+
+    // Helper function to determine status based on stock
+  const getStatusFromStock = (stock) => {
+    if (stock > 10) return "Active";
+    if (stock > 0) return "Low Stock";
+    return "Out of Stock";
+  };
+
 
   if (!product) {
     return (
@@ -67,8 +103,8 @@ const EditProductPage = ({ product, onBack, onSave }) => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
           <img
-            src={product.image}
-            alt={product.name}
+            src={product?.productsData?.images[0]}
+            alt={product?.productsData?.name}
             className="w-16 h-16 rounded-lg object-cover border border-gray-200"
           />
           <div>
@@ -105,7 +141,7 @@ const EditProductPage = ({ product, onBack, onSave }) => {
                 required
               >
                 {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat.category} value={cat.category}>{cat.category}</option>
                 ))}
               </select>
             </div>

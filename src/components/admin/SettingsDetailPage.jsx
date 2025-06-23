@@ -1,6 +1,7 @@
 
 import React, { useState, useRef } from "react";
 import { Camera, Save, Lock, User, Settings as SettingsIcon } from "lucide-react";
+import { updateAdminPass } from "../../Firebase Functions/authFunctions";
 
 const SettingsDetailPage = () => {
   const [profile, setProfile] = useState({
@@ -66,24 +67,11 @@ const SettingsDetailPage = () => {
     window.alert(`Profile changes saved successfully!\n\nUpdated Information:\nName: ${profile.firstName} ${profile.lastName}\nEmail: ${profile.email}\nPhone: ${profile.phone}\nRole: ${profile.role}`);
   };
 
-  const handleUpdatePassword = () => {
-    if (!passwords.currentPassword || !passwords.newPassword || !passwords.confirmPassword) {
-      window.alert('Please fill in all password fields.');
-      return;
+  const handleUpdatePassword = async() => {
+    const success = await updateAdminPass(passwords.currentPassword,passwords.newPassword)
+    if(success.message){
+      alert("Password Updated Successfully")
     }
-
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      window.alert('New password and confirm password do not match.');
-      return;
-    }
-
-    if (passwords.newPassword.length < 8) {
-      window.alert('New password must be at least 8 characters long.');
-      return;
-    }
-
-    window.alert('Password updated successfully!\n\nYour password has been changed. Please use the new password for future logins.');
-    
     // Clear password fields
     setPasswords({
       currentPassword: "",
@@ -94,24 +82,24 @@ const SettingsDetailPage = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
           <SettingsIcon className="text-gray-700" size={32} />
           Admin Settings
         </h1>
         <p className="text-gray-600">Manage your administrator account settings and preferences</p>
-      </div>
+      </div> */}
 
       {/* Profile Settings */}
-      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8 mb-8">
+      {/* <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8 mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
           <User className="text-gray-700" size={24} />
           Profile Information
         </h2>
         
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8"> */}
           {/* Profile Photo */}
-          <div className="flex flex-col items-center gap-4">
+          {/* <div className="flex flex-col items-center gap-4">
             <div className="relative">
               <img
                 src={profile.profileImg}
@@ -138,10 +126,10 @@ const SettingsDetailPage = () => {
               <h3 className="font-semibold text-lg text-gray-900">{profile.firstName} {profile.lastName}</h3>
               <p className="text-sm text-gray-500">{profile.role}</p>
             </div>
-          </div>
+          </div> */}
 
           {/* Profile Form */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
               <input
@@ -199,7 +187,7 @@ const SettingsDetailPage = () => {
             Save Changes
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Password Settings */}
       <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8">

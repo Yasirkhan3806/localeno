@@ -6,7 +6,7 @@ import SignupAccountTypeSelection from "./SignupAccountTypeSelection";
 import SignupSellerFields from "./SignupSellerFields";
 import { Link } from "react-router-dom";
 
-const SignupForm = ({ onSubmit, loading }) => {
+const SignupForm = ({ onSubmit, loading,handleGoogleLogin }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -20,14 +20,12 @@ const SignupForm = ({ onSubmit, loading }) => {
     dailyOrderVolume: "",
     businessOpenTime: "",
     businessCloseTime: "",
+    shopName: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSocialSignup = (provider) => {
-    console.log(`Signup with ${provider}`);
-    // ...implement social signup here
-  };
+
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({
@@ -49,7 +47,8 @@ const SignupForm = ({ onSubmit, loading }) => {
         setAccountType={(type) => handleChange("accountType", type)}
       />
       {/* Social Signup Buttons */}
-      <SignupSocialButtons onSocialSignup={handleSocialSignup} />
+      {formData.accountType === "customer" &&  <SignupSocialButtons handleGoogleLogin={handleGoogleLogin} />}
+     
 
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">

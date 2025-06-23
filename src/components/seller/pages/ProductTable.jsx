@@ -30,6 +30,7 @@ function ProductTable({
     );
   }
 
+
   // Mobile layout - card list
   if (mobile) {
     return (
@@ -42,35 +43,35 @@ function ProductTable({
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={product?.productsData?.images[0]}
+                  alt={product?.productsData?.name}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
               <div className="flex flex-col flex-1 min-w-0">
-                <div className="font-semibold text-gray-900 truncate" title={product.name}>
-                  {product.name}
+                <div className="font-semibold text-gray-900 truncate" title={product?.productsData?.name}>
+                  {product?.productsData?.name}
                 </div>
-                <span className={`mt-1 px-2 py-1 rounded-full text-xs font-semibold ${categoryColors[product.category] || "bg-gray-100 text-gray-600"}`}>
-                  {product.category}
+                <span className={`mt-1 px-2 py-1 rounded-full text-xs font-semibold ${categoryColors[product?.productsData?.category] || "bg-gray-100 text-gray-600"}`}>
+                  {product?.productsData?.category}
                 </span>
-                <span className="mt-2 font-bold text-gray-800">${product.price}</span>
+                <span className="mt-2 font-bold text-gray-800">${product?.productsData?.price}</span>
                 <div className="text-xs mt-1">
-                  {product.stock > 0
-                    ? <span className="text-green-700">{product.stock} in stock</span>
+                  {product?.productsData?.stock > 0
+                    ? <span className="text-green-700">{product?.productsData?.stock} in stock</span>
                     : <span className="text-red-600">Out of stock</span>}
                 </div>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 justify-between pt-1 border-t mt-3">
-              <span className={`px-2 py-1 text-xs rounded-full font-semibold ${statusColors[product.status] || "bg-gray-100 text-gray-600"}`}>
-                {product.status}
+              <span className={`px-2 py-1 text-xs rounded-full font-semibold ${statusColors[product?.productsData?.status] || "bg-gray-100 text-gray-600"}`}>
+                {product?.productsData?.status}
               </span>
-              <span className="text-gray-500 text-xs">{product.dateAdded}</span>
+              <span className="text-gray-500 text-xs">{product?.productsData?.dateAdded}</span>
               <div className="flex gap-2 ml-auto">
                 <button
-                  onClick={() => onViewDetail(product)}
+                  onClick={() => onViewDetail(product?.productsData)}
                   className="p-2 rounded-full hover:bg-gray-100 focus:ring-2 transition"
                   aria-label="View details"
                 >
@@ -120,48 +121,48 @@ function ProductTable({
               <TableCell>
                 <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center border">
                   <img
-                    src={product.image}
-                    alt={product.name}
+                    src={product?.productsData?.images[0]}
+                    alt={product?.productsData?.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </div>
               </TableCell>
               <TableCell>
-                <div className="font-semibold text-gray-900 truncate max-w-[180px]" title={product.name}>
-                  {product.name}
+                <div className="font-semibold text-gray-900 truncate max-w-[180px]" title={product?.productsData?.name}>
+                  {product?.productsData?.name}
                 </div>
-                {product.rentable && (
+                {product?.productsData?.rentable && (
                   <span className="block text-xs mt-1 text-blue-500">Available for rent</span>
                 )}
               </TableCell>
               <TableCell>
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${categoryColors[product.category] || "bg-gray-100 text-gray-600"}`}>
-                  {product.category}
+                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${categoryColors[product?.productsData?.category] || "bg-gray-100 text-gray-600"}`}>
+                  {product?.productsData?.category}
                 </span>
               </TableCell>
               <TableCell>
-                <span className="font-bold text-gray-800">${product.price}</span>
+                <span className="font-bold text-gray-800">${product?.productsData?.price}</span>
               </TableCell>
               <TableCell>
-                {product.stock > 0 ? (
-                  <span className="text-green-700 font-medium">{product.stock} in stock</span>
+                {product?.productsData?.stock > 0 ? (
+                  <span className="text-green-700 font-medium">{product?.productsData?.stock} in stock</span>
                 ) : (
                   <span className="text-red-600 font-medium">Out of stock</span>
                 )}
               </TableCell>
               <TableCell>
-                <span className={`px-2 py-1 text-xs rounded-full font-semibold ${statusColors[product.status] || "bg-gray-100 text-gray-600"}`}>
-                  {product.status}
+                <span className={`px-2 py-1 text-xs rounded-full font-semibold ${statusColors[product?.productsData?.status] || "bg-gray-100 text-gray-600"}`}>
+                  {product?.productsData?.status}
                 </span>
               </TableCell>
               <TableCell>
-                <span className="text-gray-500 text-xs">{product.dateAdded}</span>
+                <span className="text-gray-500 text-xs">{product?.productsData?.dateAdded}</span>
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <button
-                    onClick={() => onViewDetail(product)}
+                    onClick={() => onViewDetail(product?.productsData)}
                     className="p-2 rounded-full hover:bg-gray-100 focus:ring-2 transition"
                     aria-label="View details"
                   >

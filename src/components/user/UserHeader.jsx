@@ -1,25 +1,38 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Bell, Search, User, Settings, LogOut, Heart, ShoppingCart } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+// import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../hooks/useCart';
 import { useWishlist } from '../../hooks/useWishlist';
+import { useUser } from '../../contexts/UserContext';
+import { auth } from '../../config/firebaseConfig';
+import { useAuth } from '../../contexts/AuthContext';
 
 const UserHeader = ({
   sidebarOpen,
   setSidebarOpen
 }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const { cart } = useCart();
   const { wishlist } = useWishlist();
+  const {userData} =  useUser();
+  const {logout} = useAuth()
+  const [user,setUser] = useState([])
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  const categories = ['All Categories', 'Handicrafts', 'Home Decor', 'Furniture', 'Health & Beauty', 'Clothing', 'Accessories'];
+  useEffect(()=>{
+    const currUser = userData.filter((user) => user.userId == auth?.currentUser?.uid)
+    console.log(currUser)
+    setUser(currUser[0])
   
+  },[userData])
+
+  // const categories = ['All Categories', 'Handicrafts', 'Home Decor', 'Furniture', 'Health & Beauty', 'Clothing', 'Accessories'];
+
   const navTabs = [
     { name: "Home", link: "/user/home" },
     { name: "Products", link: "/user/products" },
@@ -28,21 +41,22 @@ const UserHeader = ({
 
   const handleLogout = () => {
     console.log("Logging out user...");
+    logout()
     navigate('/');
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      let searchUrl = `/user/products?search=${encodeURIComponent(searchQuery.trim())}`;
-      if (selectedCategory && selectedCategory !== 'All Categories') {
-        searchUrl += `&category=${encodeURIComponent(selectedCategory)}`;
-      }
-      navigate(searchUrl);
-    } else if (selectedCategory && selectedCategory !== 'All Categories') {
-      navigate(`/user/products?category=${encodeURIComponent(selectedCategory)}`);
-    }
-  };
+  // const handleSearch = (e) => {
+  //   e.preventDefault();
+  //   if (searchQuery.trim()) {
+  //     let searchUrl = `/user/products?search=${encodeURIComponent(searchQuery.trim())}`;
+  //     if (selectedCategory && selectedCategory !== 'All Categories') {
+  //       searchUrl += `&category=${encodeURIComponent(selectedCategory)}`;
+  //     }
+  //     navigate(searchUrl);
+  //   } else if (selectedCategory && selectedCategory !== 'All Categories') {
+  //     navigate(`/user/products?category=${encodeURIComponent(selectedCategory)}`);
+  //   }
+  // };
 
   const wishlistCount = wishlist.length;
   const cartCount = cart.length;
@@ -127,14 +141,14 @@ const UserHeader = ({
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
               className="w-8 h-8 sm:w-10 sm:h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm hover:bg-gray-800 transition border-2 border-gray-200 shadow-sm"
             >
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
+              {user?.userData?.userName?.[0]}{user?.userData?.firstName?.[0]}{user?.userData?.lastName?.[0]}
             </button>
 
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg z-50 py-2 animate-fade-in border border-gray-100">
                 <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="font-semibold text-gray-900 text-sm">{user?.firstName} {user?.lastName}</p>
-                  <p className="text-xs text-gray-600">{user?.email}</p>
+                  <p className="font-semibold text-gray-900 text-sm">{user?.userData?.userName} {user?.userData?.firstName} {user?.userData?.lastName}</p>
+                  <p className="text-xs text-gray-600">{user?.userData?.email}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -169,7 +183,7 @@ const UserHeader = ({
         </div>
       </div>
 
-      {/* Bottom Search Bar - Now more prominent */}
+      {/* Bottom Search Bar - Now more prominent
       <div className="pb-3 sm:pb-4">
         <div className="flex flex-col md:flex-row gap-3 md:gap-4 max-w-4xl mx-auto">
           <form onSubmit={handleSearch} className="flex-1">
@@ -204,7 +218,7 @@ const UserHeader = ({
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
 
       {/* Overlay to close dropdown */}
       {profileDropdownOpen && (

@@ -1,5 +1,13 @@
 
 import React from "react";
+import { getRentalsByUser } from "../../../Firebase Functions/RentalFunc";
+import { useEffect, useState } from "react";
+import { data } from "autoprefixer";
+import { auth, db } from "../../../config/firebaseConfig";
+import { collection } from "firebase/firestore";
+import { query, where, getDocs, doc,getDoc } from "firebase/firestore";
+import { useUser } from "../../../contexts/UserContext";
+import { updateRentalActive } from "../../../Firebase Functions/RentalFunc";
 
 const rentalStats = [
   {
@@ -110,6 +118,78 @@ const statusBadgeClass = {
 };
 
 export default function SellerRentals() {
+  const {userData} = useUser()
+  const [rentals, setRentals] = useState([]);
+
+async function fetchRentals() {
+  try {
+    const userId = auth?.currentUser?.uid;
+    const docRef = doc(db, 'userData', userId);
+
+    // Get rentals
+    const q = query(collection(db, 'rentals'), where('sellerRef', '==', docRef));
+    const snapshot = await getDocs(q);
+    const rentalData = snapshot.docs.map(doc => ({ rentalId: doc.id, ...doc.data() }));
+    
+    // Fetch products for each rental
+    const rentalsWithProducts = await Promise.all(
+      rentalData.map(async (rental) => {
+        try {
+          // Assuming the rental object has a productId or productRef field
+          // Replace 'productId' with the actual field name in your rental documents
+          const productDoc = await getDoc(doc(db, 'Products', rental.id));
+           const userDoc = await getDoc(doc(db, 'userData', rental.userId));
+          
+          if (productDoc.exists()) {
+            return {
+              ...rental,
+              product: { id: productDoc.id, ...productDoc.data() },
+              user:{id:userDoc.id,...userDoc.data()}
+            };
+          } else {
+            console.warn(`Product not found for rental ${rental.id}`);
+            return {
+              ...rental,
+              product: null
+            };
+          }
+        } catch (productError) {
+          console.error(`Error fetching product for rental ${rental.id}:`, productError);
+          return {
+            ...rental,
+            product: null
+          };
+        }
+      })
+    );
+
+    console.log("Rentals with products:", rentalsWithProducts);
+    setRentals(rentalsWithProducts);
+    
+  } catch (error) {
+    console.error("Failed to fetch rentals:", error);
+  }
+}
+
+useEffect(() => {
+  // Add a listener to wait for auth state to be determined
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    if (user) {
+      fetchRentals();
+    } else {
+      console.log("User not authenticated");
+      setRentals([]);
+    }
+  });
+
+  return () => unsubscribe(); // Cleanup
+}, []); 
+
+const updateRentalsStatus = async(rentalId)=>{
+  console.log(rentalId)
+  await updateRentalActive(rentalId)
+  alert("rental accepted please refresh the page")
+}
   return (
     <div className="w-full max-w-6xl mx-auto">
       {/* Top Stat Cards */}
@@ -142,12 +222,12 @@ export default function SellerRentals() {
               </tr>
             </thead>
             <tbody>
-              {dummyRentals.map((r, i) => (
+              {rentals.map((r, i) => (
                 <tr key={i} className="border-b last:border-b-0 hover:bg-gray-50 transition group">
                   {/* PRODUCT */}
                   <td className="px-6 py-4 flex items-center gap-3">
-                    <img src={r.product.image} alt={r.product.name} className="w-12 h-12 rounded-lg object-cover border" />
-                    <span className="font-semibold text-gray-900">{r.product.name}</span>
+                    <img src={r.image} alt={r.productName} className="w-12 h-12 rounded-lg object-cover border" />
+                    <span className="font-semibold text-gray-900">{r.productName}</span>
                   </td>
                   {/* CUSTOMER */}
                   <td className="px-6 py-4">
@@ -157,24 +237,24 @@ export default function SellerRentals() {
                           <circle cx="12" cy="7" r="4" strokeWidth="2" />
                           <path strokeWidth="2" d="M17 21a5 5 0 0 0-10 0" />
                         </svg>
-                        {r.customer.name}
+                         {r.user.userData.userName}{r.user.userData.FirstName}  {r.user.userData.lastName}
                       </span>
-                      <span className="text-gray-500 text-xs flex items-center gap-1 mt-0.5">
+                      {/* <span className="text-gray-500 text-xs flex items-center gap-1 mt-0.5">
                         <svg width={15} height={15} className="text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                           <path strokeWidth="2" d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z" />
                           <circle cx="12" cy="9" r="2.5" />
                         </svg>
                         {r.customer.city}
-                      </span>
+                      </span> */}
                     </div>
                   </td>
                   {/* RENTAL PERIOD */}
                   <td className="px-6 py-4 text-gray-900">
                     <div className="font-medium">{r.period}</div>
-                    <div className="text-xs text-gray-500">{r.rate}</div>
+                    <div className="text-xs text-gray-500">{r.totalDays}</div>
                   </td>
                   {/* AMOUNT */}
-                  <td className="px-6 py-4 font-bold text-black">{r.amount}</td>
+                  <td className="px-6 py-4 font-bold text-black">{r.totalAmount}</td>
                   {/* STATUS */}
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusBadgeClass[r.status] || "bg-gray-100 text-gray-700"}`}>{r.status}</span>
@@ -183,7 +263,9 @@ export default function SellerRentals() {
                   <td className="px-6 py-4">
                     {r.status === "Pending" && (
                       <div className="flex gap-2">
-                        <button className="flex items-center gap-1 px-4 py-1 rounded bg-green-600 hover:bg-green-700 text-white font-semibold text-sm">
+                        <button
+                        onClick={()=>updateRentalsStatus(r.rentalId)}
+                         className="flex items-center gap-1 px-4 py-1 rounded bg-green-600 hover:bg-green-700 text-white font-semibold text-sm">
                           <svg width={16} height={16} stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path strokeWidth="2" d="m5 13 4 4L19 7"/>
                           </svg>

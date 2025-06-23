@@ -2,29 +2,86 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, ArrowLeft } from 'lucide-react';
-import ProductCard from '../products/ProductCard';
+import ProductCard from '../../ProductCard'
 import ProductSearchFilters from '../products/ProductSearchFilters';
 import { allProducts, categories } from '../products/ProductsData';
+import { useAllProducts } from '../../../contexts/ProductsContext';
+import { getDocs, collection } from "firebase/firestore";
+import { db } from '../../../config/firebaseConfig';
+import { useCategories } from '../../../contexts/ProductsContext';
 
 const UserProducts = () => {
   const { categoryName } = useParams();
+  // const {allProducts,loading} = useAllProducts();
+  const [dProd,setDProd] = useState([])
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || categoryName || '');
-  const [sortBy, setSortBy] = useState('featured');
+  const [sortBy, setSortBy] = useState('');
   const [viewMode, setViewMode] = useState('grid');
+  // const {categories} =  useCategories()
+
+ 
+  const fetchAllProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "Products"));
+      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
+  };
+
+ useEffect(() => {
+  fetchAllProducts()
+    .then(allProducts => {
+      setDProd(allProducts)
+      console.log(allProducts)
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+}, [])
+
+
+
 
   useEffect(() => {
     setSearchQuery(searchParams.get('search') || '');
     setSelectedCategory(searchParams.get('category') || categoryName || '');
   }, [searchParams, categoryName]);
 
-  const filteredProducts = allProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || selectedCategory === 'All Products' || product.category === selectedCategory;
+  let filteredProducts = dProd.filter(product => {
+    const matchesSearch = product?.productsData?.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !selectedCategory || selectedCategory === 'All Products' || product?.productsData.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+
+//   const sortProducts = (products) => {
+//     switch (sortBy) {
+//       case 'price-low':
+//         return [...products].sort((a, b) => parseInt((a?.productsData?.productsData.price || 0)) - parseInt((b?.productsData?.productsData.price || 0)));
+//       case 'price-high':
+//         return [...products].sort((a, b) => (b?.productsData?.productsData.price || 0) - (a?.productsData?.productsData.price || 0));
+//       case 'rating':
+//         return [...products].sort((a, b) => (b?.productsData?.productsData.rating || 0) - (a?.productsData?.productsData.rating || 0));
+//       case 'newest':
+//         return [...products].sort((a, b) => {
+//           const dateA = new Date(a?.productsData?.productsData.dateAdded || 0);
+//           const dateB = new Date(b?.productsData?.productsData.dateAdded || 0);
+//           return dateB - dateA;
+//         });
+//       default:
+//         return products;
+//     }
+//   };
+
+//   // Fixed this line - removed .productsData
+//  filteredProducts  = sortProducts(dProd);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -49,7 +106,7 @@ const UserProducts = () => {
           </div>
         </div>
 
-        {/* Search and Filters */}
+        Search and Filters
         <ProductSearchFilters
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -69,7 +126,7 @@ const UserProducts = () => {
             : 'grid-cols-1'
         }`}>
           {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} productId={product.id} product={product?.productsData} />
           ))}
         </div>
 

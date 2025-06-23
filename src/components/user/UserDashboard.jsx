@@ -19,7 +19,7 @@ import UserSettings from './pages/UserSettings';
 
 const UserDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+
 
   return (
     <div className="relative min-h-screen bg-gray-50">

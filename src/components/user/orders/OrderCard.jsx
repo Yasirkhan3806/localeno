@@ -18,7 +18,7 @@ const OrderCard = ({ order, getStatusIcon, getStatusColor }) => {
           {getStatusIcon(order.status)}
           <div>
             <h3 className="font-semibold text-gray-900">{order.id}</h3>
-            <p className="text-sm text-gray-500">Placed on {new Date(order.date).toLocaleDateString()}</p>
+            <p className="text-sm text-gray-500">Placed on {new Date(order.orderPlaced).toLocaleDateString()}</p>
           </div>
         </div>
         
@@ -26,25 +26,25 @@ const OrderCard = ({ order, getStatusIcon, getStatusColor }) => {
           <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(order.status)}`}>
             {order.status}
           </span>
-          <span className="font-bold text-lg">{formatPKR(convertToPKR(order.total))}</span>
+          <span className="font-bold text-lg">{order.total}</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
           <p className="text-sm text-gray-500">Items</p>
-          <p className="font-medium">{order.items} item(s)</p>
+          <p className="font-medium">{(order.productInfo).length} item(s)</p>
         </div>
         {order.estimatedDelivery && (
           <div>
             <p className="text-sm text-gray-500">Estimated Delivery</p>
-            <p className="font-medium">{new Date(order.estimatedDelivery).toLocaleDateString()}</p>
+            <p className="font-medium">{new Date(order.estimatedDelievery).toLocaleDateString()}</p>
           </div>
         )}
         {order.trackingNumber && (
           <div>
             <p className="text-sm text-gray-500">Tracking Number</p>
-            <p className="font-medium">{order.trackingNumber}</p>
+            <p className="font-medium">{order.tracingNumber}</p>
           </div>
         )}
       </div>
@@ -52,10 +52,10 @@ const OrderCard = ({ order, getStatusIcon, getStatusColor }) => {
       <div className="border-t pt-4">
         <h4 className="font-medium text-gray-900 mb-2">Order Items:</h4>
         <div className="space-y-2">
-          {order.products.map((product, index) => (
+          {order.productInfo.map((product, index) => (
             <div key={index} className="flex justify-between items-center text-sm">
-              <span>{product.name} x{product.quantity}</span>
-              <span className="font-medium">{formatPKR(convertToPKR(product.price))}</span>
+              <span>{product?.productsData.name} x{product.quantity}</span>
+              <span className="font-medium">{formatPKR(convertToPKR(product?.productsData.price))}</span>
             </div>
           ))}
         </div>

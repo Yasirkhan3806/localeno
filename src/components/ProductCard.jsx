@@ -1,14 +1,24 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, ShoppingCart, Calendar, Star } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
+import {useCartContext} from "../contexts/CartContext" 
 import { useWishlist } from '../hooks/useWishlist';
+import { useProductReviewContext } from '../contexts/ReviewContext';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product,onClick,productId }) => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart } = useCartContext();
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const {review,setProductId} = useProductReviewContext()
+
+  useEffect(()=>{
+    setProductId(productId)
+  },[productId])
+
+  
+
 
   const handleRentNow = (product) => {
     navigate('/user/rentals');
@@ -20,18 +30,19 @@ const ProductCard = ({ product }) => {
   };
 
   const handleAddToCart = (product) => {
-    // Ensure the product has all required fields for the cart
-    const cartProduct = {
-      id: product.id,
-      name: product.name,
-      price: typeof product.price === 'string' ? parseFloat(product.price.replace(/[₹$,]/g, '')) : product.price,
-      image: product.image,
-      category: product.category,
-      inStock: product.inStock
-    };
+    // // Ensure the product has all required fields for the cart
+    // const cartProduct = {
+    //   id: product.id,
+    //   name: product.name,
+    //   price: typeof product.price === 'string' ? parseFloat(product.price.replace(/[₹$,]/g, '')) : product.price,
+    //   image: product.images[0],
+    //   category: product.category,
+    //   inStock: product.inStock
+    // };
     
-    addToCart(cartProduct);
-    console.log('Added to cart:', cartProduct.name);
+    // addToCart(cartProduct);
+    // console.log('Added to cart:', cartProduct.name);
+    navigate(`/product/${product.id}`);
   };
 
   // Convert dollar prices to PKR (assuming 1 USD = 280 PKR)
@@ -87,11 +98,18 @@ const ProductCard = ({ product }) => {
     return `PKR ${Math.round(numericPrice * 280).toLocaleString()}/day`;
   };
 
+   const handleProductClick = () => {
+    console.log(productId)
+    navigate(`/product/${productId}`);
+  };
+
   return (
-    <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+    <div
+    onClick={()=>handleProductClick()}
+     className="w-full bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
       <div className="relative">
         <img
-          src={product.image}
+          src={product?.images[0]}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -110,12 +128,12 @@ const ProductCard = ({ product }) => {
         
         {/* Status Badges */}
         <div className="absolute top-3 left-3 space-y-2">
-          {!product.inStock && (
+          {/* {!product.inStock && (
             <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
               Out of Stock
             </span>
-          )}
-          {product.isRentable && (
+          )} */}
+          {product.forRent && (
             <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
               Rentable
             </span>
@@ -132,10 +150,10 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} size={14} className={`${i < Math.floor(product.rating || 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+              <Star key={i} size={14} className={`${i < Math.floor(review[0]?.reviews[0]?.rating || 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
             ))}
           </div>
-          <span className="text-sm text-gray-600 ml-2">({product.reviews || 0})</span>
+          <span className="text-sm text-gray-600 ml-2">({product.rating|| review[0]?.reviews.length || 0})</span>
         </div>
         
         <div className="mb-4">
@@ -159,9 +177,9 @@ const ProductCard = ({ product }) => {
           
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={() => handleAddToCart(product)}
-              disabled={!product.inStock}
-              className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+              onClick={() => {console.log("I am being clicked"); handleAddToCart(product)}}
+              // disabled={!product.inStock}
+              className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               <ShoppingCart size={16} />
               Cart
@@ -170,7 +188,7 @@ const ProductCard = ({ product }) => {
             {product.isRentable && (
               <button
                 onClick={() => handleRentNow(product)}
-                disabled={!product.inStock}
+                // disabled={!product.inStock}
                 className="border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-purple-600 hover:text-white transition-all duration-200 flex items-center justify-center disabled:opacity-50"
               >
                 <Calendar size={16} />

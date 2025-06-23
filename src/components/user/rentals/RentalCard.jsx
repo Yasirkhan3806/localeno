@@ -106,7 +106,7 @@ const RentalCard = ({
               <span>View Details</span>
             </button>
 
-            {(rental.status === 'active' || rental.isOverdue) && (
+            {(rental.status === 'Active' || rental.isOverdue) && (
               <>
                 <button
                   onClick={() => extendRental(rental.id)}

@@ -91,7 +91,7 @@ const ProductCard = ({ product }) => {
     <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
       <div className="relative">
         <img
-          src={product.image}
+          src={product.images[0]}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -110,12 +110,12 @@ const ProductCard = ({ product }) => {
         
         {/* Status Badges */}
         <div className="absolute top-3 left-3 space-y-2">
-          {!product.inStock && (
+          {/* {!product.inStock && (
             <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
               Out of Stock
             </span>
-          )}
-          {product.isRentable && (
+          )} */}
+          {product.forRent && (
             <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
               Rentable
             </span>
@@ -160,7 +160,6 @@ const ProductCard = ({ product }) => {
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => handleAddToCart(product)}
-              disabled={!product.inStock}
               className="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <ShoppingCart size={16} />
@@ -170,7 +169,6 @@ const ProductCard = ({ product }) => {
             {product.isRentable && (
               <button
                 onClick={() => handleRentNow(product)}
-                disabled={!product.inStock}
                 className="border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-purple-600 hover:text-white transition-all duration-200 flex items-center justify-center disabled:opacity-50"
               >
                 <Calendar size={16} />

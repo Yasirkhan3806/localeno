@@ -131,9 +131,10 @@ export const allProducts = [
 
 export const categories = [
   'All Products',
-  'furniture',
-  'handicrafts',
-  'home decor',
-  'health and beauty',
-  'clothing accessories'
+  'Furniture',
+  'Handicrafts',
+  'Home Decor',
+  'Health & Beauty',
+  'Clothing & Accessories'
+
 ];

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,35 +16,66 @@ import UserDashboard from "./components/user/UserDashboard";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SellerDashboard from "./components/seller/SellerDashboard";
 import Admin from "./pages/Admin.jsx";
+import { UserProvider } from "./contexts/UserContext.jsx";
+import {
+  CategoriesProvider,
+  ProductsProvider,
+  ReviewsProvider,
+} from "./contexts/ProductsContext.jsx";
+import { AllProductsProvider } from "./contexts/ProductsContext.jsx";
+import { ProductsReviewProvider  } from "./contexts/ReviewContext.jsx";
+import { CartProvider } from "./contexts/CartContext.jsx";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/verify-identity" element={<VerifyIdentity />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/user/*" element={
-              <ProtectedRoute>
-                <UserDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/seller/*" element={<SellerDashboard />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+       <AllProductsProvider>
+      <UserProvider>
+       
+        <CategoriesProvider>
+          <ProductsProvider>
+            <CartProvider>
+            <ProductsReviewProvider >
+            <ReviewsProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route
+                      path="/verify-identity"
+                      element={<VerifyIdentity />}
+                    />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route
+                      path="/user/*"
+                      element={
+                        <ProtectedRoute>
+                          <UserDashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path="/seller/*" element={<SellerDashboard />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </TooltipProvider>
+            </ReviewsProvider>
+            </ProductsReviewProvider>
+            </CartProvider>
+          </ProductsProvider>
+        </CategoriesProvider>
+       
+      </UserProvider>
+       </AllProductsProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

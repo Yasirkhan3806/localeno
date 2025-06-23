@@ -36,7 +36,6 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: Calendar, label: 'My Rentals', path: '/user/rentals' },
     { icon: Package, label: 'My Orders', path: '/user/orders' },
     { icon: Star, label: 'Reviews', path: '/user/reviews' },
-    { icon: MessageCircle, label: 'Messages', path: '/user/chats' },
     { icon: Settings, label: 'Settings', path: '/user/settings' },
   ];
 

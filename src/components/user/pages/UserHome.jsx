@@ -7,22 +7,50 @@ import QuickStatsCard from '../home/QuickStatsCard';
 import DashboardOverview from '../home/DashboardOverview';
 import CategoriesSection from '../home/CategoriesSection';
 import RecentOrdersSection from '../home/RecentOrdersSection';
+import { getOrdersByUser } from '../../../Firebase Functions/orderFunctions';
+import { getRentalsByUser } from '../../../Firebase Functions/RentalFunc';
+import { auth } from '../../../config/firebaseConfig';
 
 const UserHome = () => {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
+  const [orders,setOrders] = useState(null)
+  const [rentals,setRentals] = useState(null)
 
+  const fetchOrders = async()=>{
+    const order = await getOrdersByUser()
+    const rent = await getRentalsByUser()
+    const activeRent = rent.filter((ren)=>ren.status == 'active')
+    console.log(order)
+    console.log(activeRent)
+    setOrders([order.orders])
+    setRentals(activeRent)
+  }
   useEffect(() => {
+    fetchOrders()
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+
   }, []);
+
+  useEffect(()=>{
+        fetchOrders()
+        
+  },[auth?.currentUser])
+
+  //  useEffect(()=>{
+  //       const totalRent = rentals.filter((ren)=>ren.totalAmount)
+  //       const totalOrdMon = orders.orders.filter((ord)=>ord.total)
+         
+        
+  // },[orders,rentals])
 
   const quickStats = [
     { 
       label: 'Total Orders', 
-      value: '12', 
+      value: orders?.length || 0, 
       icon: ShoppingBag, 
       color: 'bg-blue-500',
       trend: '+2 this month',
@@ -30,7 +58,7 @@ const UserHome = () => {
     },
     { 
       label: 'Active Rentals', 
-      value: '3', 
+      value: rentals?.length || 0, 
       icon: Clock, 
       color: 'bg-green-500',
       trend: '2 ending soon',
@@ -38,7 +66,7 @@ const UserHome = () => {
     },
     { 
       label: 'Wishlist Items', 
-      value: '8', 
+      value: '0', 
       icon: Heart, 
       color: 'bg-purple-500',
       trend: '3 on sale',
@@ -46,7 +74,7 @@ const UserHome = () => {
     },
     { 
       label: 'Total Spent', 
-      value: '$1,247', 
+      value: '$1,250', 
       icon: DollarSign, 
       color: 'bg-orange-500',
       trend: 'This year',

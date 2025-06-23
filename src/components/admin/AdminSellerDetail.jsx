@@ -2,6 +2,7 @@
 import React from "react";
 import { ArrowLeft, UserCheck } from "lucide-react";
 
+
 // Minimal seller detail page
 const AdminSellerDetail = ({ seller, onBack }) => {
   if (!seller) return null;

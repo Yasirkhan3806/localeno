@@ -1,11 +1,18 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid3x3 } from 'lucide-react';
+import {useCategories} from '../../../contexts/ProductsContext'
 
 const CategoriesSection = ({ featuredCategories }) => {
   const navigate = useNavigate();
+  const [category,setCategory] = useState([])
+  const {categories} = useCategories()
 
+
+  useEffect(()=>{
+    setCategory(categories)
+  },[categories])
   const updatedCategories = [
     { 
       name: 'Furniture', 
@@ -55,22 +62,22 @@ const CategoriesSection = ({ featuredCategories }) => {
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
-        {updatedCategories.map((category, index) => (
+        {category.map((category, index) => (
           <div
             key={index}
-            onClick={() => navigate(`/products?category=${encodeURIComponent(category.id)}`)}
+            onClick={() => navigate(`/products?category=${encodeURIComponent(category.category)}`)}
             className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group border border-gray-100"
           >
             <div className="aspect-square overflow-hidden">
               <img
                 src={category.image}
-                alt={category.name}
+                alt={category.category}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
             </div>
             <div className="p-3 sm:p-4 text-center">
               <h3 className="font-bold text-gray-900 mb-1 text-xs sm:text-sm lg:text-base">
-                {category.name}
+                {category.category}
               </h3>
               <p className="text-xs text-gray-600">
                 {category.count}

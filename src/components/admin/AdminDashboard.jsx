@@ -1,8 +1,36 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
+import { fetchAllProducts } from './AdminProductTable';
 
-const kpiCards = [
+
+
+const recentOrders = [
+  { id: "ORD1021", product: "Silk Scarf", customer: "Neha Patel", total: 79.99, status: "Paid", date: "2024-05-28" },
+  { id: "ORD1019", product: "Wooden Dining Table", customer: "Divya Garg", total: 899.99, status: "Paid", date: "2024-05-28" },
+  { id: "ORD1015", product: "Handcrafted Wooden Chair", customer: "Akshay Kumar", total: 299.99, status: "Refunded", date: "2024-05-27" },
+  { id: "ORD1012", product: "Pottery Vase", customer: "Rekha Singh", total: 89.99, status: "Paid", date: "2024-05-26" },
+];
+
+const statusColors = {
+  Paid: "bg-green-100 text-green-800",
+  Refunded: "bg-red-100 text-red-700"
+};
+
+const AdminDashboard = ({ onViewAllOrders }) => {
+  const navigate = useNavigate();
+  const {userData} = useUser();
+  const [products,setProducts] = useState([])
+  const [customers,setCustomers] = useState([])
+
+  useEffect(()=>{
+    const cust = userData.filter((user)=>user.userData?.accountType === "customer")
+    fetchAllProducts(setProducts)
+    setCustomers(cust)
+  },[userData])
+console.log(products)
+  const kpiCards = [
   {
     label: "Revenue",
     value: "$8,230",
@@ -30,7 +58,7 @@ const kpiCards = [
   },
   {
     label: "Customers",
-    value: "87",
+    value: customers.length,
     diff: "+3",
     desc: "new customers",
     icon: (
@@ -43,7 +71,7 @@ const kpiCards = [
   },
   {
     label: "Products",
-    value: "6",
+    value: products.length,
     diff: "+1",
     desc: "added today",
     icon: (
@@ -54,21 +82,6 @@ const kpiCards = [
     ),
   },
 ];
-
-const recentOrders = [
-  { id: "ORD1021", product: "Silk Scarf", customer: "Neha Patel", total: 79.99, status: "Paid", date: "2024-05-28" },
-  { id: "ORD1019", product: "Wooden Dining Table", customer: "Divya Garg", total: 899.99, status: "Paid", date: "2024-05-28" },
-  { id: "ORD1015", product: "Handcrafted Wooden Chair", customer: "Akshay Kumar", total: 299.99, status: "Refunded", date: "2024-05-27" },
-  { id: "ORD1012", product: "Pottery Vase", customer: "Rekha Singh", total: 89.99, status: "Paid", date: "2024-05-26" },
-];
-
-const statusColors = {
-  Paid: "bg-green-100 text-green-800",
-  Refunded: "bg-red-100 text-red-700"
-};
-
-const AdminDashboard = ({ onViewAllOrders }) => {
-  const navigate = useNavigate();
 
   const handleViewAll = () => {
     if (onViewAllOrders) {

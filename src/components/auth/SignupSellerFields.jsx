@@ -1,5 +1,6 @@
 
 import React from "react";
+import { MapPin } from "lucide-react";
 
 const SignupSellerFields = ({ formData, setFormData }) => (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -56,6 +57,34 @@ const SignupSellerFields = ({ formData, setFormData }) => (
         required
       />
     </div>
+    <div className="relative mt-7">
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              required
+              value={formData.shopName}
+              onChange={(e) =>  setFormData((prev) => ({
+            ...prev,
+            shopName: e.target.value,
+          }))}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
+              placeholder="Enter your Shop Name"
+            />
+          </div>
+          <div className="relative mt-7 w-full">
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              required
+              value={formData.address}
+              onChange={(e) =>  setFormData((prev) => ({
+            ...prev,
+            address: e.target.value,
+          }))}
+              className="w-[40vw] pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent"
+              placeholder="Enter your address"
+            />
+          </div>
   </div>
 );
 

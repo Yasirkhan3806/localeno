@@ -2,7 +2,7 @@
 import React from 'react';
 
 const OrderStatusFilter = ({ filterStatus, setFilterStatus }) => {
-  const statusOptions = ['all', 'processing', 'shipped', 'delivered', 'cancelled'];
+  const statusOptions = ['all', 'In Process', 'shipped', 'delivered', 'cancelled'];
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">

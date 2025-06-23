@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BackToHomeButton from '../BackToHomeButton';
 import OrderCard from '../orders/OrderCard';
 import OrderStatusFilter from '../orders/OrderStatusFilter';
+import { getOrdersByUser } from '../../../Firebase Functions/orderFunctions';
 
 const UserOrders = () => {
   const navigate = useNavigate();
+  const [orderData,setOrderData] = useState()
+  
+  const fetchOrders = async() =>{
+    const orders = await getOrdersByUser()
+    setOrderData(orders?.orders)
+    console.log(orders?.orders)
+
+  }
+
+  useEffect(()=>{
+    fetchOrders()
+  },[])
   
   const [orders] = useState([
     {
@@ -65,7 +78,7 @@ const UserOrders = () => {
         return <CheckCircle className="text-green-500" size={20} />;
       case 'shipped':
         return <Truck className="text-blue-500" size={20} />;
-      case 'processing':
+      case 'In Process':
         return <Clock className="text-orange-500" size={20} />;
       case 'cancelled':
         return <XCircle className="text-red-500" size={20} />;
@@ -80,7 +93,7 @@ const UserOrders = () => {
         return 'bg-green-100 text-green-800';
       case 'shipped':
         return 'bg-blue-100 text-blue-800';
-      case 'processing':
+      case 'In Process':
         return 'bg-orange-100 text-orange-800';
       case 'cancelled':
         return 'bg-red-100 text-red-800';
@@ -90,9 +103,10 @@ const UserOrders = () => {
   };
 
   const filteredOrders = filterStatus === 'all' 
-    ? orders 
-    : orders.filter(order => order.status === filterStatus);
+    ? (orderData || [])
+    : orderData.filter(order => order.status === filterStatus);
 
+    console.log(filteredOrders)
   return (
     <div className="space-y-8">
       <BackToHomeButton />

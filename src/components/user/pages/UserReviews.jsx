@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Star, Edit, Trash2, Camera, Send } from 'lucide-react';
 import BackToHomeButton from '../BackToHomeButton';
+import { fetchCurrentUserReviews } from '../../../Firebase Functions/ReviewFunctions';
 
 const UserReviews = () => {
+  const [rev,setRev] = useState(null)
+const fetchReviews = async()=>{
+  const reviewsData = await fetchCurrentUserReviews()
+  console.log(reviewsData)
+  setRev(reviewsData)
+}
+
+useEffect(()=>{
+  fetchReviews()
+},[])
   const [reviews, setReviews] = useState([
     {
       id: 1,

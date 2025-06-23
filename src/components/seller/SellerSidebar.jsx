@@ -21,11 +21,13 @@ const navItems = [{
   to: "/seller/reviews",
   icon: Star,
   label: "Customer Reviews"
-}, {
-  to: "/seller/chat",
-  icon: MessageSquare,
-  label: "Real-Time Chat"
-}, {
+},
+// }, {
+//   to: "/seller/chat",
+//   icon: MessageSquare,
+//   label: "Real-Time Chat"
+// }, {
+{
   to: "/seller/settings",
   icon: Settings,
   label: "Settings"

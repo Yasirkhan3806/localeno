@@ -1,49 +1,24 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-const categories = [
-  {
-    id: "furniture",
-    title: "Furniture", 
-    productCount: "3 products",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "handicrafts",
-    title: "Handicrafts", 
-    productCount: "3 products",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "clothing accessories",
-    title: "Clothing Accessories",
-    productCount: "3 products",
-    image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "home decor",
-    title: "Home Decor",
-    productCount: "3 products",
-    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=400&q=80"
-  },
-  {
-    id: "health and beauty",
-    title: "Health & Beauty",
-    productCount: "3 products",
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=400&q=80"
-  }
-];
+import { useCategories } from "../contexts/ProductsContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 const CategoriesGrid = () => {
   const navigate = useNavigate();
-
+  const {categories} = useCategories();
+  const {isAuthenticated} = useAuth()
   const handleCategoryClick = (categoryId) => {
     navigate(`/products?category=${encodeURIComponent(categoryId)}`);
   };
 
   const handleBrowseAllCategories = () => {
-    navigate('/products');
+    if(isAuthenticated){
+navigate('/products');
+    }else{
+      navigate('/login')
+    }
+    
   };
 
   return (
@@ -72,23 +47,23 @@ const CategoriesGrid = () => {
           {categories.map((category) => (
             <div
               key={category.id}
-              onClick={() => handleCategoryClick(category.id)}
+              onClick={() => handleCategoryClick(category.category)}
               className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 cursor-pointer group"
             >
               <div className="aspect-square overflow-hidden">
                 <img
                   src={category.image}
-                  alt={category.title}
+                  alt={category.category}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
               <div className="p-4 text-center">
                 <h3 className="font-semibold text-gray-900 mb-1 text-sm lg:text-base">
-                  {category.title}
+                  {category.category}
                 </h3>
-                <p className="text-xs lg:text-sm text-gray-600">
+                {/* <p className="text-xs lg:text-sm text-gray-600">
                   {category.productCount}
-                </p>
+                </p> */}
               </div>
             </div>
           ))}

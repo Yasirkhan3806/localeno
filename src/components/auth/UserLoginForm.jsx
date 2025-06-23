@@ -67,7 +67,7 @@ const UserLoginForm = ({ formData, setFormData, onSubmit, loading }) => {
         type="submit"
         disabled={loading}
         className={`
-          w-full py-3 px-4 rounded-xl font-semibold transition
+          w-full py-3 px-4 rounded-xl font-semibold
           bg-gradient-to-tr from-primary to-gray-900
           text-white shadow-lg
           hover:scale-105 hover:shadow-2xl hover:from-gray-900 hover:to-primary

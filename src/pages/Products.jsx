@@ -4,42 +4,62 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAllProducts } from "../contexts/ProductsContext.jsx";
 
 // Sample products data
-const allProducts = [
-  // FURNITURE
-  { id: 1, name: "Handcrafted Wooden Table", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$299", originalPrice: "$399", rentPrice: "$25/day", inStock: true, rating: 4.5, reviews: 123 },
-  { id: 2, name: "Vintage Armchair", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$450", originalPrice: "$550", rentPrice: "$35/day", inStock: true, rating: 4.8, reviews: 89 },
-  { id: 3, name: "Coffee Table", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$220", originalPrice: "$280", rentPrice: "$20/day", inStock: false, rating: 4.7, reviews: 234 },
+// const allProducts = [
+//   // FURNITURE
+//   { id: 1, name: "Handcrafted Wooden Table", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$299", originalPrice: "$399", rentPrice: "$25/day", inStock: true, rating: 4.5, reviews: 123 },
+//   { id: 2, name: "Vintage Armchair", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$450", originalPrice: "$550", rentPrice: "$35/day", inStock: true, rating: 4.8, reviews: 89 },
+//   { id: 3, name: "Coffee Table", category: "furniture", image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=200&q=80", price: "$220", originalPrice: "$280", rentPrice: "$20/day", inStock: false, rating: 4.7, reviews: 234 },
   
-  // HANDICRAFTS
-  { id: 4, name: "Handwoven Ceramic Bowl", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$65", rentPrice: "$5/day", inStock: true, rating: 4.8, reviews: 67 },
-  { id: 5, name: "Traditional Wood Carving", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$120", originalPrice: "$150", rentPrice: "$12/day", inStock: true, rating: 4.7, reviews: 156 },
-  { id: 6, name: "Handmade Pottery Vase", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$65", originalPrice: "$85", rentPrice: "$8/day", inStock: true, rating: 4.6, reviews: 89 },
+//   // HANDICRAFTS
+//   { id: 4, name: "Handwoven Ceramic Bowl", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$65", rentPrice: "$5/day", inStock: true, rating: 4.8, reviews: 67 },
+//   { id: 5, name: "Traditional Wood Carving", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$120", originalPrice: "$150", rentPrice: "$12/day", inStock: true, rating: 4.7, reviews: 156 },
+//   { id: 6, name: "Handmade Pottery Vase", category: "handicrafts", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=200&q=80", price: "$65", originalPrice: "$85", rentPrice: "$8/day", inStock: true, rating: 4.6, reviews: 89 },
   
-  // CLOTHING ACCESSORIES
-  { id: 7, name: "Handmade Leather Bag", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$149", originalPrice: "$199", rentPrice: "$12/day", inStock: true, rating: 4.4, reviews: 43 },
-  { id: 8, name: "Silver Jewelry Set", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$200", originalPrice: "$250", rentPrice: "$15/day", inStock: true, rating: 4.6, reviews: 45 },
-  { id: 9, name: "Designer Scarf", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$85", originalPrice: "$110", rentPrice: "$8/day", inStock: false, rating: 4.5, reviews: 78 },
+//   // CLOTHING ACCESSORIES
+//   { id: 7, name: "Handmade Leather Bag", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$149", originalPrice: "$199", rentPrice: "$12/day", inStock: true, rating: 4.4, reviews: 43 },
+//   { id: 8, name: "Silver Jewelry Set", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$200", originalPrice: "$250", rentPrice: "$15/day", inStock: true, rating: 4.6, reviews: 45 },
+//   { id: 9, name: "Designer Scarf", category: "clothing accessories", image: "https://images.unsplash.com/photo-1487252665478-49b61b47f302?auto=format&fit=crop&w=200&q=80", price: "$85", originalPrice: "$110", rentPrice: "$8/day", inStock: false, rating: 4.5, reviews: 78 },
   
-  // HOME DECOR
-  { id: 10, name: "Modern Wall Art", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$79", originalPrice: "$99", rentPrice: "$6/day", inStock: true, rating: 4.3, reviews: 21 },
-  { id: 11, name: "Table Lamp", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$65", originalPrice: "$85", rentPrice: "$7/day", inStock: true, rating: 4.7, reviews: 56 },
-  { id: 12, name: "Decorative Candles", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$45", rentPrice: "$4/day", inStock: true, rating: 4.2, reviews: 89 },
+//   // HOME DECOR
+//   { id: 10, name: "Modern Wall Art", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$79", originalPrice: "$99", rentPrice: "$6/day", inStock: true, rating: 4.3, reviews: 21 },
+//   { id: 11, name: "Table Lamp", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$65", originalPrice: "$85", rentPrice: "$7/day", inStock: true, rating: 4.7, reviews: 56 },
+//   { id: 12, name: "Decorative Candles", category: "home decor", image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$45", rentPrice: "$4/day", inStock: true, rating: 4.2, reviews: 89 },
   
-  // HEALTH AND BEAUTY
-  { id: 13, name: "Organic Face Cream", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$60", rentPrice: "$0/day", inStock: true, rating: 4.6, reviews: 67 },
-  { id: 14, name: "Natural Hair Oil", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$45", rentPrice: "$0/day", inStock: false, rating: 4.4, reviews: 34 },
-  { id: 15, name: "Herbal Soap Set", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$0/day", inStock: true, rating: 4.5, reviews: 45 }
-];
+//   // HEALTH AND BEAUTY
+//   { id: 13, name: "Organic Face Cream", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$45", originalPrice: "$60", rentPrice: "$0/day", inStock: true, rating: 4.6, reviews: 67 },
+//   { id: 14, name: "Natural Hair Oil", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$35", originalPrice: "$45", rentPrice: "$0/day", inStock: false, rating: 4.4, reviews: 34 },
+//   { id: 15, name: "Herbal Soap Set", category: "health and beauty", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=200&q=80", price: "$25", originalPrice: "$35", rentPrice: "$0/day", inStock: true, rating: 4.5, reviews: 45 }
+// ];
 
-const categories = [
+
+
+const Products = () => {
+  const navigate = useNavigate();
+   const {allProducts} = useAllProducts();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [sortBy, setSortBy] = useState('relevance');
+  const [viewMode, setViewMode] = useState('grid');
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
+  const [showFilters, setShowFilters] = useState(false);
+ useEffect(()=>{
+setProducts(allProducts?.productsData)
+setFilteredProducts(allProducts)
+ },[allProducts])
+
+  const categories = [
   { id: "all", name: "All Products", count: allProducts.length },
-  { id: "furniture", name: "Furniture", count: allProducts.filter(p => p.category === "furniture").length },
-  { id: "handicrafts", name: "Handicrafts", count: allProducts.filter(p => p.category === "handicrafts").length },
-  { id: "clothing accessories", name: "Clothing Accessories", count: allProducts.filter(p => p.category === "clothing accessories").length },
-  { id: "home decor", name: "Home Decor", count: allProducts.filter(p => p.category === "home decor").length },
-  { id: "health and beauty", name: "Health and Beauty", count: allProducts.filter(p => p.category === "health and beauty").length }
+  { id: "furniture", name: "Furniture", count: allProducts?.filter(p => p?.productsData?.category === "Furniture").length },
+  { id: "handicrafts", name: "Handicrafts", count: allProducts?.filter(p => p?.productsData?.category === "Handicrafts").length },
+  { id: "clothing accessories", name: "Clothing Accessories", count: allProducts?.filter(p => p?.productsData?.category === "Clothing & Accessories").length },
+  { id: "home decor", name: "Home Decor", count: allProducts?.filter(p => p?.productsData?.category === "Home Decor").length },
+  { id: "health and beauty", name: "Health and Beauty", count: allProducts?.filter(p => p?.productsData?.category === "Health & Beauty").length }
 ];
 
 const sortOptions = [
@@ -50,53 +70,45 @@ const sortOptions = [
   { value: "newest", label: "Newest First" }
 ];
 
-const Products = () => {
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState(allProducts);
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
-  const [sortBy, setSortBy] = useState('relevance');
-  const [viewMode, setViewMode] = useState('grid');
-  const [priceRange, setPriceRange] = useState([0, 200]);
-  const [showFilters, setShowFilters] = useState(false);
-
   useEffect(() => {
     filterAndSortProducts();
-  }, [searchQuery, selectedCategory, sortBy, priceRange]);
+  }, [allProducts,searchQuery, selectedCategory, sortBy, priceRange]);
 
   const filterAndSortProducts = () => {
     let filtered = allProducts;
-
+  
     // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        product?.productsData?.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
+
     // Filter by category
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
+      filtered = filtered.filter(product => product?.productsData?.category === selectedCategory);
     }
+ 
 
     // Filter by price range
     filtered = filtered.filter(product => {
-      const price = parseInt(product.price.replace('$', ''));
+      const price = parseInt(product?.productsData?.price);
       return price >= priceRange[0] && price <= priceRange[1];
     });
+
+
 
     // Sort products
     switch (sortBy) {
       case 'price-low':
-        filtered.sort((a, b) => parseInt(a.price.replace('$', '')) - parseInt(b.price.replace('$', '')));
+        filtered.sort((a, b) => parseInt(a?.productsData?.price) - parseInt(b?.productsData?.price));
         break;
       case 'price-high':
-        filtered.sort((a, b) => parseInt(b.price.replace('$', '')) - parseInt(a.price.replace('$', '')));
+        filtered.sort((a, b) => parseInt(b?.productsData?.price) - parseInt(a?.productsData?.price));
         break;
       case 'rating':
-        filtered.sort((a, b) => b.rating - a.rating);
+        filtered.sort((a, b) => b?.productsData?.rating - a?.productsData?.rating);
         break;
       case 'newest':
         filtered.sort((a, b) => b.id - a.id);
@@ -105,6 +117,8 @@ const Products = () => {
         // Keep original order for relevance
         break;
     }
+
+
 
     setFilteredProducts(filtered);
   };
@@ -120,9 +134,7 @@ const Products = () => {
     setSearchParams({ search: searchQuery, category: categoryId });
   };
 
-  const handleProductClick = (product) => {
-    navigate(`/product/${product.id}`);
-  };
+ 
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -300,8 +312,9 @@ const Products = () => {
                 {filteredProducts.map(product => (
                   <ProductCard
                     key={product.id}
-                    product={product}
-                    onClick={() => handleProductClick(product)}
+                    productId={product.id}
+                    product={product?.productsData}
+                    onClick={() => {handleProductClick(product)}}
                     minimal={viewMode === 'list'}
                   />
                 ))}

@@ -2,10 +2,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 
-const ADMIN_CREDENTIALS = {
-  username: "admin",
-  password: "admin123",
-};
 
 const AdminLoginForm = ({ formData, setFormData, onSubmit, loading, adminError }) => {
   const [showAdminPassword, setShowAdminPassword] = useState(false);
@@ -56,7 +52,7 @@ const AdminLoginForm = ({ formData, setFormData, onSubmit, loading, adminError }
         </div>
       </div>
       <div className="mb-2">
-        <div className="bg-gray-50 border border-gray-200 rounded-md px-4 py-2 text-xs text-gray-600 text-center">
+        {/* <div className="bg-gray-50 border border-gray-200 rounded-md px-4 py-2 text-xs text-gray-600 text-center">
           <div className="mb-1 font-semibold">Admin Login Details</div>
           <div>
             <span className="font-mono">Username: <b>{ADMIN_CREDENTIALS.username}</b></span>
@@ -64,7 +60,7 @@ const AdminLoginForm = ({ formData, setFormData, onSubmit, loading, adminError }
           <div>
             <span className="font-mono">Password: <b>{ADMIN_CREDENTIALS.password}</b></span>
           </div>
-        </div>
+        </div> */}
       </div>
       {adminError && (
         <div className="text-sm text-red-600 text-center">{adminError}</div>
@@ -73,7 +69,7 @@ const AdminLoginForm = ({ formData, setFormData, onSubmit, loading, adminError }
         type="submit"
         disabled={loading}
         className={`
-          w-full py-3 px-4 rounded-xl font-semibold transition
+          w-full py-3 px-4 rounded-xl font-semibold 
           bg-gradient-to-tr from-primary to-gray-900
           text-white shadow-lg
           hover:scale-105 hover:shadow-2xl hover:from-gray-900 hover:to-primary

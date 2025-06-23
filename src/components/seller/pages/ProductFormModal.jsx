@@ -3,45 +3,74 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { buttonVariants } from "@/components/ui/button";
+import { useCategories } from "../../../contexts/ProductsContext";
+import { updateProductFields } from "../../../Firebase Functions/EditProducts";
 
-const CATEGORIES = [
-  "Furniture", "Handicrafts", "Clothing & Accessories", "Home Decor", "Health & Beauty"
-];
 const STATUSES = ["Active", "In Review", "Rejected"];
 
 const emptyForm = {
+ id:"",
   name: "",
   category: "Furniture",
   price: "",
   stock: 1,
   status: "Active",
-  image: "",
+  image: [],
   dateAdded: "",
 };
 
-const ProductFormModal = ({
-  open, onClose, onSave, editProduct
-}) => {
+const ProductFormModal = ({ open, onClose, onSave, editProduct }) => {
   const [form, setForm] = useState(editProduct || emptyForm);
   const fileInputRef = useRef();
+  const { categories } = useCategories();
 
   useEffect(() => {
-    if (editProduct) setForm(editProduct);
+    if (editProduct?.productsData) setForm(editProduct?.productsData);
     else setForm({ ...emptyForm, category: "Furniture", status: "Active" });
   }, [editProduct, open]);
 
-  const handleSubmit = e => {
+  const handleFile = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "localeno_unsigned"); // Replace with your actual preset
+      formData.append("cloud_name", "dwheinvov"); // Replace with your actual Cloudinary cloud name
+
+      try {
+        const res = await fetch("https://api.cloudinary.com/v1_1/dwheinvov/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        setForm(f => ({ ...f, image: data.secure_url }));
+      } catch (err) {
+        console.error("Cloudinary upload failed:", err);
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave({ ...form, dateAdded: form.dateAdded || new Date().toLocaleDateString() });
+    handleSave({
+      ...form,
+      dateAdded: form.dateAdded || new Date().toLocaleDateString()
+    });
     onClose();
   };
 
-  const handleFile = e => {
-    const file = e.target.files[0];
-    if (file) {
-      setForm(f => ({ ...f, image: URL.createObjectURL(file) }));
-    }
-  };
+  const handleSave = async (formData) => {
+  await updateProductFields(editProduct?.id, {
+    name: formData.name,
+    category: formData.category,
+    price: Number(formData.price),
+    stock: Number(formData.stock),
+    status: formData.status,
+    image: formData.image || editProduct?.productsData?.images,
+    updatedAt: new Date().toISOString(),
+  });
+};
+
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -71,7 +100,8 @@ const ProductFormModal = ({
               onChange={e=>setForm(f=>({...f, category: e.target.value}))}
               required
             >
-              {CATEGORIES.map(c=><option value={c} key={c}>{c}</option>)}
+              <option value="">Select A Category</option>
+              {categories.map(c=><option value={c.category} key={c.category}>{c.category}</option>)}
             </select>
           </label>
           <label className="block font-medium text-sm mb-1">

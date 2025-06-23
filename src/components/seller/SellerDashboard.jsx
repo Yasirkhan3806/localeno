@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import SellerSidebar from "./SellerSidebar";
 import SellerProducts from "./pages/Products";
@@ -10,13 +10,23 @@ import SellerChat from "./pages/Chat";
 import SellerSettings from "./pages/Settings";
 import SellerDashboardOverview from "./pages/DashboardOverview";
 import { Menu, User, Settings, LogOut } from "lucide-react";
+import { useUser} from "../../contexts/UserContext";
+import { auth } from "../../config/firebaseConfig";
 
 export default function SellerDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [user,setUser] = useState([])
   const location = useLocation();
   const navigate = useNavigate();
-  const DUMMY_SELLER_NAME = "Samantha Liu";
+  const {userData} = useUser()
+useEffect(()=>{
+  const users = userData.filter((user) => user.userId == auth?.currentUser?.uid)
+    console.log(users)
+  setUser(users[0])
+
+},[userData])
+  const SELLER_NAME = `${user?.userData?.firstName} ${user?.userData?.lastName}`;
 
   const handleLogout = () => {
     console.log("Logging out seller...");
@@ -44,7 +54,7 @@ export default function SellerDashboard() {
         </h1>
         <div className="ml-auto flex items-center gap-1 sm:gap-2">
           <ProfileDropdown 
-            name={DUMMY_SELLER_NAME} 
+            name={SELLER_NAME} 
             open={profileDropdownOpen}
             setOpen={setProfileDropdownOpen}
             onLogout={handleLogout}

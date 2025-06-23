@@ -62,17 +62,18 @@ const ProductSearchFilters = ({
           </select>
 
           {/* Sort */}
-          <select
+          {/* <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-transparent"
           >
-            <option value="featured">Featured</option>
+            o
+            <option value="">Sort By</option>
             <option value="price-low">Price: Low to High</option>
             <option value="price-high">Price: High to Low</option>
             <option value="rating">Highest Rated</option>
             <option value="newest">Newest</option>
-          </select>
+          </select> */}
         </div>
       </div>
     </>

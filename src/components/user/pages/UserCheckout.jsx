@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../../hooks/useCart';
 import { convertToPKR } from '../../../utils/currency';
@@ -9,14 +9,22 @@ import PaymentMethodSection from '../checkout/PaymentMethodSection';
 import OrderItemsPreview from '../checkout/OrderItemsPreview';
 import OrderSummary from '../checkout/OrderSummary';
 import AddAddressModal from './AddAddressModal';
+import { addOrder } from '../../../Firebase Functions/orderFunctions';
+import { useCartContext } from '../../../contexts/CartContext';
+import { useAllProducts } from '../../../contexts/ProductsContext';
+import { auth } from '../../../config/firebaseConfig';
 
 const UserCheckout = () => {
   const navigate = useNavigate();
-  const { cart, clearCart } = useCart();
+  const { cart } = useCart();
+  const {allProducts} = useAllProducts();
   const [selectedAddress, setSelectedAddress] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState('cod');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
+  const {contextCart,clearCart} = useCartContext()
+  const [productInfo,setProductInfo] = useState([])
+
 
   const [mockAddresses, setMockAddresses] = useState([
     { id: 1, label: "Home", address: "123 Main St, Springfield, USA", phone: "+1 234-567-8900" },
@@ -35,14 +43,61 @@ const UserCheckout = () => {
   const shipping = subtotal > 28000 ? 0 : 4200;
   const total = subtotal + tax + shipping;
 
-  const handlePlaceOrder = () => {
+  useEffect(()=>{
+
+    
+      console.log(allProducts)
+      console.log(cart)
+    if (allProducts && contextCart && allProducts.length && contextCart.length) {
+      const mappedProducts = contextCart.map(cartItem => {
+        const product = allProducts.find(p => p.id === cartItem.id);
+        if (product) {
+          return {
+            id: product.id,
+            productsData: product?.productsData,
+            sellerRef: product.sellerRef,
+            quantity: cartItem.quantity,
+          };
+        }
+        return null;
+      }).filter(Boolean);
+      // console.log(mappedProducts)
+      setProductInfo(mappedProducts);
+    }
+  },[allProducts])
+
+  // useEffect(()=>{
+  //   // console.log(productInfo)
+  // },[productInfo])
+  const handlePlaceOrder = async() => {
+    console.log(contextCart)
+    const userId = auth.currentUser ? auth.currentUser.uid : null;
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
+const orderData = {
+      userId,
+      productInfo,
+      selectedAddress,
+      selectedPayment,
+      subtotal,
+      tax,
+      shipping,
+      total,
+      tracingNumber: Math.random().toString(36).substring(2, 10).toUpperCase(),
+      status: "In Process",
+      orderNumber: `ord-${Date.now()}`, // More unique than date string
+      estimatedDelievery: (() => {
+        const date = new Date();
+        date.setDate(date.getDate() + 5);
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      })(),
+      orderPlaced: new Date().toISOString(), // ISO format for better consistency
+}
+    const result = await addOrder(orderData)
+    // console.log(result)
+     setIsProcessing(false);
       clearCart();
       alert('Order placed successfully! 🎉');
       navigate('/user/orders');
-    }, 2000);
   };
 
   const handleAddAddress = (newAddress) => {
